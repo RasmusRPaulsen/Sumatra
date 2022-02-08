@@ -26,7 +26,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
 void MainWindow::showOpenFileDialog()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open file"), "",
@@ -63,14 +62,14 @@ void MainWindow::openFile(const QString& fileName)
 
 void MainWindow::createActions()
 {
-    openAct = new QAction(tr("&OpenTest"), this);
+    openAct = new QAction(tr("&Open"), this);
     openAct->setShortcuts(QKeySequence::New);
-    openAct->setStatusTip(tr("Open a file"));
+    openAct->setStatusTip(tr("Open file"));
     connect(openAct, &QAction::triggered, this, &MainWindow::showOpenFileDialog);
 }
 
 void MainWindow::createMenus()
 {
-    fileMenu = menuBar()->addMenu(tr("&FileTest"));
+    fileMenu = menuBar()->addMenu(tr("&File"));
     fileMenu->addAction(openAct);
 }
