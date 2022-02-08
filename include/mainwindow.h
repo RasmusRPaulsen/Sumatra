@@ -15,8 +15,21 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void showOpenFileDialog();
+
+protected:
+    void openFile(const QString& fileName);
+
 private:
     Ui::MainWindow *ui;
+
+private:
+    void createActions();
+    void createMenus();
+
+    QMenu* fileMenu;
+    QAction* openAct;
 };
 
 #endif // MAINWINDOW_H

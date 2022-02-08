@@ -20,3 +20,12 @@ Surface manipulation and transformation toolkit (Sumatra) - a fast and versatile
 
 - Add environment variable VTK_DIR=C:\libs\bin\VTK-9.1-MSVC2022
 - Add path %VTK_DIR%\bin\Release
+
+### Videos and inspirations
+
+
+
+### Qt creating menus
+(https://doc.qt.io/archives/qt-4.8/designer-creating-mainwindows.html)
+(https://doc.qt.io/qt-5/qtwidgets-mainwindows-menus-example.html)
+(https://www.youtube.com/watch?v=8z191FSk7n4)
