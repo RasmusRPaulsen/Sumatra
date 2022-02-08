@@ -29,3 +29,8 @@ Surface manipulation and transformation toolkit (Sumatra) - a fast and versatile
 (https://doc.qt.io/archives/qt-4.8/designer-creating-mainwindows.html)
 (https://doc.qt.io/qt-5/qtwidgets-mainwindows-menus-example.html)
 (https://www.youtube.com/watch?v=8z191FSk7n4)
+
+### Qt drag and drop
+(https://wiki.qt.io/Drag_and_Drop_of_files#Drag_and_Drop_of_files_on_QMainWindows)
+(https://doc-snapshots.qt.io/qt6-dev/dnd.html)
+(https://flylib.com/books/en/2.18.1/enabling_drag_and_drop.html)

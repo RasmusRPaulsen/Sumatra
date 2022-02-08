@@ -3,8 +3,9 @@
 
 #include <QFile>
 #include <QFileDialog>
-
+#include <qmessagebox.h>
 #include <vtkDataSetReader.h>
+#include <qmimedata.h>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -19,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent) :
     statusBar()->showMessage(message);
 
     setWindowTitle(tr("Sumatra (Qt)"));
+
+    setAcceptDrops(true);
 }
 
 MainWindow::~MainWindow()
@@ -72,4 +75,41 @@ void MainWindow::createMenus()
 {
     fileMenu = menuBar()->addMenu(tr("&File"));
     fileMenu->addAction(openAct);
+}
+
+void MainWindow::dragEnterEvent(QDragEnterEvent* event)
+{
+    event->acceptProposedAction();
+    // event->accept(QUriDrag::canDecode(event));
+ //   event->accept(true);
+}
+
+
+void MainWindow::dropEvent(QDropEvent* event)
+{
+    //QMessageBox::information(
+    //    this, "Hello",
+    //    "Test\nbox");
+
+    const QMimeData* mimeData = event->mimeData();
+
+    // check for our needed mime type, here a file or a list of files
+    if (mimeData->hasUrls())
+    {
+        QStringList pathList;
+        QList<QUrl> urlList = mimeData->urls();
+
+        // extract the local paths of the files
+        for (int i = 0; i < urlList.size(); i++)
+        {
+            pathList.append(urlList.at(i).toLocalFile());
+
+                    //QMessageBox::information(
+                    //this, "Hello",
+                    //urlList.at(i).toLocalFile());
+        }
+
+        // call a function to open the files
+        openFile(pathList[0]);
+    }    
 }

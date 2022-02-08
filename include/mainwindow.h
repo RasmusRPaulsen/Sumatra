@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <qdragenterevent>
 
 namespace Ui {
 class MainWindow;
@@ -20,6 +21,9 @@ private slots:
 
 protected:
     void openFile(const QString& fileName);
+
+    void dropEvent(QDropEvent* event);
+    void dragEnterEvent(QDragEnterEvent* event);
 
 private:
     Ui::MainWindow *ui;
