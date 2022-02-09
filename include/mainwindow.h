@@ -16,12 +16,12 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void openFile(const QString& fileName);
+
 private slots:
     void showOpenFileDialog();
 
 protected:
-    void openFile(const QString& fileName);
-
     void dropEvent(QDropEvent* event);
     void dragEnterEvent(QDragEnterEvent* event);
 
