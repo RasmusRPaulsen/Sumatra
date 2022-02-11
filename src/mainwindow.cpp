@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QString message = tr("Default status bar message");
     statusBar()->showMessage(message);
 
-    setWindowTitle(tr("Sumatra (Qt)"));
+    setWindowTitle(tr("Sumatra (Qt) ") + tr(SUMATRA_VERSION));
 
     setAcceptDrops(true);
 }
