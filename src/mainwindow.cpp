@@ -6,6 +6,7 @@
 #include <qmessagebox.h>
 #include <vtkDataSetReader.h>
 #include <qmimedata.h>
+#include "computenormalsdlg.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -63,18 +64,43 @@ void MainWindow::openFile(const QString& fileName)
     }
 }
 
+void MainWindow::processComputeNormals()
+{
+    ComputeNormalsDlg dlg;
+    dlg.Setup();
+    if (dlg.exec())
+    {
+        int selected = dlg.getSelectedSurface();
+        QMessageBox::information(this, "Hello", tr("Selected surface: ") + QString::number(selected));
+
+
+        //bool Opt1, Opt2, Opt3;
+        //myDialog->GetOptions(Opt1, Opt2, Opt3);
+        //DoSomethingWithThoseBooleans(Opt1, Opt2, Opt3);
+    }
+
+}
+
 void MainWindow::createActions()
 {
     openAct = new QAction(tr("&Open"), this);
     openAct->setShortcuts(QKeySequence::New);
     openAct->setStatusTip(tr("Open file"));
     connect(openAct, &QAction::triggered, this, &MainWindow::showOpenFileDialog);
+
+    ProcessComputeNormalsAct = new QAction(tr("&Compute normals"), this);
+    // ProcessComputeNormalsAct->setShortcuts(QKeySequence::New);
+    ProcessComputeNormalsAct->setStatusTip(tr("Compute sutface normals"));
+    connect(ProcessComputeNormalsAct, &QAction::triggered, this, &MainWindow::processComputeNormals);
 }
 
 void MainWindow::createMenus()
 {
     fileMenu = menuBar()->addMenu(tr("&File"));
     fileMenu->addAction(openAct);
+
+    fileMenu = menuBar()->addMenu(tr("&Process"));
+    fileMenu->addAction(ProcessComputeNormalsAct);
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent* event)

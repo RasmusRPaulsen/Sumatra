@@ -22,6 +22,7 @@ public:
 
 private slots:
     void showOpenFileDialog();
+    void processComputeNormals();
 
 protected:
     void dropEvent(QDropEvent* event);
@@ -36,6 +37,7 @@ private:
 
     QMenu* fileMenu;
     QAction* openAct;
+    QAction* ProcessComputeNormalsAct;
 };
 
 #endif // MAINWINDOW_H

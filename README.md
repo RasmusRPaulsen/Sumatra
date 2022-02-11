@@ -34,3 +34,7 @@ Surface manipulation and transformation toolkit (Sumatra) - a fast and versatile
 (https://wiki.qt.io/Drag_and_Drop_of_files#Drag_and_Drop_of_files_on_QMainWindows)
 (https://doc-snapshots.qt.io/qt6-dev/dnd.html)
 (https://flylib.com/books/en/2.18.1/enabling_drag_and_drop.html)
+
+### Qt dialogs
+Passing values forth and back:
+(https://stackoverflow.com/questions/20948665/passing-a-variable-to-other-dialog-qt)
