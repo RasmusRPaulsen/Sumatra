@@ -1,4 +1,4 @@
-/**********************************************************************
+ï»¿/**********************************************************************
 
 polygonizer.h
 
@@ -6,7 +6,7 @@ This is Jules Bloomenthal's implicit surface polygonizer from GRAPHICS
 GEMS IV. Bloomenthal's polygonizer is still used and the present code
 is simply the original code morphed into C++.
 
-J. Andreas Bærentzen 2003.
+J. Andreas Baerentzen 2003.
 
 Made VTK compatible
 

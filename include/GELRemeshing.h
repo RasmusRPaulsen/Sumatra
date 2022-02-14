@@ -1,4 +1,4 @@
-#ifndef _GELRemeshing_h_
+﻿#ifndef _GELRemeshing_h_
 #define _GELRemeshing_h_
 
 #include <iostream>
@@ -51,7 +51,7 @@ class CGELRemeshing
 		bool ProjectOnly(vtkImplicitFunction* func, vtkPolyData* pdin, vtkPolyData* pdout);
 
 
-		//! Remeshing following Jakob Andreas B�rentzens implementation
+		//! Remeshing following Jakob Andreas Bærentzens implementation
 		// bool RemeshJAB(vtkImplicitFunction *func, vtkPolyData *pdin, vtkPolyData *pdout);
 		
 		// Detect and visualise bad face normals (a bad face normal has an opposite normal to its neighbors)

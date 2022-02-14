@@ -3959,335 +3959,335 @@ void CMRFSurfaceReconstruction::CloneTexturesFromVRML()
 	surf->Delete();
 }
 
+//
+//bool CMRFSurfaceReconstruction::CheckCameraVisibility( C3dMDCamera &cam, double * p,double *n, vtkCellLocator * locator, double &normScore )
+//{
+//	double *CamPos = cam.GetPosition();
+//
+////	double distToCam = vtkMath::Distance2BetweenPoints(p, CamPos);
+//
+//	double v[3];
+//	v[0] = CamPos[0] - p[0];
+//	v[1] = CamPos[1] - p[1];
+//	v[2] = CamPos[2] - p[2];
+//
+//	normScore = vtkMath::Dot(v, n);
+//	if (normScore < 0)
+//		return false;
+//
+//	// push point a little towards the camera ... else the intersection will be at the point
+//	double pp[3];
+//	pp[0] = p[0] + 0.01 * (CamPos[0] - p[0]);
+//	pp[1] = p[1] + 0.01 * (CamPos[1] - p[1]);
+//	pp[2] = p[2] + 0.01 * (CamPos[2] - p[2]);
+//
+//	double tol = 0.0001;
+//	double t = 0;
+//	double intx[3];
+//	double pcoords[3];
+//	int subId = 0;
+//	int Intersect = locator->IntersectWithLine(CamPos, pp, tol , t, intx, pcoords, subId);
+//
+//	return (Intersect == 0);
+//}
 
-bool CMRFSurfaceReconstruction::CheckCameraVisibility( C3dMDCamera &cam, double * p,double *n, vtkCellLocator * locator, double &normScore )
-{
-	double *CamPos = cam.GetPosition();
+//
+//bool CMRFSurfaceReconstruction::CreateCombinedTexture(const std::string &textureName1,const std::string &textureName2, const std::string &TextureOut)
+//{
+////	vil_image_view<vil_rgb<vxl_byte> > img1 = vil_load(textureName1.c_str());
+//	vil_image_view<vxl_byte> img1 = vil_load(textureName1.c_str());
+//	if (!img1)
+//	{
+//		std::cerr << "Could not read " <<  textureName1 << std::endl;
+//		return false;
+//	}
+//	vil_image_view<vxl_byte> img2 = vil_load(textureName2.c_str());
+//	if (!img2)
+//	{
+//		std::cerr << "Could not read " <<  textureName2 << std::endl;
+//		return false;
+//	}
+//
+//	if (img1.nplanes() != img2.nplanes() || img1.nj() != img2.nj())
+//	{
+//		std::cerr << "Texture image dimensions do not fit" << std::endl;
+//		return false;
+//	}
+//
+//	int NewX = img1.ni() + img2.ni();
+//	int NewY = img1.nj();
+//	int nPlanes = img1.nplanes();
+//
+//	vil_image_view<vxl_byte> imageOut(NewX,NewY,nPlanes);
+//
+//	// Copy from image 1
+//	for (int p = 0; p < nPlanes; ++p)
+//	{
+//		for (int j = 0; j < NewY; ++j)
+//		{
+//			for (unsigned int i = 0; i < img1.ni(); ++i)
+//			{
+//				imageOut(i,j,p)= img1(i,j,p);
+//			}
+//		}
+//	}
+//	// Copy from image 2
+//	for (int p = 0; p < nPlanes; ++p)
+//	{
+//		for (int j = 0; j < NewY; ++j)
+//		{
+//			for (unsigned int i = 0; i < img2.ni(); ++i)
+//			{ 
+//				imageOut(i + img1.ni(),j,p)= img2(i,j,p);
+//			}
+//		}
+//	}
+//
+//	// Create area that is used for non-defined triangles
+//	for (int p = 0; p < nPlanes; ++p)
+//	{
+//		for (int j = 0; j < 5; ++j)
+//		{
+//			for (int i = 0; i < 5; ++i)
+//			{
+//				imageOut(i, imageOut.nj() -1 - j,p)= 127;
+//			}
+//		}
+//	}
+//
+//
+//	vil_save(imageOut, TextureOut.c_str());
+//
+//	
+//	return true;
+//}
 
-//	double distToCam = vtkMath::Distance2BetweenPoints(p, CamPos);
+//void CMRFSurfaceReconstruction::ReTextureSurface()
+//{
+//	std::string surfname			= m_Parms.OutPutDir + m_Parms.InputNameShort + "_MRFSurface_cropped.vtk";
+//	std::string cam1Cname             = m_Parms.CalibrationDir + "calib_1C.tka";
+//	std::string cam2Cname             = m_Parms.CalibrationDir + "calib_2C.tka";
+////	std::string oname			    = m_Parms.OutPutDir + m_Parms.InputNameShort + "_MRFSurface_cropped_InCameraSystem.vtk";
+//	std::string oname			    = m_Parms.OutPutDir + m_Parms.InputNameShort + "_MRFSurface_cropped_Retextured.vtk";
+//	std::string oname1			    = m_Parms.OutPutDir + m_Parms.InputNameShort + "_MRFSurface_cropped_WhichCamera.vtk";
+//	std::string oname2			    = m_Parms.OutPutDir + m_Parms.InputNameShort + "_MRFSurface_cropped_WhichCamera_VerticeSplit.vtk";
+//	std::string oname3			    = m_Parms.OutPutDir + m_Parms.InputNameShort + "_MRFSurface_cropped_WhichCamera_Relabeled.vtk";
+//	std::string oname4			    = m_Parms.OutPutDir + m_Parms.InputNameShort + "_MRFSurface_cropped_Retexture_MultiTextures.vtk";
+//	std::string TextureName1        = m_Parms.CalibrationDir + "texture_1C.bmp";
+//	std::string TextureName2        = m_Parms.CalibrationDir + "texture_2C.bmp";
+//	std::string TextureOutName	    = m_Parms.OutPutDir + m_Parms.InputNameShort + "_MRFSurface_cropped_Retexture_MultiTextures.png";
+//
+//
+//	//if (m_Parms.InputName != "" && file_exists(oname.c_str()))
+//	//{
+//	//	return;
+//	//}
+//
+//	if (!MRFSurfaceCropped)
+//	{
+//		MRFSurfaceCropped = vtkExtMisc::MultiReadSurface(surfname);
+//		if (!MRFSurfaceCropped)
+//		{
+//			std::cerr << "Could not read " << surfname << std::endl;
+//			return;
+//		}
+//	}
+//
+//	std::cout << "Retexturing" << std::endl;
+//	C3dMDCamera cam1C;
+//	if (!cam1C.Read(cam1Cname))
+//	{
+//		std::cerr << "Could not read camera" << std::endl;
+//		return;
+//	}
+//	C3dMDCamera cam2C;
+//	if (!cam2C.Read(cam2Cname))
+//	{
+//		std::cerr << "Could not read camera" << std::endl;
+//		return;
+//	}
+//
+//	if (m_Parms.WriteLevel > 0)
+//	{
+//		if (!CreateCombinedTexture(TextureName1,TextureName2,TextureOutName))
+//			return;
+//
+//	}
+//	//vtkPolyData *ShapeInCamSystem = cam1C.TransformShapeIntoCameraSystem(MRFSurfaceCropped);
+//
+//	//vtkExtMisc::WritePDVTK(ShapeInCamSystem, oname);
+//
+//	//ShapeInCamSystem->Delete();
+//
+//	if (m_Parms.WriteLevel > 10)
+//	{
+//		vtkPolyData *ReTextured = vtkPolyData::New();
+//		ReTextured->DeepCopy(MRFSurfaceCropped);
+//		ReTextured->GetPointData()->SetScalars(NULL);
+//			
+//		cam1C.ComputeAllTextureCoordinates(ReTextured);
+//
+//		vtkExtMisc::WritePDVTK(ReTextured, oname);
+//
+//		ReTextured->Delete();
+//	}
+//
+//	// Determine which camera that gave which coordinates
+//	vtkPolyData *WhichCameraPD = vtkPolyData::New();
+//	WhichCameraPD->DeepCopy(MRFSurfaceCropped);
+//
+//	vtkDoubleArray *scalars = vtkDoubleArray::New();
+//	scalars->SetNumberOfComponents(1);
+//
+//	vtkCellLocator *locator = vtkCellLocator::New();
+//	locator->SetDataSet(WhichCameraPD);
+//	locator->SetNumberOfCellsPerBucket(1);
+//	locator->BuildLocator();
+//
+//
+//	vtkDataArray *normals = WhichCameraPD->GetPointData()->GetNormals();
+//	if (!normals)
+//	{
+//		std::cerr << "No normals" << std::endl;
+//		return;
+//	}
+//
+//	scalars->SetNumberOfValues(WhichCameraPD->GetNumberOfPoints());
+//	for (int i = 0; i < WhichCameraPD->GetNumberOfPoints(); i++)
+//	{
+//		scalars->SetValue(i, 0);
+//		double p[3];
+//		WhichCameraPD->GetPoint(i, p);
+//		double n[3];
+//		normals->GetTuple(i, n);
+//
+//		double normScore1C = 0;
+//		double normScore2C = 0;
+//		bool ViewCam1C = CheckCameraVisibility(cam1C, p, n, locator, normScore1C);
+//		bool ViewCam2C = CheckCameraVisibility(cam2C, p, n, locator, normScore2C);
+//
+//		double ScalVal = 0;
+//		if (ViewCam1C && ViewCam2C) 
+//		{
+//			if (normScore2C > normScore1C)
+//			{
+//				ScalVal = 4;
+//			}
+//			else
+//			{
+//				ScalVal = 3;
+//			}
+//		}
+//		else if (ViewCam1C)
+//		{
+//			ScalVal = 1;
+//		}
+//		else if (ViewCam2C)
+//		{
+//			ScalVal = 2;
+//		}
+//		scalars->SetValue(i, ScalVal);
+//	}
+//
+//	WhichCameraPD->GetPointData()->SetScalars(scalars);
+//	scalars->Delete();
+//	locator->Delete();
+//
+//	if (m_Parms.WriteLevel > 2)
+//	{
+//		vtkExtMisc::WritePDVTK(WhichCameraPD, oname1);
+//	}
+//
+//	vtkPolyData *splits = SplitVertices(WhichCameraPD);
+//
+//	if (m_Parms.WriteLevel > 2)
+//	{
+//		vtkExtMisc::WritePDVTK(splits, oname2);
+//	}
+//
+//	RelabelVisibilityMesh(splits);
+//	
+//	if (m_Parms.WriteLevel > 2)
+//	{
+//		vtkExtMisc::WritePDVTK(splits, oname3);
+//	}
+//
+//	vtkPolyData *ReTextured2 = vtkPolyData::New();
+//	ReTextured2->DeepCopy(splits);
+//
+//	cam1C.ComputeAllTextureCoordinatesForThisCamera(ReTextured2, 1);
+//	cam2C.ComputeAllTextureCoordinatesForThisCamera(ReTextured2, 2);
+//	ReTextured2->GetPointData()->SetScalars(NULL);
+//
+//	if (m_Parms.WriteLevel > 0)
+//	{
+//		vtkExtMisc::WritePDVTK(ReTextured2, oname4);
+//	}
+//
+//	ReTextured2->Delete();
+//
+//
+//	WhichCameraPD->Delete();
+//	splits->Delete();
+//
+//}
 
-	double v[3];
-	v[0] = CamPos[0] - p[0];
-	v[1] = CamPos[1] - p[1];
-	v[2] = CamPos[2] - p[2];
-
-	normScore = vtkMath::Dot(v, n);
-	if (normScore < 0)
-		return false;
-
-	// push point a little towards the camera ... else the intersection will be at the point
-	double pp[3];
-	pp[0] = p[0] + 0.01 * (CamPos[0] - p[0]);
-	pp[1] = p[1] + 0.01 * (CamPos[1] - p[1]);
-	pp[2] = p[2] + 0.01 * (CamPos[2] - p[2]);
-
-	double tol = 0.0001;
-	double t = 0;
-	double intx[3];
-	double pcoords[3];
-	int subId = 0;
-	int Intersect = locator->IntersectWithLine(CamPos, pp, tol , t, intx, pcoords, subId);
-
-	return (Intersect == 0);
-}
-
-
-bool CMRFSurfaceReconstruction::CreateCombinedTexture(const std::string &textureName1,const std::string &textureName2, const std::string &TextureOut)
-{
-//	vil_image_view<vil_rgb<vxl_byte> > img1 = vil_load(textureName1.c_str());
-	vil_image_view<vxl_byte> img1 = vil_load(textureName1.c_str());
-	if (!img1)
-	{
-		std::cerr << "Could not read " <<  textureName1 << std::endl;
-		return false;
-	}
-	vil_image_view<vxl_byte> img2 = vil_load(textureName2.c_str());
-	if (!img2)
-	{
-		std::cerr << "Could not read " <<  textureName2 << std::endl;
-		return false;
-	}
-
-	if (img1.nplanes() != img2.nplanes() || img1.nj() != img2.nj())
-	{
-		std::cerr << "Texture image dimensions do not fit" << std::endl;
-		return false;
-	}
-
-	int NewX = img1.ni() + img2.ni();
-	int NewY = img1.nj();
-	int nPlanes = img1.nplanes();
-
-	vil_image_view<vxl_byte> imageOut(NewX,NewY,nPlanes);
-
-	// Copy from image 1
-	for (int p = 0; p < nPlanes; ++p)
-	{
-		for (int j = 0; j < NewY; ++j)
-		{
-			for (unsigned int i = 0; i < img1.ni(); ++i)
-			{
-				imageOut(i,j,p)= img1(i,j,p);
-			}
-		}
-	}
-	// Copy from image 2
-	for (int p = 0; p < nPlanes; ++p)
-	{
-		for (int j = 0; j < NewY; ++j)
-		{
-			for (unsigned int i = 0; i < img2.ni(); ++i)
-			{ 
-				imageOut(i + img1.ni(),j,p)= img2(i,j,p);
-			}
-		}
-	}
-
-	// Create area that is used for non-defined triangles
-	for (int p = 0; p < nPlanes; ++p)
-	{
-		for (int j = 0; j < 5; ++j)
-		{
-			for (int i = 0; i < 5; ++i)
-			{
-				imageOut(i, imageOut.nj() -1 - j,p)= 127;
-			}
-		}
-	}
-
-
-	vil_save(imageOut, TextureOut.c_str());
-
-	
-	return true;
-}
-
-void CMRFSurfaceReconstruction::ReTextureSurface()
-{
-	std::string surfname			= m_Parms.OutPutDir + m_Parms.InputNameShort + "_MRFSurface_cropped.vtk";
-	std::string cam1Cname             = m_Parms.CalibrationDir + "calib_1C.tka";
-	std::string cam2Cname             = m_Parms.CalibrationDir + "calib_2C.tka";
-//	std::string oname			    = m_Parms.OutPutDir + m_Parms.InputNameShort + "_MRFSurface_cropped_InCameraSystem.vtk";
-	std::string oname			    = m_Parms.OutPutDir + m_Parms.InputNameShort + "_MRFSurface_cropped_Retextured.vtk";
-	std::string oname1			    = m_Parms.OutPutDir + m_Parms.InputNameShort + "_MRFSurface_cropped_WhichCamera.vtk";
-	std::string oname2			    = m_Parms.OutPutDir + m_Parms.InputNameShort + "_MRFSurface_cropped_WhichCamera_VerticeSplit.vtk";
-	std::string oname3			    = m_Parms.OutPutDir + m_Parms.InputNameShort + "_MRFSurface_cropped_WhichCamera_Relabeled.vtk";
-	std::string oname4			    = m_Parms.OutPutDir + m_Parms.InputNameShort + "_MRFSurface_cropped_Retexture_MultiTextures.vtk";
-	std::string TextureName1        = m_Parms.CalibrationDir + "texture_1C.bmp";
-	std::string TextureName2        = m_Parms.CalibrationDir + "texture_2C.bmp";
-	std::string TextureOutName	    = m_Parms.OutPutDir + m_Parms.InputNameShort + "_MRFSurface_cropped_Retexture_MultiTextures.png";
-
-
-	//if (m_Parms.InputName != "" && file_exists(oname.c_str()))
-	//{
-	//	return;
-	//}
-
-	if (!MRFSurfaceCropped)
-	{
-		MRFSurfaceCropped = vtkExtMisc::MultiReadSurface(surfname);
-		if (!MRFSurfaceCropped)
-		{
-			std::cerr << "Could not read " << surfname << std::endl;
-			return;
-		}
-	}
-
-	std::cout << "Retexturing" << std::endl;
-	C3dMDCamera cam1C;
-	if (!cam1C.Read(cam1Cname))
-	{
-		std::cerr << "Could not read camera" << std::endl;
-		return;
-	}
-	C3dMDCamera cam2C;
-	if (!cam2C.Read(cam2Cname))
-	{
-		std::cerr << "Could not read camera" << std::endl;
-		return;
-	}
-
-	if (m_Parms.WriteLevel > 0)
-	{
-		if (!CreateCombinedTexture(TextureName1,TextureName2,TextureOutName))
-			return;
-
-	}
-	//vtkPolyData *ShapeInCamSystem = cam1C.TransformShapeIntoCameraSystem(MRFSurfaceCropped);
-
-	//vtkExtMisc::WritePDVTK(ShapeInCamSystem, oname);
-
-	//ShapeInCamSystem->Delete();
-
-	if (m_Parms.WriteLevel > 10)
-	{
-		vtkPolyData *ReTextured = vtkPolyData::New();
-		ReTextured->DeepCopy(MRFSurfaceCropped);
-		ReTextured->GetPointData()->SetScalars(NULL);
-			
-		cam1C.ComputeAllTextureCoordinates(ReTextured);
-
-		vtkExtMisc::WritePDVTK(ReTextured, oname);
-
-		ReTextured->Delete();
-	}
-
-	// Determine which camera that gave which coordinates
-	vtkPolyData *WhichCameraPD = vtkPolyData::New();
-	WhichCameraPD->DeepCopy(MRFSurfaceCropped);
-
-	vtkDoubleArray *scalars = vtkDoubleArray::New();
-	scalars->SetNumberOfComponents(1);
-
-	vtkCellLocator *locator = vtkCellLocator::New();
-	locator->SetDataSet(WhichCameraPD);
-	locator->SetNumberOfCellsPerBucket(1);
-	locator->BuildLocator();
-
-
-	vtkDataArray *normals = WhichCameraPD->GetPointData()->GetNormals();
-	if (!normals)
-	{
-		std::cerr << "No normals" << std::endl;
-		return;
-	}
-
-	scalars->SetNumberOfValues(WhichCameraPD->GetNumberOfPoints());
-	for (int i = 0; i < WhichCameraPD->GetNumberOfPoints(); i++)
-	{
-		scalars->SetValue(i, 0);
-		double p[3];
-		WhichCameraPD->GetPoint(i, p);
-		double n[3];
-		normals->GetTuple(i, n);
-
-		double normScore1C = 0;
-		double normScore2C = 0;
-		bool ViewCam1C = CheckCameraVisibility(cam1C, p, n, locator, normScore1C);
-		bool ViewCam2C = CheckCameraVisibility(cam2C, p, n, locator, normScore2C);
-
-		double ScalVal = 0;
-		if (ViewCam1C && ViewCam2C) 
-		{
-			if (normScore2C > normScore1C)
-			{
-				ScalVal = 4;
-			}
-			else
-			{
-				ScalVal = 3;
-			}
-		}
-		else if (ViewCam1C)
-		{
-			ScalVal = 1;
-		}
-		else if (ViewCam2C)
-		{
-			ScalVal = 2;
-		}
-		scalars->SetValue(i, ScalVal);
-	}
-
-	WhichCameraPD->GetPointData()->SetScalars(scalars);
-	scalars->Delete();
-	locator->Delete();
-
-	if (m_Parms.WriteLevel > 2)
-	{
-		vtkExtMisc::WritePDVTK(WhichCameraPD, oname1);
-	}
-
-	vtkPolyData *splits = SplitVertices(WhichCameraPD);
-
-	if (m_Parms.WriteLevel > 2)
-	{
-		vtkExtMisc::WritePDVTK(splits, oname2);
-	}
-
-	RelabelVisibilityMesh(splits);
-	
-	if (m_Parms.WriteLevel > 2)
-	{
-		vtkExtMisc::WritePDVTK(splits, oname3);
-	}
-
-	vtkPolyData *ReTextured2 = vtkPolyData::New();
-	ReTextured2->DeepCopy(splits);
-
-	cam1C.ComputeAllTextureCoordinatesForThisCamera(ReTextured2, 1);
-	cam2C.ComputeAllTextureCoordinatesForThisCamera(ReTextured2, 2);
-	ReTextured2->GetPointData()->SetScalars(NULL);
-
-	if (m_Parms.WriteLevel > 0)
-	{
-		vtkExtMisc::WritePDVTK(ReTextured2, oname4);
-	}
-
-	ReTextured2->Delete();
-
-
-	WhichCameraPD->Delete();
-	splits->Delete();
-
-}
-
-void CMRFSurfaceReconstruction::RelabelVisibilityMesh(vtkPolyData *pd)
-{
-	vtkDoubleArray *scalars = vtkDoubleArray::SafeDownCast(pd->GetPointData()->GetScalars());
-	if (!scalars)
-	{
-		std::cerr << "Something wrong with scalars" << std::endl;
-		return;
-	}
-
-	pd->GetPolys()->InitTraversal();
-
-	for (int i = 0; i < pd->GetNumberOfCells(); i++) 
-	{
-		vtkIdType n_pts = -1;
-		const vtkIdType *pts = NULL;
-		pd->GetPolys()->GetNextCell(n_pts, pts); 
-
-		bool OneFound = false;
-		bool TwoFound = false;
-		int Threes = 0;
-		int Fours = 0;
-
-		// copy the corresponding points, scalars and normals across
-		for (int j = 0;j < n_pts; j++) 
-		{
-			double scal = scalars->GetValue(pts[j]);
-
-			if (scal == 1)
-				OneFound = true;
-			else if (scal == 2)
-				TwoFound = true;
-			else if (scal == 3)
-				Threes++;
-			else if (scal == 4)
-				Fours++;
-			//else
-			//	std::cout << "Val: " << scal << std::endl;
-		}
-		double finalVal = 0;
-		if (OneFound && TwoFound)
-			finalVal = 0;
-		else if (OneFound)
-			finalVal = 1;
-		else if (TwoFound)
-			finalVal = 2;
-		else if (Threes > Fours)
-			finalVal = 1;
-		else if (Fours > Threes)
-			finalVal = 2;
-
-		for (int j = 0;j < n_pts; j++) 
-		{
-			scalars->SetValue(pts[j], finalVal);
-		}
-	}
-}
+//void CMRFSurfaceReconstruction::RelabelVisibilityMesh(vtkPolyData *pd)
+//{
+//	vtkDoubleArray *scalars = vtkDoubleArray::SafeDownCast(pd->GetPointData()->GetScalars());
+//	if (!scalars)
+//	{
+//		std::cerr << "Something wrong with scalars" << std::endl;
+//		return;
+//	}
+//
+//	pd->GetPolys()->InitTraversal();
+//
+//	for (int i = 0; i < pd->GetNumberOfCells(); i++) 
+//	{
+//		vtkIdType n_pts = -1;
+//		const vtkIdType *pts = NULL;
+//		pd->GetPolys()->GetNextCell(n_pts, pts); 
+//
+//		bool OneFound = false;
+//		bool TwoFound = false;
+//		int Threes = 0;
+//		int Fours = 0;
+//
+//		// copy the corresponding points, scalars and normals across
+//		for (int j = 0;j < n_pts; j++) 
+//		{
+//			double scal = scalars->GetValue(pts[j]);
+//
+//			if (scal == 1)
+//				OneFound = true;
+//			else if (scal == 2)
+//				TwoFound = true;
+//			else if (scal == 3)
+//				Threes++;
+//			else if (scal == 4)
+//				Fours++;
+//			//else
+//			//	std::cout << "Val: " << scal << std::endl;
+//		}
+//		double finalVal = 0;
+//		if (OneFound && TwoFound)
+//			finalVal = 0;
+//		else if (OneFound)
+//			finalVal = 1;
+//		else if (TwoFound)
+//			finalVal = 2;
+//		else if (Threes > Fours)
+//			finalVal = 1;
+//		else if (Fours > Threes)
+//			finalVal = 2;
+//
+//		for (int j = 0;j < n_pts; j++) 
+//		{
+//			scalars->SetValue(pts[j], finalVal);
+//		}
+//	}
+//}
 
 
 vtkPolyData * CMRFSurfaceReconstruction::SplitVertices(vtkPolyData *pd)

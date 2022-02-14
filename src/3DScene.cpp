@@ -13,7 +13,7 @@
 #include "vtkTesselateBoundaryLoops.h"
 #include "vtkTrapezoidSource.h"
 #include "vtkPolyDataProjection.h"
-#include "MRFSurfaceReconstruction.h"
+//#include "MRFSurfaceReconstruction.h"
 #include "GELRemeshing.h"
 #include "vtkPolyDataPCANormals.h"
 #include "vtkPolyDataOrientNormalsByVoting.h"
@@ -1535,128 +1535,128 @@ void C3DScene::CalculateMRFSurface( unsigned int SourceID, bool ReplaceSurface, 
 		// TODO: Update QMessageBox::information(this, "Warning","Selected object not valid!");
 		return;
 	}
-
-
-	CMRFSurfaceReconstruction::CParms parms;
-	//parms.InputName = inputname;
-	//parms.InputDir = inputdir;
-	//parms.OutPutDir = outputdir;
-	//	parms.CalibrationDir = calibrationDir;
-	parms.SetInputType(InputType);
-	parms.EstimateNormals = RecomputeNorms;
-	parms.ConnectedComponentAnalysis = ConComp;
-	parms.LargestCliqueOnly = LargestCliqueOnly;
-	parms.WriteLevel = 0;
-//	parms.SampleFactor = 0.10;
-	parms.NormalRadius = 2.5;
-	if (PPerNormal > 0)
-	{
-		parms.NormalSearchMode = 1;
-		parms.NormalPointsPerNormal	 = PPerNormal;
-	}
-	parms.NumberOfDistances = PPerDistance;
-	parms.DistanceMode = 2;
-	parms.Polygoniser = 0;
-	if (MarchingCubes)
-		parms.Polygoniser = 1;
-	parms.GlobalBeta = 0.9;
-	parms.WeightMode = 1;
-	parms.LocalWeightMaxDist = 3.0;
-	parms.PriorType = priortype;
-	parms.Optimisation = 0;
-	parms.MaxVolumeSize = 10000000;
-//	parms.EnlargePercent = 200;
-	parms.PadVoxels = 5;
-
-	parms.MaxIterations = 1000;
-	parms.CellSizeFactor = TriangleSizeFactor;
-	parms.UseLocalWeights = true;
-	parms.BandedICM = true;
-	parms.AddNoise = false;
-	parms.NoiseNature = 1;
-	parms.UseLeavePatchOut = false;
-	parms.MultiLevel = true;
-	parms.Remesh = true;
-	parms.RemeshToTargetEdgeLengths = UseTargetEdgeLengths;
-	parms.AdaptiveParameters = true;
-	parms.AggresiveCrop = true;
-
-	std::string msg;
-	CMRFSurfaceReconstruction MRFSurface;
-	bool result = true;
-	
-	// check for normals
-	if (parms.InputType == 1 ||  parms.InputType ==  2 || parms.InputType == 4 || parms.InputType ==  5 )
-	{
-		vtkDataArray *normals = m_Surfaces[SourceID]->m_polyData->GetPointData()->GetNormals(); 
-		if (!normals)
-		{
-			// TODO: Update QMessageBox::information(this, "Warning","Selected input does not have normals");
-			return;
-		}
-	}
-
-	if (NumberOfPoints < 0)
-	{
-		// use all points
-		result = MRFSurface.OneShotCompute(parms, m_Surfaces[SourceID]->m_polyData, msg);
-	}
-	else
-	{
-		// reduce input point set size
-		vtkPolyDataResamplePoints *resampler = vtkPolyDataResamplePoints::New();
-		resampler->SetInputData(m_Surfaces[SourceID]->m_polyData);
-		resampler->SetNumberOfOutputPoints(NumberOfPoints);
-		resampler->Update();
-
-		result = MRFSurface.OneShotCompute(parms, resampler->GetOutput(), msg);
-		resampler->Delete();
-	}
-	if (!result)
-	{
-		// TODO: Update QMessageBox::information(this, "Warning",msg.c_str());
-		return;
-	}
-
-	if (ReplaceSurface)
-	{
-		m_Surfaces[SourceID]->m_polyData->DeepCopy(MRFSurface.GetMRFSurfaceCropped());
-		// Remove scalar information
-		m_Surfaces[SourceID]->m_polyData->GetPointData()->SetScalars(NULL); 
-	}
-	else
-	{
-		std::string name = m_Surfaces[SourceID]->m_shortname + "_MRFSurface";
-		CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
-		surfProbs->InitialiseSurface(MRFSurface.GetMRFSurface());
-		surfProbs->m_shortname = name;
-		AddSurfaceToRenderer(surfProbs);
-		surfProbs->m_actor->SetVisibility(0);
-
-		name = m_Surfaces[SourceID]->m_shortname + "_MRFSurface_Cropped";
-		CSurfaceProperties *surfProbs1 = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
-		surfProbs1->InitialiseSurface(MRFSurface.GetMRFSurfaceCropped());
-		surfProbs1->m_polyData->GetPointData()->SetScalars(NULL);
-		surfProbs1->m_shortname = name;
-
-		AddSurfaceToRenderer(surfProbs1);
-
-		name = m_Surfaces[SourceID]->m_shortname + "_MRFSurface_AggresiveCrop";
-		CSurfaceProperties *surfProbs3 = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
-		surfProbs3->InitialiseSurface(MRFSurface.GetMRFSurfaceAgressivelyCropped());
-		surfProbs3->m_shortname = name;
-
-		AddSurfaceToRenderer(surfProbs3);
-		surfProbs3->m_actor->SetVisibility(0);
-
-		name = m_Surfaces[SourceID]->m_shortname + "_NormalData";
-		CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
-		surfProbs2->InitialiseSurface(MRFSurface.GetNormalData());
-		surfProbs2->m_shortname = name;
-
-		AddSurfaceToRenderer(surfProbs2);
-		surfProbs2->m_actor->SetVisibility(0);
-	}
+//
+//
+//	CMRFSurfaceReconstruction::CParms parms;
+//	//parms.InputName = inputname;
+//	//parms.InputDir = inputdir;
+//	//parms.OutPutDir = outputdir;
+//	//	parms.CalibrationDir = calibrationDir;
+//	parms.SetInputType(InputType);
+//	parms.EstimateNormals = RecomputeNorms;
+//	parms.ConnectedComponentAnalysis = ConComp;
+//	parms.LargestCliqueOnly = LargestCliqueOnly;
+//	parms.WriteLevel = 0;
+////	parms.SampleFactor = 0.10;
+//	parms.NormalRadius = 2.5;
+//	if (PPerNormal > 0)
+//	{
+//		parms.NormalSearchMode = 1;
+//		parms.NormalPointsPerNormal	 = PPerNormal;
+//	}
+//	parms.NumberOfDistances = PPerDistance;
+//	parms.DistanceMode = 2;
+//	parms.Polygoniser = 0;
+//	if (MarchingCubes)
+//		parms.Polygoniser = 1;
+//	parms.GlobalBeta = 0.9;
+//	parms.WeightMode = 1;
+//	parms.LocalWeightMaxDist = 3.0;
+//	parms.PriorType = priortype;
+//	parms.Optimisation = 0;
+//	parms.MaxVolumeSize = 10000000;
+////	parms.EnlargePercent = 200;
+//	parms.PadVoxels = 5;
+//
+//	parms.MaxIterations = 1000;
+//	parms.CellSizeFactor = TriangleSizeFactor;
+//	parms.UseLocalWeights = true;
+//	parms.BandedICM = true;
+//	parms.AddNoise = false;
+//	parms.NoiseNature = 1;
+//	parms.UseLeavePatchOut = false;
+//	parms.MultiLevel = true;
+//	parms.Remesh = true;
+//	parms.RemeshToTargetEdgeLengths = UseTargetEdgeLengths;
+//	parms.AdaptiveParameters = true;
+//	parms.AggresiveCrop = true;
+//
+//	std::string msg;
+//	CMRFSurfaceReconstruction MRFSurface;
+//	bool result = true;
+//	
+//	// check for normals
+//	if (parms.InputType == 1 ||  parms.InputType ==  2 || parms.InputType == 4 || parms.InputType ==  5 )
+//	{
+//		vtkDataArray *normals = m_Surfaces[SourceID]->m_polyData->GetPointData()->GetNormals(); 
+//		if (!normals)
+//		{
+//			// TODO: Update QMessageBox::information(this, "Warning","Selected input does not have normals");
+//			return;
+//		}
+//	}
+//
+//	if (NumberOfPoints < 0)
+//	{
+//		// use all points
+//		result = MRFSurface.OneShotCompute(parms, m_Surfaces[SourceID]->m_polyData, msg);
+//	}
+//	else
+//	{
+//		// reduce input point set size
+//		vtkPolyDataResamplePoints *resampler = vtkPolyDataResamplePoints::New();
+//		resampler->SetInputData(m_Surfaces[SourceID]->m_polyData);
+//		resampler->SetNumberOfOutputPoints(NumberOfPoints);
+//		resampler->Update();
+//
+//		result = MRFSurface.OneShotCompute(parms, resampler->GetOutput(), msg);
+//		resampler->Delete();
+//	}
+//	if (!result)
+//	{
+//		// TODO: Update QMessageBox::information(this, "Warning",msg.c_str());
+//		return;
+//	}
+//
+//	if (ReplaceSurface)
+//	{
+//		m_Surfaces[SourceID]->m_polyData->DeepCopy(MRFSurface.GetMRFSurfaceCropped());
+//		// Remove scalar information
+//		m_Surfaces[SourceID]->m_polyData->GetPointData()->SetScalars(NULL); 
+//	}
+//	else
+//	{
+//		std::string name = m_Surfaces[SourceID]->m_shortname + "_MRFSurface";
+//		CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+//		surfProbs->InitialiseSurface(MRFSurface.GetMRFSurface());
+//		surfProbs->m_shortname = name;
+//		AddSurfaceToRenderer(surfProbs);
+//		surfProbs->m_actor->SetVisibility(0);
+//
+//		name = m_Surfaces[SourceID]->m_shortname + "_MRFSurface_Cropped";
+//		CSurfaceProperties *surfProbs1 = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+//		surfProbs1->InitialiseSurface(MRFSurface.GetMRFSurfaceCropped());
+//		surfProbs1->m_polyData->GetPointData()->SetScalars(NULL);
+//		surfProbs1->m_shortname = name;
+//
+//		AddSurfaceToRenderer(surfProbs1);
+//
+//		name = m_Surfaces[SourceID]->m_shortname + "_MRFSurface_AggresiveCrop";
+//		CSurfaceProperties *surfProbs3 = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+//		surfProbs3->InitialiseSurface(MRFSurface.GetMRFSurfaceAgressivelyCropped());
+//		surfProbs3->m_shortname = name;
+//
+//		AddSurfaceToRenderer(surfProbs3);
+//		surfProbs3->m_actor->SetVisibility(0);
+//
+//		name = m_Surfaces[SourceID]->m_shortname + "_NormalData";
+//		CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+//		surfProbs2->InitialiseSurface(MRFSurface.GetNormalData());
+//		surfProbs2->m_shortname = name;
+//
+//		AddSurfaceToRenderer(surfProbs2);
+//		surfProbs2->m_actor->SetVisibility(0);
+//	}
 }
 
 void C3DScene::CalculateNormals(unsigned int SourceID, bool ReplaceSurface, bool flip, bool split, double featureAngle)
@@ -2969,25 +2969,25 @@ void C3DScene::CalculatePCANormalsParameters( unsigned int SourceID, double Radi
 		return;
 	}
 
-	CMRFSurfaceReconstruction::CParms parms;
-	parms.SetInputType(1);
-	parms.EstimateNormals = true;
-	parms.WriteLevel = 0;
+	//CMRFSurfaceReconstruction::CParms parms;
+	//parms.SetInputType(1);
+	//parms.EstimateNormals = true;
+	//parms.WriteLevel = 0;
 
-	parms.AdaptiveParameters = true;
-	parms.NormalRadiusFactor = RadiusFactor;
+	//parms.AdaptiveParameters = true;
+	//parms.NormalRadiusFactor = RadiusFactor;
 
-	std::string msg;
-	CMRFSurfaceReconstruction MRFSurface;
-	bool result = MRFSurface.AdaptiveParameters(m_Surfaces[SourceID]->m_polyData, parms);
-	if (!result)
-	{
-		// TODO: Update QMessageBox::information(this, "Warning","Could not compute adaptive parameters");
-	}
-	ManualNormalRadius = parms.NormalRadius;
-	ManualPlaneDist = parms.MaxPlaneDistance;
-	ManualMinCliqueSize = parms.MinCliqueSize;
-	CliqueNeigDist = parms.CliqueNeighbourDistance;
+	//std::string msg;
+	//CMRFSurfaceReconstruction MRFSurface;
+	//bool result = MRFSurface.AdaptiveParameters(m_Surfaces[SourceID]->m_polyData, parms);
+	//if (!result)
+	//{
+	//	// TODO: Update QMessageBox::information(this, "Warning","Could not compute adaptive parameters");
+	//}
+	//ManualNormalRadius = parms.NormalRadius;
+	//ManualPlaneDist = parms.MaxPlaneDistance;
+	//ManualMinCliqueSize = parms.MinCliqueSize;
+	//CliqueNeigDist = parms.CliqueNeighbourDistance;
 }
 
 bool C3DScene::ComputeAverageEdgelengths(unsigned int SourceID, double & avgL)
@@ -3016,88 +3016,88 @@ void C3DScene::CalculatePCANormals( unsigned int SourceID, bool ReplaceSurface, 
 		return;
 	}
 
-	vtkTransform *sourceTrans = vtkTransform::New();
-	sourceTrans->SetMatrix(m_Surfaces[SourceID]->m_actor->GetMatrix());
+	//vtkTransform *sourceTrans = vtkTransform::New();
+	//sourceTrans->SetMatrix(m_Surfaces[SourceID]->m_actor->GetMatrix());
 
-	vtkTransformPolyDataFilter *ptransSource = vtkTransformPolyDataFilter::New();
-	ptransSource->SetInputData(m_Surfaces[SourceID]->m_polyData);
-	ptransSource->SetTransform(sourceTrans);
-	ptransSource->Update();
-
-
-	CMRFSurfaceReconstruction::CParms parms;
-	parms.SetInputType(1);
-	parms.EstimateNormals = true;
-	parms.ConnectedComponentAnalysis = ConComp;
-	parms.LargestCliqueOnly = KeepLargestClique;
-	parms.UseReferenceNormalsInVoting = UseOrgNormals;
-	parms.WriteLevel = 0;
+	//vtkTransformPolyDataFilter *ptransSource = vtkTransformPolyDataFilter::New();
+	//ptransSource->SetInputData(m_Surfaces[SourceID]->m_polyData);
+	//ptransSource->SetTransform(sourceTrans);
+	//ptransSource->Update();
 
 
-	if (AdaptiveOrManual == 0)
-	{
-		// Adaptive parameters
-		parms.AdaptiveParameters = true;
-		parms.NormalRadiusFactor = RadiusFactor;
-		parms.NormalSearchMode = 0;
-		if (PointsPerNormal > 0)
-		{
-			parms.NormalSearchMode = 1;
-			parms.NormalPointsPerNormal	 = PointsPerNormal;
-		}
-	}
-	else
-	{
-		// Manual parameters
-		parms.AdaptiveParameters = false;
-		parms.NormalRadius = ManualNormalRadius;
-		parms.NormalSearchMode = 0;
-		if (PointsPerNormal > 0)
-		{
-			parms.NormalSearchMode = 1;
-			parms.NormalPointsPerNormal	 = PointsPerNormal;
-		}
-		parms.MinCliqueSize = ManualMinCliqueSize;
-		parms.MaxPlaneDistance = ManualPlaneDist;
-		parms.CliqueNeighbourDistance = CliqueNeigDist;
-	}
+	//CMRFSurfaceReconstruction::CParms parms;
+	//parms.SetInputType(1);
+	//parms.EstimateNormals = true;
+	//parms.ConnectedComponentAnalysis = ConComp;
+	//parms.LargestCliqueOnly = KeepLargestClique;
+	//parms.UseReferenceNormalsInVoting = UseOrgNormals;
+	//parms.WriteLevel = 0;
 
-	std::string msg;
-	CMRFSurfaceReconstruction MRFSurface;
-	bool result = MRFSurface.OneShotComputePCANormals(parms,ptransSource->GetOutput(), msg);
-	if (!result)
-	{
-		// TODO: Update QMessageBox::information(this, "Warning",msg.c_str());
-	}
-	else
-	{
-		if (ReplaceSurface)
-		{
-			m_Surfaces[SourceID]->m_polyData->DeepCopy(MRFSurface.GetNormalData());
-		}
-		else
-		{
-			std::string name = m_Surfaces[SourceID]->m_shortname + "_PCANormals";
-			CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
-			surfProbs->InitialiseSurface(MRFSurface.GetNormalData());
-			surfProbs->m_shortname = name;
-			AddSurfaceToRenderer(surfProbs);
-		}
-		if (VisNormals)
-		{
-			if (ReplaceSurface)
-			{
-				VisualiseNormals(SourceID, false);
-			}
-			else
-			{
-				VisualiseNormals(m_Surfaces.size()-1, false);
-			}
-		}
-	}
 
-	ptransSource->Delete();
-	sourceTrans->Delete();
+	//if (AdaptiveOrManual == 0)
+	//{
+	//	// Adaptive parameters
+	//	parms.AdaptiveParameters = true;
+	//	parms.NormalRadiusFactor = RadiusFactor;
+	//	parms.NormalSearchMode = 0;
+	//	if (PointsPerNormal > 0)
+	//	{
+	//		parms.NormalSearchMode = 1;
+	//		parms.NormalPointsPerNormal	 = PointsPerNormal;
+	//	}
+	//}
+	//else
+	//{
+	//	// Manual parameters
+	//	parms.AdaptiveParameters = false;
+	//	parms.NormalRadius = ManualNormalRadius;
+	//	parms.NormalSearchMode = 0;
+	//	if (PointsPerNormal > 0)
+	//	{
+	//		parms.NormalSearchMode = 1;
+	//		parms.NormalPointsPerNormal	 = PointsPerNormal;
+	//	}
+	//	parms.MinCliqueSize = ManualMinCliqueSize;
+	//	parms.MaxPlaneDistance = ManualPlaneDist;
+	//	parms.CliqueNeighbourDistance = CliqueNeigDist;
+	//}
+
+	//std::string msg;
+	//CMRFSurfaceReconstruction MRFSurface;
+	//bool result = MRFSurface.OneShotComputePCANormals(parms,ptransSource->GetOutput(), msg);
+	//if (!result)
+	//{
+	//	// TODO: Update QMessageBox::information(this, "Warning",msg.c_str());
+	//}
+	//else
+	//{
+	//	if (ReplaceSurface)
+	//	{
+	//		m_Surfaces[SourceID]->m_polyData->DeepCopy(MRFSurface.GetNormalData());
+	//	}
+	//	else
+	//	{
+	//		std::string name = m_Surfaces[SourceID]->m_shortname + "_PCANormals";
+	//		CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+	//		surfProbs->InitialiseSurface(MRFSurface.GetNormalData());
+	//		surfProbs->m_shortname = name;
+	//		AddSurfaceToRenderer(surfProbs);
+	//	}
+	//	if (VisNormals)
+	//	{
+	//		if (ReplaceSurface)
+	//		{
+	//			VisualiseNormals(SourceID, false);
+	//		}
+	//		else
+	//		{
+	//			VisualiseNormals(m_Surfaces.size()-1, false);
+	//		}
+	//	}
+	//}
+
+	//ptransSource->Delete();
+	//sourceTrans->Delete();
 }
 
 std::string C3DScene::PickPointAndGetText( double x, double y )

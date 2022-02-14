@@ -21,6 +21,12 @@ Surface manipulation and transformation toolkit (Sumatra) - a fast and versatile
 - Add environment variable VTK_DIR=C:\libs\bin\VTK-9.1-MSVC2022
 - Add path %VTK_DIR%\bin\Release
 
+## Install GEL
+
+- Get latest version af GEL from Github
+- Compile using CMake
+- Add environment variable GEL_SRC_DIR=C:\Users\rapa\Documents\src\libs\GEL
+
 ### Videos and inspirations
 
 

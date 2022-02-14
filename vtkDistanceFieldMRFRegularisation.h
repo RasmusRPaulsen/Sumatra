@@ -1,12 +1,12 @@
 #ifndef __vtkDistanceFieldMRFRegularisation_h
 #define __vtkDistanceFieldMRFRegularisation_h
 
-#include "MRFEnergyComputer.h"
+//#include "MRFEnergyComputer.h"
 #include "vtkSimpleImageToImageFilter.h"
 #include <vector>
-#include <vnl/vnl_cost_function.h>
-#include <vnl/vnl_vector.h>
-#include <vgl/vgl_point_3d.h>
+//#include <vnl/vnl_cost_function.h>
+//#include <vnl/vnl_vector.h>
+//#include <vgl/vgl_point_3d.h>
 
 class vtkIntArray;
 class vtkDoubleArray;
@@ -341,29 +341,29 @@ private:
 	// Final spline energy
 	double FinalSplineEnergy;
 };
-
-//! Minimiser for MRF
-class CMRFCostFunction : public vnl_cost_function
-{
-public:
-	CMRFCostFunction(int dims[3], int nunknowns, vtkDoubleArray *OS, vtkDoubleArray *LW, double GB, int EnergyType);
-
-	void SetDimensions(int dims[3]);
-
-	double f( vnl_vector< double > const& x );
-
-	void gradf (vnl_vector< double > const &x, vnl_vector< double > &gradient );
-
-
-private:
-
-	CMRFEnergyComputer m_EnergyComputer;
-
-	// 0: Spline
-	// 1: Membrane
-	int m_EnergyType;
-
-	CMRFCostFunction();
-};
+//
+////! Minimiser for MRF
+//class CMRFCostFunction : public vnl_cost_function
+//{
+//public:
+//	CMRFCostFunction(int dims[3], int nunknowns, vtkDoubleArray *OS, vtkDoubleArray *LW, double GB, int EnergyType);
+//
+//	void SetDimensions(int dims[3]);
+//
+//	double f( vnl_vector< double > const& x );
+//
+//	void gradf (vnl_vector< double > const &x, vnl_vector< double > &gradient );
+//
+//
+//private:
+//
+//	CMRFEnergyComputer m_EnergyComputer;
+//
+//	// 0: Spline
+//	// 1: Membrane
+//	int m_EnergyType;
+//
+//	CMRFCostFunction();
+//};
 
 #endif
