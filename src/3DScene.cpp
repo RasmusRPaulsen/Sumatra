@@ -240,7 +240,7 @@ void C3DScene::SetupScreenThings()
 {
 	m_Renderer = vtkRenderer::New();
 
-	m_Renderer->SetBackground(0.0, 0.0, 0.0);
+	m_Renderer->SetBackground(0.5, 0.5, 0.5);
 
 	m_lookup = vtkLookupTable::New();
 	SetScalarLookupTableNum(0);

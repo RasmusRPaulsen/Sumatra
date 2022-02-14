@@ -4,7 +4,6 @@
 #include <QFile>
 #include <QFileDialog>
 #include <qmessagebox.h>
-#include <vtkDataSetReader.h>
 #include <qmimedata.h>
 #include "computenormalsdlg.h"
 
@@ -49,21 +48,6 @@ void MainWindow::showOpenFileDialog()
 void MainWindow::openFile(const QString& fileName)
 {
     ui->sceneWidget->OpenFile(fileName.toStdString());
-
-    // ui->sceneWidget->removeDataSet();
-
-//    // Create reader
-//    vtkSmartPointer<vtkDataSetReader> reader = vtkSmartPointer<vtkDataSetReader>::New();
-//    reader->SetFileName(fileName.toStdString().c_str());
-//
-//    // Read the file
-//    reader->Update();
-//
-//    // Add data set to 3D view
-//    vtkSmartPointer<vtkDataSet> dataSet = reader->GetOutput();
-//    if (dataSet != nullptr) {
-//        ui->sceneWidget->addDataSet(reader->GetOutput());
-//    }
 }
 
 void MainWindow::processComputeNormals()
@@ -108,8 +92,6 @@ void MainWindow::createMenus()
 void MainWindow::dragEnterEvent(QDragEnterEvent* event)
 {
     event->acceptProposedAction();
-    // event->accept(QUriDrag::canDecode(event));
- //   event->accept(true);
 }
 
 
@@ -124,20 +106,15 @@ void MainWindow::dropEvent(QDropEvent* event)
     // check for our needed mime type, here a file or a list of files
     if (mimeData->hasUrls())
     {
-        QStringList pathList;
+        //QStringList pathList;
         QList<QUrl> urlList = mimeData->urls();
 
         // extract the local paths of the files
         for (int i = 0; i < urlList.size(); i++)
         {
-            pathList.append(urlList.at(i).toLocalFile());
-
-                    //QMessageBox::information(
-                    //this, "Hello",
-                    //urlList.at(i).toLocalFile());
+            // pathList.append(urlList.at(i).toLocalFile());
+            // call a function to open the files
+            openFile(urlList.at(i).toLocalFile());
         }
-
-        // call a function to open the files
-        openFile(pathList[0]);
     }    
 }

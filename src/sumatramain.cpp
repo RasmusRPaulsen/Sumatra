@@ -15,7 +15,8 @@ int main(int argc, char *argv[]) {
 	// TODO: Open all files
 	if (app.arguments().length() > 1)
 	{
-		mainWindow.openFile(app.arguments().at(1).toLocal8Bit().constData());
+		for (int i = 1; i < app.arguments().length(); i++)
+			mainWindow.openFile(app.arguments().at(i));
 	}
 	// QMessageBox::information(NULL, "Arguments:", app.arguments().join(" | "));
 

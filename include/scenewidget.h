@@ -14,22 +14,12 @@ public:
     explicit SceneWidget(QWidget* parent = nullptr);
 
     void OpenFile(const std::string& fname);
-    //! Add a data set to the scene
-    /*!
-    \param[in] dataSet The data set to add
-  */
-    // void addDataSet(vtkSmartPointer<vtkDataSet> dataSet);
-
-    //! Remove the data set from the scene
-    // void removeDataSet();
 
 public slots:
     //! Zoom to the extent of the data set in the scene
     // void zoomToExtent();
 
 private:
-    // vtkSmartPointer<vtkRenderer> m_renderer;
-
     virtual ~SceneWidget();
 
     C3DScene* m3DScene = NULL;
