@@ -6,12 +6,16 @@
 #include <qmessagebox.h>
 #include <qmimedata.h>
 #include "computenormalsdlg.h"
+#include "SumatraSettings.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    CSumatraSettings mSettings;
+    mSettings.ReadSettings();
 
     createActions();
     createMenus();
