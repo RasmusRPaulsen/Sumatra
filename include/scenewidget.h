@@ -2,9 +2,10 @@
 #define SCENEWIDGET_H
 
 #include <QVTKOpenGLNativeWidget.h>
-#include <vtkDataSet.h>
-#include <vtkRenderer.h>
+#include <QtGui>
 #include <vtkSmartPointer.h>
+#include <vtkInteractorStyleTrackballActor.h>
+#include <vtkInteractorStyleTrackballCamera.h>
 #include <string>
 #include "3DScene.h"
 
@@ -23,6 +24,12 @@ private:
     virtual ~SceneWidget();
 
     C3DScene* m3DScene = NULL;
+
+    vtkSmartPointer<vtkInteractorStyleTrackballActor> mStyleActor;
+    vtkSmartPointer<vtkInteractorStyleTrackballCamera> mStyleCamera;
+
+protected:
+    void keyPressEvent(QKeyEvent*);
 };
 
 #endif // SCENEWIDGET_H

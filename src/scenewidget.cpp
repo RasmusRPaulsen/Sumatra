@@ -1,5 +1,7 @@
 #include "scenewidget.h"
 
+#include <qmessagebox.h>
+
 #include <vtkCamera.h>
 #include <vtkDataSetMapper.h>
 #include <vtkGenericOpenGLRenderWindow.h>
@@ -15,6 +17,9 @@ SceneWidget::SceneWidget(QWidget* parent)
     m3DScene = new C3DScene();
     m3DScene->Init();
 
+    mStyleActor = vtkSmartPointer<vtkInteractorStyleTrackballActor>::New();
+    mStyleCamera = vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
+
     renderWindow()->AddRenderer(m3DScene->GetRenderer());
 }
 
@@ -28,4 +33,18 @@ void SceneWidget::OpenFile(const std::string& fname)
 {
     m3DScene->ReadFile(fname);
     renderWindow()->Render();
+}
+
+// QMessageBox::information(this, "KeyPress", tr("Keypress"));
+
+void SceneWidget::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_A)
+    {
+        renderWindow()->GetInteractor()->SetInteractorStyle(mStyleActor);
+    }
+    else if (event->key() == Qt::Key_C)
+    {
+        renderWindow()->GetInteractor()->SetInteractorStyle(mStyleCamera);
+    }
 }
