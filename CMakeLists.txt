@@ -21,8 +21,35 @@ find_package(VTK
     REQUIRED
     COMPONENTS
         GUISupportQt
-        IOLegacy)
+        IOLegacy
+		IOImport
+		IOImage
+		IOGeometry
+		IOPLY
+		IOXML
+		IOExport
+		ImagingGeneral
+		ImagingHybrid
+		FiltersHybrid
+		FiltersModeling
+		CommonColor
+		CommonCore
+		CommonSystem
+		CommonDataModel
+		RenderingAnnotation
+		InteractionStyle
+		RenderingContextOpenGL2
+		RenderingCore
+		RenderingFreeType
+		RenderingGL2PSOpenGL2
+		RenderingOpenGL2)
+				
 
+#======================= INCLUSION OF GEL ======================#
+set(GEL_DIR $ENV{GEL_SRC_DIR})				
+FIND_PATH(GEL_SRC_DIR GEL/HMesh/Manifold.h ${GEL_DIR}/src )
+include_directories(${GEL_SRC_DIR})				
+				
 #======================= INCLUSION OF Our Code ======================#
 set(FORMS_DIR "${CMAKE_SOURCE_DIR}/forms")
 set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include")
@@ -38,6 +65,7 @@ file(GLOB_RECURSE SOURCES
     "${FORMS_DIR}/*.ui"
     "${INCLUDE_DIR}/*.h"
     "${SOURCE_DIR}/*.cpp"
+    "${SOURCE_DIR}/*.cxx"
     "${RESOURCE_DIR}/*.qrc"
 )
 
@@ -53,6 +81,8 @@ set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_AUTOUIC_SEARCH_PATHS} ${FORMS_DIR})
 
 # Add the executable
 if (WIN32) 
+	# Prevent a "command line is too long" failure in Windows.
+	set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response files.")
     add_executable(Sumatra WIN32 ${SOURCES} ${WIN32_RESOURCES})
 elseif(UNIX)
     add_executable(Sumatra ${SOURCES})
@@ -69,9 +99,10 @@ target_link_libraries( Sumatra Qt6::OpenGL)
 target_link_libraries( Sumatra Qt6::Xml)
 target_link_libraries( Sumatra Qt6::Widgets)
 target_link_libraries( Sumatra ${QT_LIBRARIES} ${OPENGL_LIBRARIES})
-target_link_libraries( Sumatra VTK::GUISupportQt VTK::IOLegacy)
+#target_link_libraries( Sumatra VTK::GUISupportQt VTK::IOLegacy VTK:IOGeometry)
+target_link_libraries( Sumatra ${VTK_LIBRARIES})
 
 
 vtk_module_autoinit(
     TARGETS Sumatra
-    MODULES VTK::GUISupportQt VTK::IOLegacy)
+    MODULES ${VTK_LIBRARIES})
