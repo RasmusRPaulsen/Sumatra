@@ -5,27 +5,34 @@
 #include <vtkDataSet.h>
 #include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
+#include <string>
+#include "3DScene.h"
 
 class SceneWidget : public QVTKOpenGLNativeWidget {
     Q_OBJECT
 public:
     explicit SceneWidget(QWidget* parent = nullptr);
 
+    void OpenFile(const std::string& fname);
     //! Add a data set to the scene
     /*!
     \param[in] dataSet The data set to add
   */
-    void addDataSet(vtkSmartPointer<vtkDataSet> dataSet);
+    // void addDataSet(vtkSmartPointer<vtkDataSet> dataSet);
 
     //! Remove the data set from the scene
-    void removeDataSet();
+    // void removeDataSet();
 
 public slots:
     //! Zoom to the extent of the data set in the scene
-    void zoomToExtent();
+    // void zoomToExtent();
 
 private:
-    vtkSmartPointer<vtkRenderer> m_renderer;
+    // vtkSmartPointer<vtkRenderer> m_renderer;
+
+    virtual ~SceneWidget();
+
+    C3DScene* m3DScene = NULL;
 };
 
 #endif // SCENEWIDGET_H

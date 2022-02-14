@@ -33,7 +33,7 @@ MainWindow::~MainWindow()
 void MainWindow::showOpenFileDialog()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open file"), "",
-        "VTK Files (*.vtk)");
+        "VTK Files (*.vtk) | STL Files (*.stl)");
 
     // Open file
     QFile file(fileName);
@@ -48,20 +48,22 @@ void MainWindow::showOpenFileDialog()
 
 void MainWindow::openFile(const QString& fileName)
 {
-    ui->sceneWidget->removeDataSet();
+    ui->sceneWidget->OpenFile(fileName.toStdString());
 
-    // Create reader
-    vtkSmartPointer<vtkDataSetReader> reader = vtkSmartPointer<vtkDataSetReader>::New();
-    reader->SetFileName(fileName.toStdString().c_str());
+    // ui->sceneWidget->removeDataSet();
 
-    // Read the file
-    reader->Update();
-
-    // Add data set to 3D view
-    vtkSmartPointer<vtkDataSet> dataSet = reader->GetOutput();
-    if (dataSet != nullptr) {
-        ui->sceneWidget->addDataSet(reader->GetOutput());
-    }
+//    // Create reader
+//    vtkSmartPointer<vtkDataSetReader> reader = vtkSmartPointer<vtkDataSetReader>::New();
+//    reader->SetFileName(fileName.toStdString().c_str());
+//
+//    // Read the file
+//    reader->Update();
+//
+//    // Add data set to 3D view
+//    vtkSmartPointer<vtkDataSet> dataSet = reader->GetOutput();
+//    if (dataSet != nullptr) {
+//        ui->sceneWidget->addDataSet(reader->GetOutput());
+//    }
 }
 
 void MainWindow::processComputeNormals()
