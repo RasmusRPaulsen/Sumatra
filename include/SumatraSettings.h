@@ -1,8 +1,10 @@
 #ifndef _SumatraSettings_h_
 #define _SumatraSettings_h_
 
-//! Basic class
-/** This is a class used as template for new classes */
+#include <qjsonobject.h>
+
+//! Sumatra settings
+/** Used for parsing settings file */
 class CSumatraSettings
 {
 	public:
@@ -15,6 +17,8 @@ class CSumatraSettings
 		bool ReadSettings();
 
 	private:
+		bool ParseJSON(const QJsonObject& json);
+
 };
 
 #endif

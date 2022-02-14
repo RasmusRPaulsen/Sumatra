@@ -1,7 +1,7 @@
 {
     "ColorBar": 1,
     "PointSize": 1,
-    "BackGroundColor": [128, 128, 128, 1],
+    "BackgroundColor": [128, 128, 128, 1],
 	"colors":[
 	{
 	  "aliceblue": [240, 248, 255, 1],
