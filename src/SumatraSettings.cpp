@@ -43,11 +43,11 @@ bool CSumatraSettings::ParseJSON(const QJsonObject& json)
 {
     if (json.contains("ColorBar") && json["ColorBar"].isDouble())
     {
-        int ColorbarType = json["ColorBar"].toInt();
+        mColorbarType = json["ColorBar"].toInt();
     }
     if (json.contains("PointSize") && json["PointSize"].isDouble())
     {
-        int PointSize = json["PointSize"].toInt();
+        mPointSize = json["PointSize"].toInt();
     }
     if (json.contains("BackgroundColor") && json["BackgroundColor"].isArray())
     {
@@ -86,3 +86,32 @@ bool CSumatraSettings::ParseJSON(const QJsonObject& json)
 
     return true;
 }
+
+void CSumatraSettings::GetNextColor(double* col, bool range1)
+{
+    if (mColors.size() == 0)
+    {
+        col[0] = 255;
+        col[1] = 255;
+        col[2] = 255;
+    }
+    else
+    {
+        if (mCurrentColor >= mColors.size())
+            mCurrentColor = 0;
+
+        col[0] = mColors[mCurrentColor].GetRed();
+        col[1] = mColors[mCurrentColor].GetGreen();
+        col[2] = mColors[mCurrentColor].GetBlue();
+
+        mCurrentColor++;
+    }
+
+    if (range1)
+    {
+        col[0] /= 255.0;
+        col[1] /= 255.0;
+        col[2] /= 255.0;
+    }
+}
+

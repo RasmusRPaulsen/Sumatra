@@ -13,7 +13,7 @@
 #include <vtkOBJReader.h>
 #include <vtkTexture.h>
 
-#include "ColorManager.h"
+#include "SumatraSettings.h"
 
 class vtkTexture;
 
@@ -21,10 +21,8 @@ class vtkTexture;
 class CSurfaceProperties
 {
 	public:
-		//! Constructor with lookup table and a color manager and a default pointsize
-		/** It could be nice thought if the colormanager was a singleton.
-		    pointsize should be changed into a general structure*/
-		CSurfaceProperties(vtkLookupTable *lut, CColorManager *CM, int ps);
+		//! Constructor with lookup table and settings
+		CSurfaceProperties(vtkLookupTable *lut, CSumatraSettings *settings);
 
 		//! Destructor
 		~CSurfaceProperties();
@@ -93,12 +91,13 @@ class CSurfaceProperties
 		//! Simple file check
 		bool file_exists( char const* fn );
 
-
 		//! Constructor
 		CSurfaceProperties();
 	
+		CSumatraSettings* mSettings;
+
 		//! Pointer to a colormanager
-		CColorManager *m_colorManager;
+		//CColorManager *m_colorManager;
 
 		//! Poly data copy for undo operations
 		vtkPolyData *m_UndoPolyData;
@@ -114,7 +113,7 @@ class CSurfaceProperties
 		bool m_UndoAvailable;
 
 		//! Default point size - should be made into a general structure with more options
-		int m_DefPointSize;
+		// int m_DefPointSize;
 };
 
 #endif

@@ -34,3 +34,6 @@
 
 # Compiler stuff
 *.aps
+
+# other files
+*.zip

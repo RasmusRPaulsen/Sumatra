@@ -39,7 +39,7 @@
 // 	m_colorManager = NULL;
 // }
 
-CSurfaceProperties::CSurfaceProperties(vtkLookupTable *lut, CColorManager *CM, int ps)
+CSurfaceProperties::CSurfaceProperties(vtkLookupTable *lut, const CSumatraSettings* settings)
 {
 	m_shortname = "";
 	m_fullname = "";
@@ -51,8 +51,9 @@ CSurfaceProperties::CSurfaceProperties(vtkLookupTable *lut, CColorManager *CM, i
 	m_mapper = NULL;
 	m_actor = NULL;
 	m_lookup = lut;
-	m_colorManager = CM;
-	m_DefPointSize = ps;
+	// m_colorManager = CM;
+	// m_DefPointSize = ps;
+	mSettings = settings;
 }
 
 
@@ -91,8 +92,9 @@ Points 0 0 100
 	m_actor->SetMapper(m_mapper);
 
 	double color[3];
-	m_colorManager->GetNextColor(color);
-	
+	// m_colorManager->GetNextColor(color);
+	mSettings->GetNextColor(color);
+
 	vtkProperty *prop = m_actor->GetProperty();
 //	prop->SetColor(255.0/255.0, 210.0/255.0, 150.0/255.0);
 	prop->SetColor(color);
@@ -102,7 +104,7 @@ Points 0 0 100
 	prop->SetAmbient(0.2);
 	prop->SetDiffuse(0.8);
 	prop->SetOpacity(1.0);
-	prop->SetPointSize(m_DefPointSize);
+	prop->SetPointSize(mSettings->mPointSize);
 	prop->SetLineWidth(1);
 
 	UpdateScalarProperties();
