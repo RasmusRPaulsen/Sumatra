@@ -5,6 +5,7 @@
 
 #include <QMainWindow>
 #include <qdragenterevent>
+#include "objectpropertiesdlg.h"
 
 namespace Ui {
 class MainWindow;
@@ -35,6 +36,8 @@ private:
 private:
     void createActions();
     void createMenus();
+
+    ObjectPropertiesDlg* mObjectPropsDlg = NULL;
 
     QMenu* fileMenu;
     QMenu* optionsMenu;

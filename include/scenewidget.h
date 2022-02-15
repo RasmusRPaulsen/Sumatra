@@ -19,6 +19,8 @@ public:
 
     void OpenFile(const std::string& fname);
 
+    C3DScene* get3DScene();
+
     // void SetSettings(CSumatraSettings* Settings);
 
 public slots:

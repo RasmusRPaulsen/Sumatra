@@ -2,6 +2,7 @@
 #define OBJECTPROPERTIESDLG_H
 
 #include <QDialog>
+#include "3DScene.h"
 
 namespace Ui {
 class ObjectPropertiesDlg;
@@ -15,8 +16,15 @@ public:
     explicit ObjectPropertiesDlg(QWidget *parent = nullptr);
     ~ObjectPropertiesDlg();
 
+    void Set3DScene(C3DScene* sc);
+
+    void UpdateAllSceneData();
+
 private:
     Ui::ObjectPropertiesDlg *ui;
+
+    C3DScene *m3DScene = NULL;
+
 };
 
 #endif // OBJECTPROPERTIESDLG_H

@@ -33,6 +33,8 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    if (mObjectPropsDlg)
+        delete mObjectPropsDlg;
 }
 
 void MainWindow::showOpenFileDialog()
@@ -75,10 +77,23 @@ void MainWindow::processComputeNormals()
 
 void MainWindow::showObjectProperties()
 {
-    ObjectPropertiesDlg dlg;
-    if (dlg.exec())
+    if (!mObjectPropsDlg) 
     {
+        C3DScene* t3DScene = ui->sceneWidget->get3DScene();
+        mObjectPropsDlg = new ObjectPropertiesDlg(this);
+        mObjectPropsDlg->Set3DScene(t3DScene);
+        //connect(findDialog, &FindDialog::findNext,
+        //    this, &EditorWindow::findNext);
     }
+
+    mObjectPropsDlg->UpdateAllSceneData();
+    mObjectPropsDlg->show();
+    mObjectPropsDlg->raise();
+    mObjectPropsDlg->activateWindow();
+    //ObjectPropertiesDlg dlg;
+    //if (dlg.exec())
+    //{
+    //}
 }
 
 void MainWindow::createActions()

@@ -39,6 +39,10 @@ void SceneWidget::OpenFile(const std::string& fname)
     m3DScene->ReadFile(fname);
     renderWindow()->Render();
 }
+C3DScene* SceneWidget::get3DScene()
+{
+    return m3DScene;
+}
 //
 //void SceneWidget::SetSettings(CSumatraSettings* Settings)
 //{
