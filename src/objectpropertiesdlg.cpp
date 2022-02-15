@@ -18,10 +18,11 @@ ObjectPropertiesDlg::~ObjectPropertiesDlg()
 void ObjectPropertiesDlg::Set3DScene(C3DScene* sc)
 {
     m3DScene = sc;
+	PopulateObjectCB();
 	UpdateAllSceneData();
 }
 
-void ObjectPropertiesDlg::UpdateAllSceneData()
+void ObjectPropertiesDlg::PopulateObjectCB()
 {
 	if (!m3DScene)
 		return;
@@ -34,6 +35,13 @@ void ObjectPropertiesDlg::UpdateAllSceneData()
 		ui->selectedObjectCB->addItem(ost.str().c_str());
 	}
 	ui->selectedObjectCB->setCurrentIndex(0);
+}
 
+void ObjectPropertiesDlg::UpdateAllSceneData()
+{
 
+	int idx = ui->selectedObjectCB->currentIndex();
+	std::string fullName = m3DScene->GetSurfaceFullName(idx).c_str();
+	ui->fullObjectName->setText(fullName.c_str());
+	//ui->fullObjectName->
 }

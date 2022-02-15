@@ -86,6 +86,7 @@ void MainWindow::showObjectProperties()
         //    this, &EditorWindow::findNext);
     }
 
+    mObjectPropsDlg->PopulateObjectCB();
     mObjectPropsDlg->UpdateAllSceneData();
     mObjectPropsDlg->show();
     mObjectPropsDlg->raise();
