@@ -22,6 +22,9 @@ public:
 
     void UpdateAllSceneData();
 
+public slots:
+    void selectionChanged(int);
+
 private:
     Ui::ObjectPropertiesDlg *ui;
 

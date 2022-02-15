@@ -8,11 +8,18 @@ ObjectPropertiesDlg::ObjectPropertiesDlg(QWidget *parent) :
     ui(new Ui::ObjectPropertiesDlg)
 {
     ui->setupUi(this);
+
+	connect(ui->selectedObjectCB, SIGNAL(currentIndexChanged(int)), SLOT(selectionChanged(int)));
 }
 
 ObjectPropertiesDlg::~ObjectPropertiesDlg()
 {
     delete ui;
+}
+
+void ObjectPropertiesDlg::selectionChanged(int idx)
+{
+	UpdateAllSceneData();
 }
 
 void ObjectPropertiesDlg::Set3DScene(C3DScene* sc)
