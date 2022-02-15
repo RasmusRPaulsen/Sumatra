@@ -6,9 +6,11 @@
 #include <qfile.h>
 #include <QJsonDocument>
 #include <qjsonarray.h>
+#include <qtextstream.h>
 
 CSumatraSettings::CSumatraSettings()
 {
+    mColors.clear();
 }
 
 CSumatraSettings::~CSumatraSettings()
@@ -17,17 +19,13 @@ CSumatraSettings::~CSumatraSettings()
 
 bool CSumatraSettings::ReadSettings()
 {
-    // QString dir1 = QDir::currentPath();
-        
     QString setdir = QCoreApplication::applicationDirPath();
-    // QMessageBox::information(NULL, "Application dir", dir2);
-
     QString setname = setdir + "/SumatraSettings.json";
 
     QFile loadFile(setname);
 
     if (!loadFile.open(QIODevice::ReadOnly)) {
-        qWarning("Couldn't open setings file.");
+        qWarning("Couldn't open settings file.");
         QMessageBox::information(NULL, "Error", "Could not read settings file");
         return false;
     }
@@ -35,21 +33,14 @@ bool CSumatraSettings::ReadSettings()
     QByteArray saveData = loadFile.readAll();
     QJsonDocument loadDoc(QJsonDocument::fromJson(saveData));
 
-    ParseJSON(loadDoc.object());
+    if (!ParseJSON(loadDoc.object()))
+        return false;
 
-    //QTextStream(stdout) << "Loaded save for "
-    //    << loadDoc["player"]["name"].toString()
-    //    << " using "
-    //    << (saveFormat != Json ? "CBOR" : "JSON") << "...\n";
     return true;
 }
 
-
-
 bool CSumatraSettings::ParseJSON(const QJsonObject& json)
 {
-    // QMessageBox::information(NULL, "Info", "parsing");
-
     if (json.contains("ColorBar") && json["ColorBar"].isDouble())
     {
         int ColorbarType = json["ColorBar"].toInt();
@@ -60,72 +51,38 @@ bool CSumatraSettings::ParseJSON(const QJsonObject& json)
     }
     if (json.contains("BackgroundColor") && json["BackgroundColor"].isArray())
     {
-        // QString BackgroundColor = json["BackgroundColor"].toString();
-        QJsonArray BackgroundColor = json["BackgroundColor"].toArray();
-        int R = BackgroundColor[0].toInt();
-        int G = BackgroundColor[1].toInt();
-        int B = BackgroundColor[2].toInt();
-        double alpha = BackgroundColor[3].toDouble();
-
-        // QMessageBox::information(NULL, "Test", BackgroundColor);
-        // qWarning
+        QJsonArray BackColor = json["BackgroundColor"].toArray();
+        if (BackColor.size() != 3)
+        {
+            QMessageBox::information(NULL, "Warning", "Error reading settings file");
+            return false;
+        }
+        int R = BackColor[0].toInt();
+        int G = BackColor[1].toInt();
+        int B = BackColor[2].toInt();
+        mBackgroundColor.Set(R, G, B);
     }
     if (json.contains("colors") && json["colors"].isArray())
     {
-        //QStringList keystt = json["colors"].toArray().keys();
-
-
-        // QString BackgroundColor = json["BackgroundColor"].toString();
         QJsonArray colors = json["colors"].toArray();
-        int sz = colors.size();
+        // int sz = colors.size();
         for (int i = 0; i < colors.size(); i++)
         {
-            auto ttt = colors[i];
-            QJsonObject obt = colors[i].toObject();
-            QStringList keys = obt.keys();
-
             QJsonArray onecolor = colors[i].toArray();
             int sz2 = onecolor.size();
-
-            QString tt = QString::number(sz) + QString(", ") + QString::number(sz2);
-            if (sz == 0 and sz2 == 0)
-                QMessageBox::information(NULL, "Test", tt);
-
-            QString cname = onecolor[0].toString();
-            int R = onecolor[1].toInt();
-            int G = onecolor[2].toInt();
-            int B = onecolor[3].toInt();
-            double alpha = onecolor[4].toDouble();
-            if (G == 128)
-                QMessageBox::information(NULL, "Test", "test");
-
+            if (sz2 != 3)
+            {
+                QMessageBox::information(NULL, "Warning", "Error reading settings file");
+                return false;
+            }
+                
+            int R = onecolor[0].toInt();
+            int G = onecolor[1].toInt();
+            int B = onecolor[2].toInt();
+            vtkColor3ub rgb(R, G, B);
+            mColors.push_back(rgb);
         }
-
-        //int R = BackgroundColor[0].toInt();
-        //int G = BackgroundColor[1].toInt();
-        //int B = BackgroundColor[2].toInt();
-        //double alpha = BackgroundColor[3].toDouble();
-
-        // QMessageBox::information(NULL, "Test", BackgroundColor);
-        // qWarning
     }
 
-    
-    //mPlayer.read(json["player"].toObject());
-
-    //if (json.contains("player") && json["player"].isObject())
-    //    mPlayer.read(json["player"].toObject());
-
-    //if (json.contains("levels") && json["levels"].isArray()) {
-    //    QJsonArray levelArray = json["levels"].toArray();
-    //    mLevels.clear();
-    //    mLevels.reserve(levelArray.size());
-    //    for (int levelIndex = 0; levelIndex < levelArray.size(); ++levelIndex) {
-    //        QJsonObject levelObject = levelArray[levelIndex].toObject();
-    //        Level level;
-    //        level.read(levelObject);
-    //        mLevels.append(level);
-    //    }
-    //}
     return true;
 }
