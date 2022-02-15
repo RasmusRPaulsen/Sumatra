@@ -67,9 +67,10 @@
 #include <algorithm>
 #include <sstream>
 
-C3DScene::C3DScene()
+C3DScene::C3DScene(CSumatraSettings* Settings)
 {
-	m_DefaultPointSize = 1;
+	mSettings = Settings;
+	// m_DefaultPointSize = 1;
 	m_PointPicker = NULL;
 	m_SphereMarkerLocator = NULL;
 	m_Renderer = NULL;
@@ -481,7 +482,7 @@ bool C3DScene::ReadFile(const std::string &fname)
 			{
 				std::ostringstream ost;
 				ost <<  CGeneralUtils::StripPathAndExtensionFromFilename(fname) << "_"  << i;
-				CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+				CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 
 				surfProbs->InitialiseSurface(OBJImporter.GetMesh(i));
 				if (OBJImporter.GetTexture(i) != NULL)
@@ -501,7 +502,7 @@ bool C3DScene::ReadFile(const std::string &fname)
 		}
 	}
 	
-	CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+	CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 
 	if (!surfProbs->ReadFromFile(fname))
 	{
@@ -658,7 +659,7 @@ void C3DScene::MirrorWithPlane( unsigned int objID )
 	}
 	else
 	{
-		CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+		CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, mSettings);
 		surfProbs2->InitialiseSurface(mirror);
 		surfProbs2->m_shortname = mirrorName;
 
@@ -911,7 +912,7 @@ void C3DScene::FlipObject(unsigned int SourceID, bool ReplaceSurface)
 	else
 	{
 		std::string name = m_Surfaces[SourceID]->m_shortname + "_flip";
-		CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+		CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, mSettings);
 
 		if (hasNormals)
 		{
@@ -1011,7 +1012,7 @@ void C3DScene::VisualiseNormals(unsigned int SourceID, bool VisualiseAdjacentFli
 	lines->Delete();
 
 	std::string name = m_Surfaces[SourceID]->m_shortname + "_LineNormals";
-	CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+	CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, mSettings);
 
 	surfProbs2->InitialiseSurface(pd);
 	surfProbs2->m_shortname = name;
@@ -1029,7 +1030,7 @@ void C3DScene::VisualiseNormals(unsigned int SourceID, bool VisualiseAdjacentFli
 		else
 		{ 
 			name = m_Surfaces[SourceID]->m_shortname + "_AdjacentFlippedNormals";
-			CSurfaceProperties *surfProbs3 = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+			CSurfaceProperties *surfProbs3 = new CSurfaceProperties(m_lookup, mSettings);
 
 			surfProbs3->InitialiseSurface(pd2);
 			surfProbs3->m_shortname = name;
@@ -1075,7 +1076,7 @@ void C3DScene::CloseHoles(unsigned int SourceID, bool ReplaceSurface)
 	else
 	{
 		std::string name = m_Surfaces[SourceID]->m_shortname + "_CloseHoles";
-		CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+		CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, mSettings);
 
 		surfProbs2->InitialiseSurface(tess->GetOutput());
 		surfProbs2->m_shortname = name;
@@ -1249,7 +1250,7 @@ void C3DScene::CloseHoles(unsigned int SourceID, bool ReplaceSurface)
 //		 ISOSurf->Update();
 //		if (ISOSurf->GetOutput()->GetNumberOfPoints() > 0)
 //		{
-//			CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+//			CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 //			surfProbs->InitialiseSurface(ISOSurf->GetOutput());
 //			surfProbs->m_shortname = m_Surfaces[SourceID]->m_shortname + "_FastRBF";
 //
@@ -1265,7 +1266,7 @@ void C3DScene::CloseHoles(unsigned int SourceID, bool ReplaceSurface)
 //
 //		if (reader->GetOutput()->GetNumberOfPoints() > 0)
 //		{
-//			CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+//			CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 //			surfProbs->InitialiseSurface(reader->GetOutput());
 //			surfProbs->m_shortname = m_Surfaces[SourceID]->m_shortname + "_FastRBFEstimatedNormals";
 //
@@ -1282,7 +1283,7 @@ void C3DScene::CloseHoles(unsigned int SourceID, bool ReplaceSurface)
 //
 //		if (reader->GetOutput()->GetNumberOfPoints() > 0)
 //		{
-//			CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+//			CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 //			surfProbs->InitialiseSurface(reader->GetOutput());
 //			surfProbs->m_shortname = m_Surfaces[SourceID]->m_shortname + "_FastRBFDensity";
 //
@@ -1328,7 +1329,7 @@ void C3DScene::SmoothSurface(unsigned int SourceID, bool ReplaceSurface, int smo
 		name << "_it_" << NumIt << "_relax_" << RelaxFactor << "_BoundarySmooth_" << BoundarySmooth
 			<< "_FeatureEdgeSmooth_" << FeatureEdgeSmooth << "_FeatureAngle_" << FeatureAngle;
 
-		CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+		CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 		surfProbs->InitialiseSurface(smooth);
 		surfProbs->m_shortname = name.str();
 
@@ -1363,7 +1364,7 @@ void C3DScene::DecimateSurface(unsigned int SourceID, bool ReplaceSurface, int d
 		if (decimtype == 1)
 			name << "_QuadricDecimation_" << decimfactor;
 
-		CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+		CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 		surfProbs->InitialiseSurface(decim);
 		surfProbs->m_shortname = name.str();
 
@@ -1394,7 +1395,7 @@ void C3DScene::ComputeFeatureEdges(unsigned int SourceID, int EdgeType, double F
 	if (EdgeType == 3)
 		name << "_FeatureEdges_" << FeatureAngle;
 
-	CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+	CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 	surfProbs->InitialiseSurface(FeatureEdges);
 	surfProbs->m_shortname = name.str();
 
@@ -1428,7 +1429,7 @@ void C3DScene::SubdivideSurface(unsigned int SourceID, bool ReplaceSurface, int 
 		if (subdivtype == 2)
 			name << "_LoopSubdivided_" << subdivisions;
 
-		CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+		CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 		surfProbs->InitialiseSurface(subdiv);
 		surfProbs->m_shortname = name.str();
 
@@ -1469,7 +1470,7 @@ void C3DScene::Connectivity(unsigned int SourceID, bool ReplaceSurface, int Regi
 
 			nn.str("");
 			nn << m_Surfaces[SourceID]->m_shortname << "_connect" << i;
-			CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+			CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 			surfProbs->InitialiseSurface(rem->GetOutput());
 			surfProbs->m_shortname = nn.str();
 
@@ -1497,7 +1498,7 @@ void C3DScene::Connectivity(unsigned int SourceID, bool ReplaceSurface, int Regi
 		else
 		{
 			std::string name = m_Surfaces[SourceID]->m_shortname + "_largestregion";
-			CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+			CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 			surfProbs->InitialiseSurface(rem->GetOutput());
 			surfProbs->m_shortname = name;
 			AddSurfaceToRenderer(surfProbs);
@@ -1517,7 +1518,7 @@ void C3DScene::Connectivity(unsigned int SourceID, bool ReplaceSurface, int Regi
 		else
 		{
 			std::string name = m_Surfaces[SourceID]->m_shortname + "_outersurface";
-			CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+			CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 			surfProbs->InitialiseSurface(con);
 			surfProbs->m_shortname = name;
 			AddSurfaceToRenderer(surfProbs);
@@ -1627,14 +1628,14 @@ void C3DScene::CalculateMRFSurface( unsigned int SourceID, bool ReplaceSurface, 
 //	else
 //	{
 //		std::string name = m_Surfaces[SourceID]->m_shortname + "_MRFSurface";
-//		CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+//		CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 //		surfProbs->InitialiseSurface(MRFSurface.GetMRFSurface());
 //		surfProbs->m_shortname = name;
 //		AddSurfaceToRenderer(surfProbs);
 //		surfProbs->m_actor->SetVisibility(0);
 //
 //		name = m_Surfaces[SourceID]->m_shortname + "_MRFSurface_Cropped";
-//		CSurfaceProperties *surfProbs1 = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+//		CSurfaceProperties *surfProbs1 = new CSurfaceProperties(m_lookup, mSettings);
 //		surfProbs1->InitialiseSurface(MRFSurface.GetMRFSurfaceCropped());
 //		surfProbs1->m_polyData->GetPointData()->SetScalars(NULL);
 //		surfProbs1->m_shortname = name;
@@ -1642,7 +1643,7 @@ void C3DScene::CalculateMRFSurface( unsigned int SourceID, bool ReplaceSurface, 
 //		AddSurfaceToRenderer(surfProbs1);
 //
 //		name = m_Surfaces[SourceID]->m_shortname + "_MRFSurface_AggresiveCrop";
-//		CSurfaceProperties *surfProbs3 = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+//		CSurfaceProperties *surfProbs3 = new CSurfaceProperties(m_lookup, mSettings);
 //		surfProbs3->InitialiseSurface(MRFSurface.GetMRFSurfaceAgressivelyCropped());
 //		surfProbs3->m_shortname = name;
 //
@@ -1650,7 +1651,7 @@ void C3DScene::CalculateMRFSurface( unsigned int SourceID, bool ReplaceSurface, 
 //		surfProbs3->m_actor->SetVisibility(0);
 //
 //		name = m_Surfaces[SourceID]->m_shortname + "_NormalData";
-//		CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+//		CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, mSettings);
 //		surfProbs2->InitialiseSurface(MRFSurface.GetNormalData());
 //		surfProbs2->m_shortname = name;
 //
@@ -1683,7 +1684,7 @@ void C3DScene::CalculateNormals(unsigned int SourceID, bool ReplaceSurface, bool
 	else
 	{
 		std::string name = m_Surfaces[SourceID]->m_shortname + "_normals";
-		CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+		CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 		surfProbs->InitialiseSurface(norms->GetOutput());
 		surfProbs->m_shortname = name;
 
@@ -1764,7 +1765,7 @@ void C3DScene::ScalarFiltering(unsigned int SourceID, bool ReplaceSurface, doubl
 	}
 	else
 	{
-		CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+		CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 
 		surfProbs->m_shortname = ost.str();
 
@@ -1838,7 +1839,7 @@ void C3DScene::ScalarThreshold(unsigned int SourceID, bool ReplaceSurface, doubl
 	  }
 	  else
 	  {
-		CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+		CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 		
 		surfProbs->m_shortname = ost.str();
 
@@ -1957,7 +1958,7 @@ void C3DScene::DoMerge(unsigned int SourceID, unsigned int TargetID)
 
 	std::string name = m_Surfaces[SourceID]->m_shortname + "_MergedWith_" + m_Surfaces[TargetID]->m_shortname;
 
-	CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+	CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, mSettings);
 	surfProbs2->InitialiseSurface(pd);
 	surfProbs2->m_shortname = name;
 
@@ -2041,7 +2042,7 @@ bool C3DScene::DoCompare( unsigned int SourceID, unsigned int TargetID, bool Sig
 	}
 	else
 	{
-		CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+		CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, mSettings);
 		surfProbs2->InitialiseSurface(PDDiff->GetOutput());
 		surfProbs2->m_shortname = name;
 
@@ -2099,7 +2100,7 @@ void C3DScene::DoRemesh(unsigned int SourceID, bool ReplaceSurface, bool ScalarT
 			}
 			else
 			{
-				CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+				CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 				surfProbs->m_shortname = ost.str();
 
 				vtkTransform *sourceTrans = vtkTransform::New();
@@ -2147,7 +2148,7 @@ void C3DScene::DoRemesh(unsigned int SourceID, bool ReplaceSurface, bool ScalarT
 			}
 			else
 			{
-				CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+				CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 				surfProbs->m_shortname = ost.str();
 
 				vtkTransform *sourceTrans = vtkTransform::New();
@@ -2247,7 +2248,7 @@ bool C3DScene::DoICPAlignment( CICPParameters& parms )
 	}
 	else
 	{
-		CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+		CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, mSettings);
 		surfProbs2->InitialiseSurface(parms.transformedSurface);
 		surfProbs2->m_shortname = name;
 
@@ -2408,7 +2409,7 @@ void C3DScene::FindClosestPoints(unsigned int SourceID, unsigned int TargetID,bo
 	  else
 	  {
 		std::string name = m_Surfaces[SourceID]->m_shortname + "_ClosestPointsTo_" + m_Surfaces[TargetID]->m_shortname;
-		CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+		CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 		surfProbs->InitialiseSurface(pd);
 		surfProbs->m_shortname = name;
 
@@ -2430,7 +2431,7 @@ void C3DScene::CreateCube(double XLength, double YLength, double ZLength)
 	std::ostringstream name;
 	name << "Cube_x_" << XLength << "_y_" << YLength << "_z_" << ZLength;
 
-	CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+	CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 	surfProbs->InitialiseSurface(Cube->GetOutput());
 	surfProbs->m_shortname = name.str();
 
@@ -2455,7 +2456,7 @@ void C3DScene::CreateTrapezoid(double XLength, double YLength, double ZLength, d
 	std::ostringstream name;
 	name << "Trapezoid_x_" << XLength << "_y_" << YLength << "_z_" << ZLength << "_alpha_" << alpha << "_beta_" << beta << "_cap_" << capping;
 
-	CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+	CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 	surfProbs->InitialiseSurface(Trapezoid->GetOutput());
 	surfProbs->m_shortname = name.str();
 
@@ -2485,7 +2486,7 @@ void C3DScene::CreateSphere(double radius, double startTheta, double endTheta, d
 	name << "Sphere_r_" << radius << "_sT_" << startTheta << "_eT_" << endTheta
 		<< "_sP_" << startPhi << "_eP_" << endPhi << "_tR_" << thetaRes << "_pR_" << phiRes;
 
-	CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+	CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 	surfProbs->InitialiseSurface(Sphere->GetOutput());
 	surfProbs->m_shortname = name.str();
 
@@ -2507,7 +2508,7 @@ void C3DScene::CreateCylinder(double radius, double height, int resolution, bool
 	std::ostringstream name;
 	name << "Cylinder_r_" << radius << "_h_" << height << "_res_" << resolution << "_cap_" << capping;
 
-	CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+	CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 	surfProbs->InitialiseSurface(cylinder->GetOutput());
 	surfProbs->m_shortname = name.str();
 
@@ -2816,7 +2817,7 @@ void C3DScene::Animate( unsigned int SourceID, unsigned int DisplacementID, unsi
 	{
 		// Create new output surface
 		std::string name = m_Surfaces[SourceID]->m_shortname + "_animated";
-		CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+		CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, mSettings);
 
 		surfProbs2->InitialiseSurface(m_Surfaces[SourceID]->m_polyData);
 		surfProbs2->m_shortname = name;
@@ -2914,7 +2915,7 @@ void C3DScene::DoProjectSurface( unsigned int SourceID, unsigned int TargetID, b
 	}
 	else
 	{
-		CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+		CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, mSettings);
 		surfProbs2->InitialiseSurface(PDProj->GetOutput());
 		surfProbs2->m_shortname = name;
 
@@ -2924,7 +2925,7 @@ void C3DScene::DoProjectSurface( unsigned int SourceID, unsigned int TargetID, b
 	{
 		name = m_Surfaces[SourceID]->m_shortname + "_ProjectedTo_"	+ m_Surfaces[TargetID]->m_shortname + "_displacements";
 
-		CSurfaceProperties *surfProbs3 = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+		CSurfaceProperties *surfProbs3 = new CSurfaceProperties(m_lookup, mSettings);
 		surfProbs3->InitialiseSurface(PDProj->GetDisplacementField());
 		surfProbs3->m_shortname = name;
 
@@ -3078,7 +3079,7 @@ void C3DScene::CalculatePCANormals( unsigned int SourceID, bool ReplaceSurface, 
 	//	else
 	//	{
 	//		std::string name = m_Surfaces[SourceID]->m_shortname + "_PCANormals";
-	//		CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+	//		CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 	//		surfProbs->InitialiseSurface(MRFSurface.GetNormalData());
 	//		surfProbs->m_shortname = name;
 	//		AddSurfaceToRenderer(surfProbs);
@@ -3224,7 +3225,7 @@ void C3DScene::SubSamplePointCloud( unsigned int SourceID, bool ReplaceSurface, 
 	}
 	else
 	{
-		CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+		CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, mSettings);
 		surfProbs2->InitialiseSurface(Resample->GetOutput());
 		surfProbs2->m_shortname = name;
 
@@ -3275,7 +3276,7 @@ void C3DScene::RandomResample( unsigned int SourceID, bool ReplaceSurface, int N
 	}
 	else
 	{
-		CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+		CSurfaceProperties *surfProbs2 = new CSurfaceProperties(m_lookup, mSettings);
 		surfProbs2->InitialiseSurface(randomResample->GetOutput());
 		surfProbs2->m_shortname = name;
 
@@ -3439,11 +3440,11 @@ void C3DScene::SetScalarLookupTableNum( int num )
 	//	m_Surfaces[i]->UpdateScalarProperties();
 	//}
 }
-
-void C3DScene::SetDefaultPointSize( int ps )
-{
-	m_DefaultPointSize = ps;
-}
+//
+//void C3DScene::SetDefaultPointSize( int ps )
+//{
+//	m_DefaultPointSize = ps;
+//}
 
 void C3DScene::SetBackgroundColor( int R, int G, int B )
 {
@@ -3560,7 +3561,7 @@ void C3DScene::MergeAllSets()
 	verts->Delete();
 	Normals->Delete();
 
-	CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, &colorManager, m_DefaultPointSize);
+	CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 	surfProbs->InitialiseSurface(pd);
 	surfProbs->m_shortname = "AllMerged";
 

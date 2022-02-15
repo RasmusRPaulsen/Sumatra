@@ -5,8 +5,9 @@
 #include <vector>
 
 #include "SurfaceProperties.h"
-#include "ColorManager.h"
+// #include "ColorManager.h"
 #include "Process3DData.h"
+#include "SumatraSettings.h"
 
 class vtkActor2D;
 class vtkPointLocator;
@@ -25,7 +26,7 @@ class C3DScene
 {
 	public:
 		//! Default constructor
-		C3DScene();
+		C3DScene(CSumatraSettings *Settings);
 
 		//! Destructor
 		virtual ~C3DScene();
@@ -306,13 +307,16 @@ class C3DScene
 		//! Set the scalar lookup table to one of the predifined values
 		void SetScalarLookupTableNum(int num);
 
-		//! Set the default point size
-		void SetDefaultPointSize(int ps);
+		////! Set the default point size
+		//void SetDefaultPointSize(int ps);
 
 		//! Set the background color
 		void SetBackgroundColor(int R, int G, int B);
 
 	private:
+
+		CSumatraSettings* mSettings;
+
 		//! Initialise renderers etc
 		void SetupScreenThings();
 
@@ -349,7 +353,7 @@ class C3DScene
 		vtkSphereWidget *m_SphereWidget;
 
 		//! The color manager used to get a new color for each shape
-		CColorManager colorManager;
+		// CColorManager colorManager;
 
 		//! Add surface to renderer and do other minor things
 		void AddSurfaceToRenderer(CSurfaceProperties *sp);
@@ -383,7 +387,7 @@ class C3DScene
 		vtkActor *m_PickSphereActor;
 
 		//! Default pointsize should be changed into a general structure
-		int m_DefaultPointSize;
+		// int m_DefaultPointSize;
 
 		//! Default ID of mirror surface
 		int m_MirrorID;

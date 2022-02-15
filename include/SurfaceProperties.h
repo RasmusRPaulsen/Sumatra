@@ -94,7 +94,7 @@ class CSurfaceProperties
 		//! Constructor
 		CSurfaceProperties();
 	
-		CSumatraSettings* mSettings;
+		CSumatraSettings* mSettings = NULL;
 
 		//! Pointer to a colormanager
 		//CColorManager *m_colorManager;

@@ -39,7 +39,7 @@
 // 	m_colorManager = NULL;
 // }
 
-CSurfaceProperties::CSurfaceProperties(vtkLookupTable *lut, const CSumatraSettings* settings)
+CSurfaceProperties::CSurfaceProperties(vtkLookupTable *lut, CSumatraSettings* settings)
 {
 	m_shortname = "";
 	m_fullname = "";

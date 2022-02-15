@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     CSumatraSettings mSettings;
     mSettings.ReadSettings();
+    ui->sceneWidget->Setup(&mSettings);
 
     createActions();
     createMenus();

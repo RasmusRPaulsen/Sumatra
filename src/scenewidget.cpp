@@ -13,14 +13,6 @@ SceneWidget::SceneWidget(QWidget* parent)
 {
     vtkNew<vtkGenericOpenGLRenderWindow> window;
     setRenderWindow(window.Get());
-
-    m3DScene = new C3DScene();
-    m3DScene->Init();
-
-    mStyleActor = vtkSmartPointer<vtkInteractorStyleTrackballActor>::New();
-    mStyleCamera = vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
-
-    renderWindow()->AddRenderer(m3DScene->GetRenderer());
 }
 
 SceneWidget::~SceneWidget()
@@ -29,11 +21,29 @@ SceneWidget::~SceneWidget()
         delete m3DScene;
 }
 
+void SceneWidget::Setup(CSumatraSettings* Settings)
+{
+    mSettings = Settings;
+
+    m3DScene = new C3DScene(mSettings);
+    m3DScene->Init();
+
+    mStyleActor = vtkSmartPointer<vtkInteractorStyleTrackballActor>::New();
+    mStyleCamera = vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
+
+    renderWindow()->AddRenderer(m3DScene->GetRenderer());
+}
+
 void SceneWidget::OpenFile(const std::string& fname)
 {
     m3DScene->ReadFile(fname);
     renderWindow()->Render();
 }
+//
+//void SceneWidget::SetSettings(CSumatraSettings* Settings)
+//{
+//    mSettings = Settings;
+//}
 
 // QMessageBox::information(this, "KeyPress", tr("Keypress"));
 
