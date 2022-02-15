@@ -6,6 +6,7 @@
 #include <qmessagebox.h>
 #include <qmimedata.h>
 #include "computenormalsdlg.h"
+#include "objectpropertiesdlg.h"
 #include "SumatraSettings.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -72,6 +73,14 @@ void MainWindow::processComputeNormals()
 
 }
 
+void MainWindow::showObjectProperties()
+{
+    ObjectPropertiesDlg dlg;
+    if (dlg.exec())
+    {
+    }
+}
+
 void MainWindow::createActions()
 {
     openAct = new QAction(tr("&Open"), this);
@@ -80,9 +89,12 @@ void MainWindow::createActions()
     connect(openAct, &QAction::triggered, this, &MainWindow::showOpenFileDialog);
 
     ProcessComputeNormalsAct = new QAction(tr("&Compute normals"), this);
-    // ProcessComputeNormalsAct->setShortcuts(QKeySequence::New);
-    ProcessComputeNormalsAct->setStatusTip(tr("Compute sutface normals"));
+    ProcessComputeNormalsAct->setStatusTip(tr("Compute surface normals"));
     connect(ProcessComputeNormalsAct, &QAction::triggered, this, &MainWindow::processComputeNormals);
+
+    optionsObjectPropAct = new QAction(tr("Object &Properties"), this);
+    optionsObjectPropAct->setStatusTip(tr("View and modify object properties"));
+    connect(optionsObjectPropAct, &QAction::triggered, this, &MainWindow::showObjectProperties);
 }
 
 void MainWindow::createMenus()
@@ -92,6 +104,9 @@ void MainWindow::createMenus()
 
     fileMenu = menuBar()->addMenu(tr("&Process"));
     fileMenu->addAction(ProcessComputeNormalsAct);
+
+    fileMenu = menuBar()->addMenu(tr("&Options"));
+    fileMenu->addAction(optionsObjectPropAct);
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent* event)
@@ -102,23 +117,16 @@ void MainWindow::dragEnterEvent(QDragEnterEvent* event)
 
 void MainWindow::dropEvent(QDropEvent* event)
 {
-    //QMessageBox::information(
-    //    this, "Hello",
-    //    "Test\nbox");
-
     const QMimeData* mimeData = event->mimeData();
 
     // check for our needed mime type, here a file or a list of files
     if (mimeData->hasUrls())
     {
-        //QStringList pathList;
         QList<QUrl> urlList = mimeData->urls();
 
         // extract the local paths of the files
         for (int i = 0; i < urlList.size(); i++)
         {
-            // pathList.append(urlList.at(i).toLocalFile());
-            // call a function to open the files
             openFile(urlList.at(i).toLocalFile());
         }
     }    
