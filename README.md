@@ -44,3 +44,7 @@ Surface manipulation and transformation toolkit (Sumatra) - a fast and versatile
 ### Qt dialogs
 Passing values forth and back:
 (https://stackoverflow.com/questions/20948665/passing-a-variable-to-other-dialog-qt)
+
+### Parsing JSON
+https://doc.qt.io/qt-5/qtcore-serialization-savegame-example.html
+

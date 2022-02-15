@@ -5,6 +5,7 @@
 #include <qmessagebox.h>
 #include <qfile.h>
 #include <QJsonDocument>
+#include <qjsonarray.h>
 
 CSumatraSettings::CSumatraSettings()
 {
@@ -26,7 +27,7 @@ bool CSumatraSettings::ReadSettings()
     QFile loadFile(setname);
 
     if (!loadFile.open(QIODevice::ReadOnly)) {
-        qWarning("Couldn't open save file.");
+        qWarning("Couldn't open setings file.");
         QMessageBox::information(NULL, "Error", "Could not read settings file");
         return false;
     }
@@ -47,22 +48,70 @@ bool CSumatraSettings::ReadSettings()
 
 bool CSumatraSettings::ParseJSON(const QJsonObject& json)
 {
-    QMessageBox::information(NULL, "Info", "parsing");
+    // QMessageBox::information(NULL, "Info", "parsing");
 
-    if (json.contains("ColorBar"))
+    if (json.contains("ColorBar") && json["ColorBar"].isDouble())
     {
-        QMessageBox::information(NULL, "Test1", QString(json["ColorBar"].toString()));
-        // qWarning
-
+        int ColorbarType = json["ColorBar"].toInt();
     }
-
+    if (json.contains("PointSize") && json["PointSize"].isDouble())
+    {
+        int PointSize = json["PointSize"].toInt();
+    }
     if (json.contains("BackgroundColor") && json["BackgroundColor"].isArray())
     {
-        QMessageBox::information(NULL, "Test", QString(json["BackGroundColor"].toString()));
-        // qWarning
+        // QString BackgroundColor = json["BackgroundColor"].toString();
+        QJsonArray BackgroundColor = json["BackgroundColor"].toArray();
+        int R = BackgroundColor[0].toInt();
+        int G = BackgroundColor[1].toInt();
+        int B = BackgroundColor[2].toInt();
+        double alpha = BackgroundColor[3].toDouble();
 
+        // QMessageBox::information(NULL, "Test", BackgroundColor);
+        // qWarning
     }
-        //mPlayer.read(json["player"].toObject());
+    if (json.contains("colors") && json["colors"].isArray())
+    {
+        //QStringList keystt = json["colors"].toArray().keys();
+
+
+        // QString BackgroundColor = json["BackgroundColor"].toString();
+        QJsonArray colors = json["colors"].toArray();
+        int sz = colors.size();
+        for (int i = 0; i < colors.size(); i++)
+        {
+            auto ttt = colors[i];
+            QJsonObject obt = colors[i].toObject();
+            QStringList keys = obt.keys();
+
+            QJsonArray onecolor = colors[i].toArray();
+            int sz2 = onecolor.size();
+
+            QString tt = QString::number(sz) + QString(", ") + QString::number(sz2);
+            if (sz == 0 and sz2 == 0)
+                QMessageBox::information(NULL, "Test", tt);
+
+            QString cname = onecolor[0].toString();
+            int R = onecolor[1].toInt();
+            int G = onecolor[2].toInt();
+            int B = onecolor[3].toInt();
+            double alpha = onecolor[4].toDouble();
+            if (G == 128)
+                QMessageBox::information(NULL, "Test", "test");
+
+        }
+
+        //int R = BackgroundColor[0].toInt();
+        //int G = BackgroundColor[1].toInt();
+        //int B = BackgroundColor[2].toInt();
+        //double alpha = BackgroundColor[3].toDouble();
+
+        // QMessageBox::information(NULL, "Test", BackgroundColor);
+        // qWarning
+    }
+
+    
+    //mPlayer.read(json["player"].toObject());
 
     //if (json.contains("player") && json["player"].isObject())
     //    mPlayer.read(json["player"].toObject());
