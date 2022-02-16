@@ -24,6 +24,14 @@ public:
 
 public slots:
     void selectionChanged(int);
+    // void OnRenderingTypeChange();
+    void OnRenderingTypePoints(bool);
+    void OnRenderingTypeWireframe(bool);
+    void OnRenderingTypeSurface(bool);
+    void OnRenderingTypeHidden(bool);
+
+signals:
+    void valueChanged();
 
 private:
     Ui::ObjectPropertiesDlg *ui;

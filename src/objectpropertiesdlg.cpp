@@ -2,6 +2,10 @@
 #include "ui_objectpropertiesdlg.h"
 
 #include <sstream>
+#include <vtkActor.h>
+#include <vtkProperty.h>
+#include <vtkRenderer.h>
+
 
 ObjectPropertiesDlg::ObjectPropertiesDlg(QWidget *parent) :
     QDialog(parent),
@@ -10,6 +14,10 @@ ObjectPropertiesDlg::ObjectPropertiesDlg(QWidget *parent) :
     ui->setupUi(this);
 
 	connect(ui->selectedObjectCB, SIGNAL(currentIndexChanged(int)), SLOT(selectionChanged(int)));
+	connect(ui->RenderingPointsBtn, SIGNAL(toggled(bool)), SLOT(OnRenderingTypePoints(bool)));
+	connect(ui->RenderingHiddenBtn, SIGNAL(toggled(bool)), SLOT(OnRenderingTypeHidden(bool)));
+	connect(ui->RenderingWFBtn, SIGNAL(toggled(bool)), SLOT(OnRenderingTypeWireframe(bool)));
+	connect(ui->RenderingSurfaceBtn, SIGNAL(toggled(bool)), SLOT(OnRenderingTypeSurface(bool)));
 }
 
 ObjectPropertiesDlg::~ObjectPropertiesDlg()
@@ -46,9 +54,89 @@ void ObjectPropertiesDlg::PopulateObjectCB()
 
 void ObjectPropertiesDlg::UpdateAllSceneData()
 {
-
 	int idx = ui->selectedObjectCB->currentIndex();
 	std::string fullName = m3DScene->GetSurfaceFullName(idx).c_str();
 	ui->fullObjectName->setText(fullName.c_str());
-	//ui->fullObjectName->
+
+	vtkActor* actor = m3DScene->GetActor(idx);
+	if (!actor)
+		return;
+
+	int rep = actor->GetProperty()->GetRepresentation();
+	if (actor->GetVisibility() == 0)
+	{
+		ui->RenderingHiddenBtn->setChecked(true);
+	}
+	else if (rep == 0)
+	{
+		ui->RenderingPointsBtn->setChecked(true);
+	}
+	else if (rep == 1)
+	{
+		ui->RenderingWFBtn->setChecked(true);
+	}
+	else if (rep == 2)
+	{
+		ui->RenderingSurfaceBtn->setChecked(true);
+	}
 }
+
+void ObjectPropertiesDlg::OnRenderingTypePoints(bool on)
+{
+	int idx = ui->selectedObjectCB->currentIndex();
+	if (on)
+	{
+		m3DScene->GetActor(idx)->GetProperty()->SetRepresentationToPoints();
+		m3DScene->GetActor(idx)->VisibilityOn();
+	}
+	emit valueChanged();
+}
+
+void ObjectPropertiesDlg::OnRenderingTypeWireframe(bool on)
+{
+	int idx = ui->selectedObjectCB->currentIndex();
+	if (on)
+	{
+		m3DScene->GetActor(idx)->GetProperty()->SetRepresentationToWireframe();
+		m3DScene->GetActor(idx)->VisibilityOn();
+	}
+	emit valueChanged();
+}
+
+void ObjectPropertiesDlg::OnRenderingTypeSurface(bool on)
+{
+	int idx = ui->selectedObjectCB->currentIndex();
+	if (on)
+	{
+		m3DScene->GetActor(idx)->GetProperty()->SetRepresentationToSurface();
+		m3DScene->GetActor(idx)->VisibilityOn();
+	}
+	emit valueChanged();
+}
+
+void ObjectPropertiesDlg::OnRenderingTypeHidden(bool on)
+{
+	int idx = ui->selectedObjectCB->currentIndex();
+	if (on)
+	{
+		m3DScene->GetActor(idx)->VisibilityOff();
+	}
+	emit valueChanged();
+}
+
+//
+//void ObjectPropertiesDlg::OnRenderingTypeChange()
+//{
+//	//int idx = ui->selectedObjectCB->currentIndex();
+//
+//	//m3DScene->GetActor(idx)->SetVisibility(ui->RenderingHiddenBtn->isChecked());
+//	//
+//	//if (ui->RenderingPointsBtn->isChecked())
+//	//	m3DScene->GetActor(idx)->GetProperty()->SetRepresentationToPoints();
+//	//else if (ui->RenderingWFBtn->isChecked())
+//	//	m3DScene->GetActor(idx)->GetProperty()->SetRepresentationToWireframe();
+//	//else if (ui->RenderingSurfaceBtn->isChecked())
+//	//	m3DScene->GetActor(idx)->GetProperty()->SetRepresentationToSurface();
+//
+//	//m3DScene->GetRenderer()->Render();
+//}

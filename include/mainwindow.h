@@ -25,6 +25,7 @@ private slots:
     void showOpenFileDialog();
     void processComputeNormals();
     void showObjectProperties();
+    void forceRendering();
 
 protected:
     void dropEvent(QDropEvent* event);

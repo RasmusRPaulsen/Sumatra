@@ -82,8 +82,9 @@ void MainWindow::showObjectProperties()
         C3DScene* t3DScene = ui->sceneWidget->get3DScene();
         mObjectPropsDlg = new ObjectPropertiesDlg(this);
         mObjectPropsDlg->Set3DScene(t3DScene);
-        //connect(findDialog, &FindDialog::findNext,
-        //    this, &EditorWindow::findNext);
+
+        QObject::connect(mObjectPropsDlg, &ObjectPropertiesDlg::valueChanged,
+            this, &MainWindow::forceRendering);
     }
 
     mObjectPropsDlg->PopulateObjectCB();
@@ -91,10 +92,12 @@ void MainWindow::showObjectProperties()
     mObjectPropsDlg->show();
     mObjectPropsDlg->raise();
     mObjectPropsDlg->activateWindow();
-    //ObjectPropertiesDlg dlg;
-    //if (dlg.exec())
-    //{
-    //}
+
+}
+
+void MainWindow::forceRendering()
+{
+    ui->sceneWidget->ForceRender();
 }
 
 void MainWindow::createActions()

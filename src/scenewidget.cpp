@@ -21,6 +21,11 @@ SceneWidget::~SceneWidget()
         delete m3DScene;
 }
 
+void SceneWidget::ForceRender()
+{
+    renderWindow()->Render();
+}
+
 void SceneWidget::Setup(CSumatraSettings* Settings)
 {
     mSettings = Settings;
