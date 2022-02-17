@@ -26,13 +26,14 @@ public:
 
 public slots:
     void selectionChanged(int);
-    // void OnRenderingTypeChange();
     void OnRenderingTypePoints(bool);
     void OnRenderingTypeWireframe(bool);
     void OnRenderingTypeSurface(bool);
     void OnRenderingTypeHidden(bool);
     void OnRenderingPointsAsSpheres(bool);
     void OnRenderingLinesAsTubes(bool);
+    void OnRenderingFrontFaceCulling(bool);
+    void OnRenderingBackFaceCulling(bool);
 
 signals:
     void valueChanged();

@@ -20,6 +20,8 @@ ObjectPropertiesDlg::ObjectPropertiesDlg(QWidget *parent) :
 	connect(ui->RenderingSurfaceBtn, SIGNAL(toggled(bool)), SLOT(OnRenderingTypeSurface(bool)));
 	connect(ui->RenderPointsAsSpheresChk, SIGNAL(toggled(bool)), SLOT(OnRenderingPointsAsSpheres(bool)));
 	connect(ui->RenderLinesAsTubesChk, SIGNAL(toggled(bool)), SLOT(OnRenderingLinesAsTubes(bool)));
+	connect(ui->BackFaceCullingChk, SIGNAL(toggled(bool)), SLOT(OnRenderingBackFaceCulling(bool)));
+	connect(ui->FrontFaceCullingChk, SIGNAL(toggled(bool)), SLOT(OnRenderingFrontFaceCulling(bool)));
 }
 
 ObjectPropertiesDlg::~ObjectPropertiesDlg()
@@ -89,6 +91,8 @@ void ObjectPropertiesDlg::UpdateAllSceneData()
 	}
 	ui->RenderPointsAsSpheresChk->setChecked(actor->GetProperty()->GetRenderPointsAsSpheres());
 	ui->RenderLinesAsTubesChk->setChecked(actor->GetProperty()->GetRenderLinesAsTubes());
+	ui->BackFaceCullingChk->setChecked(actor->GetProperty()->GetBackfaceCulling());
+	ui->FrontFaceCullingChk->setChecked(actor->GetProperty()->GetFrontfaceCulling());
 
 	double color[3];
 	actor->GetProperty()->GetColor(color);
@@ -156,6 +160,20 @@ void ObjectPropertiesDlg::OnRenderingLinesAsTubes(bool on)
 {
 	int idx = ui->selectedObjectCB->currentIndex();
 	m3DScene->GetActor(idx)->GetProperty()->SetRenderLinesAsTubes(on);
+	emit valueChanged();
+}
+
+void ObjectPropertiesDlg::OnRenderingFrontFaceCulling(bool on)
+{
+	int idx = ui->selectedObjectCB->currentIndex();
+	m3DScene->GetActor(idx)->GetProperty()->SetFrontfaceCulling(on);
+	emit valueChanged();
+}
+
+void ObjectPropertiesDlg::OnRenderingBackFaceCulling(bool on)
+{
+	int idx = ui->selectedObjectCB->currentIndex();
+	m3DScene->GetActor(idx)->GetProperty()->SetBackfaceCulling(on);
 	emit valueChanged();
 }
 

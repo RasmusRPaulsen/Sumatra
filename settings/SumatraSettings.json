@@ -1,6 +1,7 @@
 {
     "ColorBar": 1,
-    "PointSize": 1,
+    "PointSize": 5,
+	"LineWidth": 4,
     "BackgroundColor": [128, 128, 128],
 	"colors":[
 		[255, 210, 150],
