@@ -88,7 +88,7 @@ void ObjectPropertiesDlg::UpdateAllSceneData()
 	double color[3];
 	actor->GetProperty()->GetColor(color);
 	std::string info = m3DScene->GetSurfaceValues(idx);
-	info = info + "Color: (" + std::to_string(color[0]) + ", " + std::to_string(color[1]) + ", " + std::to_string(color[0]) + ")\r\n";
+	info = info + "Color: (" + std::to_string(color[0]) + ", " + std::to_string(color[1]) + ", " + std::to_string(color[2]) + ")\r\n";
 	ui->ObjectInfo->setPlainText(info.c_str());
 
 	// QPixmap pix = ui->ObjectColorLabel->pixmap();
