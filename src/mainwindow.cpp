@@ -56,6 +56,8 @@ void MainWindow::showOpenFileDialog()
 void MainWindow::openFile(const QString& fileName)
 {
     ui->sceneWidget->OpenFile(fileName.toStdString());
+    if (mObjectPropsDlg)
+        mObjectPropsDlg->FullUpdate();
 }
 
 void MainWindow::processComputeNormals()

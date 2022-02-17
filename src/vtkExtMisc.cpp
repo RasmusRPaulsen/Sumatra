@@ -2143,12 +2143,20 @@ std::string vtkExtMisc::GetSurfaceValues(vtkPolyData *pd, const std::string& sep
 		ost << "Contains normals" << sep;
 		ost << sep;
 	}
+	else
+	{
+		ost << "No normals" << sep;
+	}
 	
 	vtkFloatArray *TCoords = vtkFloatArray::SafeDownCast(pd->GetPointData()->GetTCoords());
 	if (TCoords)
 	{
 		ost << "Contains texture coordinates" << sep;
 		ost << sep;
+	}
+	else
+	{
+		ost << "No texture coordinates" << sep;
 	}
 
 	double bounds[6];
@@ -2160,7 +2168,7 @@ std::string vtkExtMisc::GetSurfaceValues(vtkPolyData *pd, const std::string& sep
 		<< " (xmin,xmax, ymin,ymax, zmin,zmax) = "
 		<< "(" << bounds[0] << ", " << bounds[1] << ", " << bounds[2] << ", " 
 		<< bounds[3] << ", " << bounds[4] << ", " << bounds[5] << ")" << sep;
-	ost << "Volume:" << spa << volume << sep;
+	ost << "Bounding box volume: " << spa << volume << sep;
 
 	return ost.str();
 }

@@ -18,6 +18,8 @@ public:
 
     void Set3DScene(C3DScene* sc);
 
+    void FullUpdate();
+
     void PopulateObjectCB();
 
     void UpdateAllSceneData();

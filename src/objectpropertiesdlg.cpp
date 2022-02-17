@@ -37,6 +37,12 @@ void ObjectPropertiesDlg::Set3DScene(C3DScene* sc)
 	UpdateAllSceneData();
 }
 
+void ObjectPropertiesDlg::FullUpdate()
+{
+	PopulateObjectCB();
+	UpdateAllSceneData();
+}
+
 void ObjectPropertiesDlg::PopulateObjectCB()
 {
 	if (!m3DScene)
@@ -79,6 +85,7 @@ void ObjectPropertiesDlg::UpdateAllSceneData()
 	{
 		ui->RenderingSurfaceBtn->setChecked(true);
 	}
+	ui->ObjectInfo->setPlainText(m3DScene->GetSurfaceValues(idx).c_str());
 }
 
 void ObjectPropertiesDlg::OnRenderingTypePoints(bool on)
