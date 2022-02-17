@@ -31,6 +31,7 @@ public slots:
     void OnRenderingTypeWireframe(bool);
     void OnRenderingTypeSurface(bool);
     void OnRenderingTypeHidden(bool);
+    void OnRenderingPointsAsSpheres(bool);
 
 signals:
     void valueChanged();

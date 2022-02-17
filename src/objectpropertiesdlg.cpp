@@ -18,6 +18,7 @@ ObjectPropertiesDlg::ObjectPropertiesDlg(QWidget *parent) :
 	connect(ui->RenderingHiddenBtn, SIGNAL(toggled(bool)), SLOT(OnRenderingTypeHidden(bool)));
 	connect(ui->RenderingWFBtn, SIGNAL(toggled(bool)), SLOT(OnRenderingTypeWireframe(bool)));
 	connect(ui->RenderingSurfaceBtn, SIGNAL(toggled(bool)), SLOT(OnRenderingTypeSurface(bool)));
+	connect(ui->RenderPointsAsSpheresChk, SIGNAL(toggled(bool)), SLOT(OnRenderingPointsAsSpheres(bool)));
 }
 
 ObjectPropertiesDlg::~ObjectPropertiesDlg()
@@ -137,6 +138,14 @@ void ObjectPropertiesDlg::OnRenderingTypeHidden(bool on)
 	{
 		m3DScene->GetActor(idx)->VisibilityOff();
 	}
+	emit valueChanged();
+}
+
+void ObjectPropertiesDlg::OnRenderingPointsAsSpheres(bool on)
+{
+	int idx = ui->selectedObjectCB->currentIndex();
+	m3DScene->GetActor(idx)->GetProperty()->SetRenderPointsAsSpheres(on);
+
 	emit valueChanged();
 }
 
