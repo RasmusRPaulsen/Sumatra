@@ -32,6 +32,7 @@ public slots:
     void OnRenderingTypeSurface(bool);
     void OnRenderingTypeHidden(bool);
     void OnRenderingPointsAsSpheres(bool);
+    void OnRenderingLinesAsTubes(bool);
 
 signals:
     void valueChanged();

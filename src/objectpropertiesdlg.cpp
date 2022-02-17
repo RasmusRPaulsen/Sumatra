@@ -19,6 +19,7 @@ ObjectPropertiesDlg::ObjectPropertiesDlg(QWidget *parent) :
 	connect(ui->RenderingWFBtn, SIGNAL(toggled(bool)), SLOT(OnRenderingTypeWireframe(bool)));
 	connect(ui->RenderingSurfaceBtn, SIGNAL(toggled(bool)), SLOT(OnRenderingTypeSurface(bool)));
 	connect(ui->RenderPointsAsSpheresChk, SIGNAL(toggled(bool)), SLOT(OnRenderingPointsAsSpheres(bool)));
+	connect(ui->RenderLinesAsTubesChk, SIGNAL(toggled(bool)), SLOT(OnRenderingLinesAsTubes(bool)));
 }
 
 ObjectPropertiesDlg::~ObjectPropertiesDlg()
@@ -86,6 +87,9 @@ void ObjectPropertiesDlg::UpdateAllSceneData()
 	{
 		ui->RenderingSurfaceBtn->setChecked(true);
 	}
+	ui->RenderPointsAsSpheresChk->setChecked(actor->GetProperty()->GetRenderPointsAsSpheres());
+	ui->RenderLinesAsTubesChk->setChecked(actor->GetProperty()->GetRenderLinesAsTubes());
+
 	double color[3];
 	actor->GetProperty()->GetColor(color);
 	std::string info = m3DScene->GetSurfaceValues(idx);
@@ -93,7 +97,7 @@ void ObjectPropertiesDlg::UpdateAllSceneData()
 	ui->ObjectInfo->setPlainText(info.c_str());
 
 	// QPixmap pix = ui->ObjectColorLabel->pixmap();
-	QPixmap pix(16, 16);
+	QPixmap pix(32, 32);
 	pix.fill(QColor((int)(color[0] * 255), (int)(color[1] * 255), (int)(color[2] * 255)));
 	ui->ObjectColorLabel->setPixmap(pix);
 }
@@ -145,7 +149,13 @@ void ObjectPropertiesDlg::OnRenderingPointsAsSpheres(bool on)
 {
 	int idx = ui->selectedObjectCB->currentIndex();
 	m3DScene->GetActor(idx)->GetProperty()->SetRenderPointsAsSpheres(on);
+	emit valueChanged();
+}
 
+void ObjectPropertiesDlg::OnRenderingLinesAsTubes(bool on)
+{
+	int idx = ui->selectedObjectCB->currentIndex();
+	m3DScene->GetActor(idx)->GetProperty()->SetRenderLinesAsTubes(on);
 	emit valueChanged();
 }
 

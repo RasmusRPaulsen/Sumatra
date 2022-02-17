@@ -29,6 +29,8 @@ class CSumatraSettings
 
 		int mPointSize = 1;
 
+		int mLineWidth = 1;
+
 	private:
 		bool ParseJSON(const QJsonObject& json);
 

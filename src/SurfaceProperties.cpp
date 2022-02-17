@@ -43,8 +43,6 @@ CSurfaceProperties::CSurfaceProperties(vtkLookupTable *lut, CSumatraSettings* se
 	m_mapper = NULL;
 	m_actor = NULL;
 	m_lookup = lut;
-	// m_colorManager = CM;
-	// m_DefPointSize = ps;
 	mSettings = settings;
 }
 
@@ -97,7 +95,7 @@ Points 0 0 100
 	prop->SetDiffuse(0.8);
 	prop->SetOpacity(1.0);
 	prop->SetPointSize(mSettings->mPointSize);
-	prop->SetLineWidth(1);
+	prop->SetLineWidth(mSettings->mLineWidth);
 
 	UpdateScalarProperties();
 

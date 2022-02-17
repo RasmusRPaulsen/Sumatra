@@ -51,6 +51,10 @@ bool CSumatraSettings::ParseJSON(const QJsonObject& json)
     {
         mPointSize = json["PointSize"].toInt();
     }
+    if (json.contains("LineWidth") && json["LineWidth"].isDouble())
+    {
+        mLineWidth = json["LineWidth"].toInt();
+    }
     if (json.contains("BackgroundColor") && json["BackgroundColor"].isArray())
     {
         QJsonArray BackColor = json["BackgroundColor"].toArray();
