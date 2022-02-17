@@ -85,7 +85,16 @@ void ObjectPropertiesDlg::UpdateAllSceneData()
 	{
 		ui->RenderingSurfaceBtn->setChecked(true);
 	}
-	ui->ObjectInfo->setPlainText(m3DScene->GetSurfaceValues(idx).c_str());
+	double color[3];
+	actor->GetProperty()->GetColor(color);
+	std::string info = m3DScene->GetSurfaceValues(idx);
+	info = info + "Color: (" + std::to_string(color[0]) + ", " + std::to_string(color[1]) + ", " + std::to_string(color[0]) + ")\r\n";
+	ui->ObjectInfo->setPlainText(info.c_str());
+
+	// QPixmap pix = ui->ObjectColorLabel->pixmap();
+	QPixmap pix(16, 16);
+	pix.fill(QColor((int)(color[0] * 255), (int)(color[1] * 255), (int)(color[2] * 255)));
+	ui->ObjectColorLabel->setPixmap(pix);
 }
 
 void ObjectPropertiesDlg::OnRenderingTypePoints(bool on)

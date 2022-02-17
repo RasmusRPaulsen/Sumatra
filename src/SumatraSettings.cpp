@@ -11,6 +11,7 @@
 CSumatraSettings::CSumatraSettings()
 {
     mColors.clear();
+    mCurrentColor = 0;
 }
 
 CSumatraSettings::~CSumatraSettings()
