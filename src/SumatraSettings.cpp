@@ -12,6 +12,7 @@ CSumatraSettings::CSumatraSettings()
 {
     mColors.clear();
     mCurrentColor = 0;
+    mTest = "Constructed";
 }
 
 CSumatraSettings::~CSumatraSettings()
@@ -58,10 +59,9 @@ bool CSumatraSettings::ParseJSON(const QJsonObject& json)
             QMessageBox::information(NULL, "Warning", "Error reading settings file");
             return false;
         }
-        int R = BackColor[0].toInt();
-        int G = BackColor[1].toInt();
-        int B = BackColor[2].toInt();
-        mBackgroundColor.Set(R, G, B);
+        mBackgroundColor[0] = BackColor[0].toDouble() / 255.0;
+        mBackgroundColor[1] = BackColor[1].toDouble() / 255.0;
+        mBackgroundColor[2] = BackColor[2].toDouble() / 255.0;
     }
     if (json.contains("colors") && json["colors"].isArray())
     {
@@ -84,6 +84,8 @@ bool CSumatraSettings::ParseJSON(const QJsonObject& json)
             mColors.push_back(rgb);
         }
     }
+
+    mTest = mTest + QString(" Parsed");
 
     return true;
 }

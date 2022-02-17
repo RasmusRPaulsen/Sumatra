@@ -15,9 +15,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    CSumatraSettings mSettings;
-    mSettings.ReadSettings();
-    ui->sceneWidget->Setup(&mSettings);
+    mSettings = new CSumatraSettings();
+    mSettings->ReadSettings();
+    ui->sceneWidget->Setup(mSettings);
 
     createActions();
     createMenus();
@@ -35,6 +35,8 @@ MainWindow::~MainWindow()
     delete ui;
     if (mObjectPropsDlg)
         delete mObjectPropsDlg;
+    if (mSettings)
+        delete mSettings;
 }
 
 void MainWindow::showOpenFileDialog()

@@ -69,8 +69,6 @@
 
 C3DScene::C3DScene(CSumatraSettings* Settings)
 {
-	mSettings = Settings;
-	// m_DefaultPointSize = 1;
 	m_PointPicker = NULL;
 	m_SphereMarkerLocator = NULL;
 	m_Renderer = NULL;
@@ -78,7 +76,7 @@ C3DScene::C3DScene(CSumatraSettings* Settings)
 	m_lookup = NULL;
 	m_PlaneWidget = NULL;
 	m_ScalarBarVisible = false;
-	m_Axes = NULL;;
+	m_Axes = NULL;
 	m_AxesVisible = false;
 	m_MarkerValue = 1;
 	m_StatusText = NULL;
@@ -90,6 +88,7 @@ C3DScene::C3DScene(CSumatraSettings* Settings)
 	m_PickSphereMapper = NULL;
 	m_PickSphereActor = NULL;
 	m_MirrorID = -1;
+	mSettings = Settings;
 }
 
 C3DScene::~C3DScene()
@@ -240,8 +239,8 @@ iren AddObserver UserEvent {wm deiconify .vtkInteract}
 void C3DScene::SetupScreenThings()
 {
 	m_Renderer = vtkRenderer::New();
-
-	m_Renderer->SetBackground(0.5, 0.5, 0.5);
+	//m_Renderer->SetBackground(0.5, 0.5, 0.5);
+	m_Renderer->SetBackground(mSettings->mBackgroundColor);
 
 	m_lookup = vtkLookupTable::New();
 	SetScalarLookupTableNum(0);

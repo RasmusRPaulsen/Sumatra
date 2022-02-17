@@ -30,7 +30,7 @@ void SceneWidget::Setup(CSumatraSettings* Settings)
 {
     mSettings = Settings;
 
-    m3DScene = new C3DScene(mSettings);
+    m3DScene = new C3DScene(Settings);
     m3DScene->Init();
 
     mStyleActor = vtkSmartPointer<vtkInteractorStyleTrackballActor>::New();

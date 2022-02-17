@@ -4,6 +4,7 @@
 #include <qjsonobject.h>
 #include <vtkColor.h>
 #include <vector>
+#include <qstring.h>
 
 //! Sumatra settings
 /** Used for parsing settings file */
@@ -22,8 +23,7 @@ class CSumatraSettings
 		/** \param range1 if this is true, each component will be scaled to 0-1*/
 		void GetNextColor(double* col, bool range1 = true);
 
-		// unsigned byte RGB
-		vtkColor3ub mBackgroundColor;
+		double mBackgroundColor[3];
 
 		int mColorbarType = 0;
 
@@ -35,6 +35,8 @@ class CSumatraSettings
 		int mCurrentColor = 0;
 
 		std::vector<vtkColor3ub> mColors;
+
+		QString mTest;
 };
 
 #endif

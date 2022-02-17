@@ -193,10 +193,10 @@ class C3DScene
 
 		//! Create FastRBF surface
 		/** */
-		void CreateFastRBFSurface(unsigned int SourceID, bool OutputSurface, bool OutputEstNormals,  bool OutputDensity,
-			double MinNormalLength, double MaxNormalLength, double Accuracy, double Resolution,
-			double EstNormalsRadius, double EstNormalsPlaneFactor, bool ErrorBarFitting, double ISOSmooth,
-			bool DefineDensity, int InsideID, int OutsideID);
+		//void CreateFastRBFSurface(unsigned int SourceID, bool OutputSurface, bool OutputEstNormals,  bool OutputDensity,
+		//	double MinNormalLength, double MaxNormalLength, double Accuracy, double Resolution,
+		//	double EstNormalsRadius, double EstNormalsPlaneFactor, bool ErrorBarFitting, double ISOSmooth,
+		//	bool DefineDensity, int InsideID, int OutsideID);
 
 		//! Simply merge all sets into a point sets. Keeping normals and scalars
 		void MergeAllSets();
@@ -315,7 +315,7 @@ class C3DScene
 
 	private:
 
-		CSumatraSettings* mSettings;
+		CSumatraSettings* mSettings = NULL;
 
 		//! Initialise renderers etc
 		void SetupScreenThings();
@@ -324,7 +324,7 @@ class C3DScene
 		void SetupScalarBar();
 
 		//! Update Lookup table
-		void UpdateLookupTable(vtkPolyData *pd);
+		// void UpdateLookupTable(vtkPolyData *pd);
 
 		vtkRenderer *m_Renderer;
 
@@ -391,6 +391,8 @@ class C3DScene
 
 		//! Default ID of mirror surface
 		int m_MirrorID;
+
+		C3DScene() {};
 };
 
 #endif

@@ -110,7 +110,7 @@ class CSurfaceProperties
 		std::string m_UndoName2;
 
 		//! Is undo available
-		bool m_UndoAvailable;
+		bool m_UndoAvailable = false;
 
 		//! Default point size - should be made into a general structure with more options
 		// int m_DefPointSize;

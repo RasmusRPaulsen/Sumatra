@@ -6,6 +6,7 @@
 #include <QMainWindow>
 #include <qdragenterevent>
 #include "objectpropertiesdlg.h"
+#include "SumatraSettings.h"
 
 namespace Ui {
 class MainWindow;
@@ -33,6 +34,8 @@ protected:
 
 private:
     Ui::MainWindow *ui;
+
+    CSumatraSettings *mSettings = NULL;
 
 private:
     void createActions();

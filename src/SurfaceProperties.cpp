@@ -27,17 +27,9 @@
 #include "GeneralUtils.h"
 #include "vtkVRMLImporter.h"
 
-// CSurfaceProperties::CSurfaceProperties()
-// {
-// 	m_shortname = "";
-// 	m_fullname = "";
-// 
-// 	m_polyData = NULL;
-// 	m_mapper = NULL;
-// 	m_actor = NULL;
-// 	m_lookup = NULL;
-// 	m_colorManager = NULL;
-// }
+ CSurfaceProperties::CSurfaceProperties()
+{
+}
 
 CSurfaceProperties::CSurfaceProperties(vtkLookupTable *lut, CSumatraSettings* settings)
 {
