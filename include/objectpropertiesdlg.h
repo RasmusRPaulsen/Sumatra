@@ -34,6 +34,7 @@ public slots:
     void OnRenderingLinesAsTubes(bool);
     void OnRenderingFrontFaceCulling(bool);
     void OnRenderingBackFaceCulling(bool);
+    void OnPointSizeSpin(int);
 
 signals:
     void valueChanged();

@@ -22,6 +22,7 @@ ObjectPropertiesDlg::ObjectPropertiesDlg(QWidget *parent) :
 	connect(ui->RenderLinesAsTubesChk, SIGNAL(toggled(bool)), SLOT(OnRenderingLinesAsTubes(bool)));
 	connect(ui->BackFaceCullingChk, SIGNAL(toggled(bool)), SLOT(OnRenderingBackFaceCulling(bool)));
 	connect(ui->FrontFaceCullingChk, SIGNAL(toggled(bool)), SLOT(OnRenderingFrontFaceCulling(bool)));
+	connect(ui->PointSizeSpin, SIGNAL(valueChanged(int)), SLOT(OnPointSizeSpin(int)));
 }
 
 ObjectPropertiesDlg::~ObjectPropertiesDlg()
@@ -174,6 +175,13 @@ void ObjectPropertiesDlg::OnRenderingBackFaceCulling(bool on)
 {
 	int idx = ui->selectedObjectCB->currentIndex();
 	m3DScene->GetActor(idx)->GetProperty()->SetBackfaceCulling(on);
+	emit valueChanged();
+}
+
+void ObjectPropertiesDlg::OnPointSizeSpin(int val)
+{
+	int idx = ui->selectedObjectCB->currentIndex();
+	m3DScene->GetActor(idx)->GetProperty()->SetPointSize(val);
 	emit valueChanged();
 }
 
