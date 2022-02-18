@@ -23,6 +23,8 @@ ObjectPropertiesDlg::ObjectPropertiesDlg(QWidget *parent) :
 	connect(ui->BackFaceCullingChk, SIGNAL(toggled(bool)), SLOT(OnRenderingBackFaceCulling(bool)));
 	connect(ui->FrontFaceCullingChk, SIGNAL(toggled(bool)), SLOT(OnRenderingFrontFaceCulling(bool)));
 	connect(ui->PointSizeSpin, SIGNAL(valueChanged(int)), SLOT(OnPointSizeSpin(int)));
+	connect(ui->LineWidthSpin, SIGNAL(valueChanged(int)), SLOT(OnLineWidthSpin(int)));
+	connect(ui->OpacitySpin, SIGNAL(valueChanged(double)), SLOT(OnOpacitySpin(double)));
 }
 
 ObjectPropertiesDlg::~ObjectPropertiesDlg()
@@ -94,6 +96,9 @@ void ObjectPropertiesDlg::UpdateAllSceneData()
 	ui->RenderLinesAsTubesChk->setChecked(actor->GetProperty()->GetRenderLinesAsTubes());
 	ui->BackFaceCullingChk->setChecked(actor->GetProperty()->GetBackfaceCulling());
 	ui->FrontFaceCullingChk->setChecked(actor->GetProperty()->GetFrontfaceCulling());
+	ui->PointSizeSpin->setValue(actor->GetProperty()->GetPointSize());
+	ui->LineWidthSpin->setValue(actor->GetProperty()->GetLineWidth());
+	ui->OpacitySpin->setValue(actor->GetProperty()->GetOpacity());
 
 	double color[3];
 	actor->GetProperty()->GetColor(color);
@@ -102,7 +107,10 @@ void ObjectPropertiesDlg::UpdateAllSceneData()
 	ui->ObjectInfo->setPlainText(info.c_str());
 
 	// QPixmap pix = ui->ObjectColorLabel->pixmap();
-	QPixmap pix(32, 32);
+	//int w = ui->ObjectColorLabel->rect().width();
+	//int h = ui->ObjectColorLabel->rect().height();
+
+	QPixmap pix(20, 20);
 	pix.fill(QColor((int)(color[0] * 255), (int)(color[1] * 255), (int)(color[2] * 255)));
 	ui->ObjectColorLabel->setPixmap(pix);
 }
@@ -182,6 +190,20 @@ void ObjectPropertiesDlg::OnPointSizeSpin(int val)
 {
 	int idx = ui->selectedObjectCB->currentIndex();
 	m3DScene->GetActor(idx)->GetProperty()->SetPointSize(val);
+	emit valueChanged();
+}
+
+void ObjectPropertiesDlg::OnLineWidthSpin(int val)
+{
+	int idx = ui->selectedObjectCB->currentIndex();
+	m3DScene->GetActor(idx)->GetProperty()->SetLineWidth(val);
+	emit valueChanged();
+}
+
+void ObjectPropertiesDlg::OnOpacitySpin(double val)
+{
+	int idx = ui->selectedObjectCB->currentIndex();
+	m3DScene->GetActor(idx)->GetProperty()->SetOpacity(val);
 	emit valueChanged();
 }
 

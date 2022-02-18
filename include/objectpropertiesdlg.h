@@ -35,6 +35,8 @@ public slots:
     void OnRenderingFrontFaceCulling(bool);
     void OnRenderingBackFaceCulling(bool);
     void OnPointSizeSpin(int);
+    void OnLineWidthSpin(int);
+    void OnOpacitySpin(double);
 
 signals:
     void valueChanged();

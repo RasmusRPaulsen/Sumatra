@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/sumatra.ico</file>
+        <file>icons/Sumatra.png</file>
     </qresource>
 </RCC>
