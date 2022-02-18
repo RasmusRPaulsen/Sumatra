@@ -138,6 +138,13 @@
          </widget>
         </item>
         <item>
+         <widget class="QCheckBox" name="EdgesVisibleChk">
+          <property name="text">
+           <string>Edges Visible</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QCheckBox" name="BackFaceCullingChk">
           <property name="text">
            <string>Backface culling</string>

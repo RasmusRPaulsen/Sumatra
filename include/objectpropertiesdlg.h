@@ -34,9 +34,11 @@ public slots:
     void OnRenderingLinesAsTubes(bool);
     void OnRenderingFrontFaceCulling(bool);
     void OnRenderingBackFaceCulling(bool);
+    void OnRenderingVisibleEdges(bool);
     void OnPointSizeSpin(int);
     void OnLineWidthSpin(int);
     void OnOpacitySpin(double);
+
 
 signals:
     void valueChanged();

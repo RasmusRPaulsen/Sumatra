@@ -96,6 +96,8 @@ Points 0 0 100
 	prop->SetOpacity(1.0);
 	prop->SetPointSize(mSettings->mPointSize);
 	prop->SetLineWidth(mSettings->mLineWidth);
+	prop->SetEdgeColor(0, 0, 0);
+	// prop->SetVertexVisibility(true);
 
 	UpdateScalarProperties();
 

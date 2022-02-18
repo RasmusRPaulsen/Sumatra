@@ -22,6 +22,7 @@ ObjectPropertiesDlg::ObjectPropertiesDlg(QWidget *parent) :
 	connect(ui->RenderLinesAsTubesChk, SIGNAL(toggled(bool)), SLOT(OnRenderingLinesAsTubes(bool)));
 	connect(ui->BackFaceCullingChk, SIGNAL(toggled(bool)), SLOT(OnRenderingBackFaceCulling(bool)));
 	connect(ui->FrontFaceCullingChk, SIGNAL(toggled(bool)), SLOT(OnRenderingFrontFaceCulling(bool)));
+	connect(ui->EdgesVisibleChk, SIGNAL(toggled(bool)), SLOT(OnRenderingVisibleEdges(bool)));
 	connect(ui->PointSizeSpin, SIGNAL(valueChanged(int)), SLOT(OnPointSizeSpin(int)));
 	connect(ui->LineWidthSpin, SIGNAL(valueChanged(int)), SLOT(OnLineWidthSpin(int)));
 	connect(ui->OpacitySpin, SIGNAL(valueChanged(double)), SLOT(OnOpacitySpin(double)));
@@ -96,6 +97,7 @@ void ObjectPropertiesDlg::UpdateAllSceneData()
 	ui->RenderLinesAsTubesChk->setChecked(actor->GetProperty()->GetRenderLinesAsTubes());
 	ui->BackFaceCullingChk->setChecked(actor->GetProperty()->GetBackfaceCulling());
 	ui->FrontFaceCullingChk->setChecked(actor->GetProperty()->GetFrontfaceCulling());
+	ui->EdgesVisibleChk->setChecked(actor->GetProperty()->GetVertexVisibility());
 	ui->PointSizeSpin->setValue(actor->GetProperty()->GetPointSize());
 	ui->LineWidthSpin->setValue(actor->GetProperty()->GetLineWidth());
 	ui->OpacitySpin->setValue(actor->GetProperty()->GetOpacity());
@@ -183,6 +185,13 @@ void ObjectPropertiesDlg::OnRenderingBackFaceCulling(bool on)
 {
 	int idx = ui->selectedObjectCB->currentIndex();
 	m3DScene->GetActor(idx)->GetProperty()->SetBackfaceCulling(on);
+	emit valueChanged();
+}
+
+void ObjectPropertiesDlg::OnRenderingVisibleEdges(bool on)
+{
+	int idx = ui->selectedObjectCB->currentIndex();
+	m3DScene->GetActor(idx)->GetProperty()->SetEdgeVisibility(on);
 	emit valueChanged();
 }
 
