@@ -5,6 +5,8 @@
 #include <vtkActor.h>
 #include <vtkProperty.h>
 #include <vtkRenderer.h>
+#include <qcolordialog.h>
+
 
 
 ObjectPropertiesDlg::ObjectPropertiesDlg(QWidget *parent) :
@@ -31,6 +33,7 @@ ObjectPropertiesDlg::ObjectPropertiesDlg(QWidget *parent) :
 	connect(ui->DiffuseSpin, SIGNAL(valueChanged(double)), SLOT(OnDiffuseSpin(double)));
 	connect(ui->SpecularSpin, SIGNAL(valueChanged(double)), SLOT(OnSpecularSpin(double)));
 	connect(ui->SpecularPowerSpin, SIGNAL(valueChanged(double)), SLOT(OnSpecularPowerSpin(double)));
+	connect(ui->ChooseColorBtn, SIGNAL(clicked()), SLOT(OnChooseColorBtn()));
 }
 
 ObjectPropertiesDlg::~ObjectPropertiesDlg()
@@ -275,6 +278,21 @@ void ObjectPropertiesDlg::OnShowScalarsChk(bool on)
 	int idx = ui->selectedObjectCB->currentIndex();
 	m3DScene->GetMapper(idx)->SetScalarVisibility(on);
 	emit valueChanged();
+}
+
+void ObjectPropertiesDlg::OnChooseColorBtn()
+{
+	int idx = ui->selectedObjectCB->currentIndex();
+	double ocolor[3];
+	m3DScene->GetActor(idx)->GetProperty()->GetColor(ocolor);
+
+	QColor color = QColorDialog::getColor(QColor(ocolor[0] * 255, ocolor[1] * 255, ocolor[2] * 255), this);
+	if (color.isValid())
+	{
+		m3DScene->GetActor(idx)->GetProperty()->SetColor(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0);
+		UpdateAllSceneData();
+		emit valueChanged();
+	}
 }
 
 //

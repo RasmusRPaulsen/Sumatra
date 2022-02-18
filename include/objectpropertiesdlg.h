@@ -43,7 +43,7 @@ public slots:
     void OnSpecularSpin(double);
     void OnSpecularPowerSpin(double);
     void OnShowScalarsChk(bool);
-
+    void OnChooseColorBtn();
 
 signals:
     void valueChanged();
