@@ -38,6 +38,10 @@ public slots:
     void OnPointSizeSpin(int);
     void OnLineWidthSpin(int);
     void OnOpacitySpin(double);
+    void OnAmbientSpin(double);
+    void OnDiffuseSpin(double);
+    void OnSpecularSpin(double);
+    void OnSpecularPowerSpin(double);
 
 
 signals:

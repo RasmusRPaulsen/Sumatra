@@ -26,6 +26,10 @@ ObjectPropertiesDlg::ObjectPropertiesDlg(QWidget *parent) :
 	connect(ui->PointSizeSpin, SIGNAL(valueChanged(int)), SLOT(OnPointSizeSpin(int)));
 	connect(ui->LineWidthSpin, SIGNAL(valueChanged(int)), SLOT(OnLineWidthSpin(int)));
 	connect(ui->OpacitySpin, SIGNAL(valueChanged(double)), SLOT(OnOpacitySpin(double)));
+	connect(ui->AmbientSpin, SIGNAL(valueChanged(double)), SLOT(OnAmbientSpin(double)));
+	connect(ui->DiffuseSpin, SIGNAL(valueChanged(double)), SLOT(OnDiffuseSpin(double)));
+	connect(ui->SpecularSpin, SIGNAL(valueChanged(double)), SLOT(OnSpecularSpin(double)));
+	connect(ui->SpecularPowerSpin, SIGNAL(valueChanged(double)), SLOT(OnSpecularPowerSpin(double)));
 }
 
 ObjectPropertiesDlg::~ObjectPropertiesDlg()
@@ -101,6 +105,10 @@ void ObjectPropertiesDlg::UpdateAllSceneData()
 	ui->PointSizeSpin->setValue(actor->GetProperty()->GetPointSize());
 	ui->LineWidthSpin->setValue(actor->GetProperty()->GetLineWidth());
 	ui->OpacitySpin->setValue(actor->GetProperty()->GetOpacity());
+	ui->AmbientSpin->setValue(actor->GetProperty()->GetAmbient());
+	ui->DiffuseSpin->setValue(actor->GetProperty()->GetDiffuse());
+	ui->SpecularSpin->setValue(actor->GetProperty()->GetSpecular());
+	ui->SpecularPowerSpin->setValue(actor->GetProperty()->GetSpecularPower());
 
 	double color[3];
 	actor->GetProperty()->GetColor(color);
@@ -213,6 +221,34 @@ void ObjectPropertiesDlg::OnOpacitySpin(double val)
 {
 	int idx = ui->selectedObjectCB->currentIndex();
 	m3DScene->GetActor(idx)->GetProperty()->SetOpacity(val);
+	emit valueChanged();
+}
+
+void ObjectPropertiesDlg::OnAmbientSpin(double val)
+{
+	int idx = ui->selectedObjectCB->currentIndex();
+	m3DScene->GetActor(idx)->GetProperty()->SetAmbient(val);
+	emit valueChanged();
+}
+
+void ObjectPropertiesDlg::OnDiffuseSpin(double val)
+{
+	int idx = ui->selectedObjectCB->currentIndex();
+	m3DScene->GetActor(idx)->GetProperty()->SetDiffuse(val);
+	emit valueChanged();
+}
+
+void ObjectPropertiesDlg::OnSpecularSpin(double val)
+{
+	int idx = ui->selectedObjectCB->currentIndex();
+	m3DScene->GetActor(idx)->GetProperty()->SetSpecular(val);
+	emit valueChanged();
+}
+
+void ObjectPropertiesDlg::OnSpecularPowerSpin(double val)
+{
+	int idx = ui->selectedObjectCB->currentIndex();
+	m3DScene->GetActor(idx)->GetProperty()->SetSpecularPower(val);
 	emit valueChanged();
 }
 
