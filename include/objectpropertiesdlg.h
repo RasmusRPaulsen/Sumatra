@@ -44,6 +44,11 @@ public slots:
     void OnSpecularPowerSpin(double);
     void OnShowScalarsChk(bool);
     void OnChooseColorBtn();
+    void OnDeleteObjectBtn();
+    void OnResetTransformBtn();
+    void OnRemoveScalarsBtn();
+    void OnRemoveNormalsBtn();
+
 
 signals:
     void valueChanged();

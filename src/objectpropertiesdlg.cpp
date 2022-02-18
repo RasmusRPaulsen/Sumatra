@@ -34,6 +34,10 @@ ObjectPropertiesDlg::ObjectPropertiesDlg(QWidget *parent) :
 	connect(ui->SpecularSpin, SIGNAL(valueChanged(double)), SLOT(OnSpecularSpin(double)));
 	connect(ui->SpecularPowerSpin, SIGNAL(valueChanged(double)), SLOT(OnSpecularPowerSpin(double)));
 	connect(ui->ChooseColorBtn, SIGNAL(clicked()), SLOT(OnChooseColorBtn()));
+	connect(ui->DeleteObjectBtn, SIGNAL(clicked()), SLOT(OnDeleteObjectBtn()));
+	connect(ui->RemoveScalarsBtn, SIGNAL(clicked()), SLOT(OnRemoveScalarsBtn()));
+	connect(ui->RemoveNormalsBtn, SIGNAL(clicked()), SLOT(OnRemoveNormalsBtn()));
+	connect(ui->ResetTransformBtn, SIGNAL(clicked()), SLOT(OnResetTransformBtn()));
 }
 
 ObjectPropertiesDlg::~ObjectPropertiesDlg()
@@ -76,6 +80,9 @@ void ObjectPropertiesDlg::PopulateObjectCB()
 
 void ObjectPropertiesDlg::UpdateAllSceneData()
 {
+	if (ui->selectedObjectCB->count() <= 0)
+		return;
+
 	int idx = ui->selectedObjectCB->currentIndex();
 	std::string fullName = m3DScene->GetSurfaceFullName(idx).c_str();
 	ui->fullObjectName->setText(fullName.c_str());
@@ -293,6 +300,30 @@ void ObjectPropertiesDlg::OnChooseColorBtn()
 		UpdateAllSceneData();
 		emit valueChanged();
 	}
+}
+
+// TODO: Do something when last object is deleted
+void ObjectPropertiesDlg::OnDeleteObjectBtn()
+{
+	int idx = ui->selectedObjectCB->currentIndex();
+	if (idx < 0)
+		return;
+	m3DScene->RemoveSurface(idx);
+	PopulateObjectCB();
+	UpdateAllSceneData();
+	emit valueChanged();
+}
+
+void ObjectPropertiesDlg::OnResetTransformBtn()
+{
+}
+
+void ObjectPropertiesDlg::OnRemoveScalarsBtn()
+{
+}
+
+void ObjectPropertiesDlg::OnRemoveNormalsBtn()
+{
 }
 
 //
