@@ -23,6 +23,7 @@ ObjectPropertiesDlg::ObjectPropertiesDlg(QWidget *parent) :
 	connect(ui->BackFaceCullingChk, SIGNAL(toggled(bool)), SLOT(OnRenderingBackFaceCulling(bool)));
 	connect(ui->FrontFaceCullingChk, SIGNAL(toggled(bool)), SLOT(OnRenderingFrontFaceCulling(bool)));
 	connect(ui->EdgesVisibleChk, SIGNAL(toggled(bool)), SLOT(OnRenderingVisibleEdges(bool)));
+	connect(ui->ShowScalarsChk, SIGNAL(toggled(bool)), SLOT(OnShowScalarsChk(bool)));
 	connect(ui->PointSizeSpin, SIGNAL(valueChanged(int)), SLOT(OnPointSizeSpin(int)));
 	connect(ui->LineWidthSpin, SIGNAL(valueChanged(int)), SLOT(OnLineWidthSpin(int)));
 	connect(ui->OpacitySpin, SIGNAL(valueChanged(double)), SLOT(OnOpacitySpin(double)));
@@ -109,6 +110,23 @@ void ObjectPropertiesDlg::UpdateAllSceneData()
 	ui->DiffuseSpin->setValue(actor->GetProperty()->GetDiffuse());
 	ui->SpecularSpin->setValue(actor->GetProperty()->GetSpecular());
 	ui->SpecularPowerSpin->setValue(actor->GetProperty()->GetSpecularPower());
+
+	bool viewScalars = m3DScene->GetMapper(idx)->GetScalarVisibility();
+	ui->ShowScalarsChk->setChecked(viewScalars);
+
+	if (viewScalars)
+	{
+		double range[2];
+		m3DScene->GetScalarRange(idx, range);
+		//m_MinScalarRange = range[0];
+		//m_MaxScalarRange = range[1];
+	}
+	else
+	{
+		//m_MinScalarRange = 0;
+		//m_MaxScalarRange = 0;
+	}
+
 
 	double color[3];
 	actor->GetProperty()->GetColor(color);
@@ -249,6 +267,13 @@ void ObjectPropertiesDlg::OnSpecularPowerSpin(double val)
 {
 	int idx = ui->selectedObjectCB->currentIndex();
 	m3DScene->GetActor(idx)->GetProperty()->SetSpecularPower(val);
+	emit valueChanged();
+}
+
+void ObjectPropertiesDlg::OnShowScalarsChk(bool on)
+{
+	int idx = ui->selectedObjectCB->currentIndex();
+	m3DScene->GetMapper(idx)->SetScalarVisibility(on);
 	emit valueChanged();
 }
 

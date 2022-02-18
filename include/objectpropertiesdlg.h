@@ -42,6 +42,7 @@ public slots:
     void OnDiffuseSpin(double);
     void OnSpecularSpin(double);
     void OnSpecularPowerSpin(double);
+    void OnShowScalarsChk(bool);
 
 
 signals:
