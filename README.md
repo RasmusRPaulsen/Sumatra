@@ -46,5 +46,8 @@ Passing values forth and back:
 (https://stackoverflow.com/questions/20948665/passing-a-variable-to-other-dialog-qt)
 
 ### Parsing JSON
-https://doc.qt.io/qt-5/qtcore-serialization-savegame-example.html
+(https://doc.qt.io/qt-5/qtcore-serialization-savegame-example.html)
+
+### Creating installer
+(https://doc.qt.io/qtinstallerframework/index.html)
 
