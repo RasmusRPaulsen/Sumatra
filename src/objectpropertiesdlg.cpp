@@ -347,9 +347,12 @@ void ObjectPropertiesDlg::OnSetMinScalarRange(double val)
 	int idx = ui->selectedObjectCB->currentIndex();
 	double range[2];
 	m3DScene->GetScalarRange(idx, range);
-	range[0] = val;
-	m3DScene->SetScalarRange(idx, range);
-	emit valueChanged();
+	if (val < range[1])
+	{
+		range[0] = val;
+		m3DScene->SetScalarRange(idx, range);
+		emit valueChanged();
+	}
 }
 
 void ObjectPropertiesDlg::OnSetMaxScalarRange(double val)
@@ -357,7 +360,10 @@ void ObjectPropertiesDlg::OnSetMaxScalarRange(double val)
 	int idx = ui->selectedObjectCB->currentIndex();
 	double range[2];
 	m3DScene->GetScalarRange(idx, range);
-	range[1] = val;
-	m3DScene->SetScalarRange(idx, range);
-	emit valueChanged();
+	if (val > range[0])
+	{
+		range[1] = val;
+		m3DScene->SetScalarRange(idx, range);
+		emit valueChanged();
+	}
 }

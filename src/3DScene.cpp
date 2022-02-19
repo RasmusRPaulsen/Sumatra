@@ -2522,12 +2522,12 @@ void C3DScene::SetupScalarBar()
 {
 	vtkTextProperty *SBTextProps = vtkTextProperty::New();
 	 SBTextProps->ShadowOff();
-	 SBTextProps->SetColor(0.5, 0.5, 0.5);
+	 SBTextProps->SetColor(0.1, 0.1, 0.1);
 //	 SBTextProps->BoldOn();
 
 	m_scalarBar = vtkScalarBarActor::New();
 	 m_scalarBar->SetLookupTable(m_lookup);
-	 m_scalarBar->SetPosition(0.01 , 0.2 );
+	 m_scalarBar->SetPosition(0.01 , 0.1 );
 //	 scalarBar->SetPosition2(0.42 , 0.7 );
 //	 scalarBar->SetOrientationToHorizontal();
 	 m_scalarBar->SetOrientationToVertical();
