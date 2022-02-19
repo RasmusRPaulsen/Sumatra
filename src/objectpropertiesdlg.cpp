@@ -316,29 +316,25 @@ void ObjectPropertiesDlg::OnDeleteObjectBtn()
 
 void ObjectPropertiesDlg::OnResetTransformBtn()
 {
+	int idx = ui->selectedObjectCB->currentIndex();
+	m3DScene->GetActor(idx)->SetPosition(0, 0, 0);
+	m3DScene->GetActor(idx)->SetScale(1);
+	m3DScene->GetActor(idx)->SetOrientation(0, 0, 0);
+	emit valueChanged();
 }
 
 void ObjectPropertiesDlg::OnRemoveScalarsBtn()
 {
+	int idx = ui->selectedObjectCB->currentIndex();
+	m3DScene->RemoveScalars(idx);
+	UpdateAllSceneData();
+	emit valueChanged();
 }
 
 void ObjectPropertiesDlg::OnRemoveNormalsBtn()
 {
+	int idx = ui->selectedObjectCB->currentIndex();
+	m3DScene->RemoveNormals(idx);
+	UpdateAllSceneData();
+	emit valueChanged();
 }
-
-//
-//void ObjectPropertiesDlg::OnRenderingTypeChange()
-//{
-//	//int idx = ui->selectedObjectCB->currentIndex();
-//
-//	//m3DScene->GetActor(idx)->SetVisibility(ui->RenderingHiddenBtn->isChecked());
-//	//
-//	//if (ui->RenderingPointsBtn->isChecked())
-//	//	m3DScene->GetActor(idx)->GetProperty()->SetRepresentationToPoints();
-//	//else if (ui->RenderingWFBtn->isChecked())
-//	//	m3DScene->GetActor(idx)->GetProperty()->SetRepresentationToWireframe();
-//	//else if (ui->RenderingSurfaceBtn->isChecked())
-//	//	m3DScene->GetActor(idx)->GetProperty()->SetRepresentationToSurface();
-//
-//	//m3DScene->GetRenderer()->Render();
-//}
