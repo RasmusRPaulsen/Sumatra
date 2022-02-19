@@ -48,6 +48,8 @@ public slots:
     void OnResetTransformBtn();
     void OnRemoveScalarsBtn();
     void OnRemoveNormalsBtn();
+    void OnSetMinScalarRange(double);
+    void OnSetMaxScalarRange(double);
 
 
 signals:

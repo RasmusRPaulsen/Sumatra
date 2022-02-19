@@ -33,6 +33,9 @@ ObjectPropertiesDlg::ObjectPropertiesDlg(QWidget *parent) :
 	connect(ui->DiffuseSpin, SIGNAL(valueChanged(double)), SLOT(OnDiffuseSpin(double)));
 	connect(ui->SpecularSpin, SIGNAL(valueChanged(double)), SLOT(OnSpecularSpin(double)));
 	connect(ui->SpecularPowerSpin, SIGNAL(valueChanged(double)), SLOT(OnSpecularPowerSpin(double)));
+	connect(ui->ScalarRangeMin, SIGNAL(valueChanged(double)), SLOT(OnSetMinScalarRange(double)));
+	connect(ui->ScalarRangeMax, SIGNAL(valueChanged(double)), SLOT(OnSetMaxScalarRange(double)));
+	connect(ui->SpecularPowerSpin, SIGNAL(valueChanged(double)), SLOT(OnSpecularPowerSpin(double)));
 	connect(ui->ChooseColorBtn, SIGNAL(clicked()), SLOT(OnChooseColorBtn()));
 	connect(ui->DeleteObjectBtn, SIGNAL(clicked()), SLOT(OnDeleteObjectBtn()));
 	connect(ui->RemoveScalarsBtn, SIGNAL(clicked()), SLOT(OnRemoveScalarsBtn()));
@@ -124,19 +127,19 @@ void ObjectPropertiesDlg::UpdateAllSceneData()
 	bool viewScalars = m3DScene->GetMapper(idx)->GetScalarVisibility();
 	ui->ShowScalarsChk->setChecked(viewScalars);
 
+	double minScals = 0;
+	double maxScals = 0;
 	if (viewScalars)
 	{
 		double range[2];
 		m3DScene->GetScalarRange(idx, range);
-		//m_MinScalarRange = range[0];
-		//m_MaxScalarRange = range[1];
+		minScals = range[0];
+		maxScals = range[1];
 	}
-	else
-	{
-		//m_MinScalarRange = 0;
-		//m_MaxScalarRange = 0;
-	}
-
+	//ui->ScalarRangeMin->setText(QString::number(minScals));
+	//ui->ScalarRangeMax->setText(QString::number(maxScals));
+	ui->ScalarRangeMin->setValue(minScals);
+	ui->ScalarRangeMax->setValue(maxScals);
 
 	double color[3];
 	actor->GetProperty()->GetColor(color);
@@ -336,5 +339,25 @@ void ObjectPropertiesDlg::OnRemoveNormalsBtn()
 	int idx = ui->selectedObjectCB->currentIndex();
 	m3DScene->RemoveNormals(idx);
 	UpdateAllSceneData();
+	emit valueChanged();
+}
+
+void ObjectPropertiesDlg::OnSetMinScalarRange(double val)
+{
+	int idx = ui->selectedObjectCB->currentIndex();
+	double range[2];
+	m3DScene->GetScalarRange(idx, range);
+	range[0] = val;
+	m3DScene->SetScalarRange(idx, range);
+	emit valueChanged();
+}
+
+void ObjectPropertiesDlg::OnSetMaxScalarRange(double val)
+{
+	int idx = ui->selectedObjectCB->currentIndex();
+	double range[2];
+	m3DScene->GetScalarRange(idx, range);
+	range[1] = val;
+	m3DScene->SetScalarRange(idx, range);
 	emit valueChanged();
 }
