@@ -2,6 +2,7 @@
 #define COMPUTENORMALSDLG_H
 
 #include <QDialog>
+#include "3DScene.h"
 
 namespace Ui {
 class ComputeNormalsDlg;
@@ -15,7 +16,11 @@ public:
     explicit ComputeNormalsDlg(QWidget *parent = nullptr);
     ~ComputeNormalsDlg();
 
-    void Setup();
+    // void Setup();
+
+    void Set3DScene(C3DScene* sc);
+
+    void PopulateObjectCB();
 
     int getSelectedSurface();
 
@@ -24,6 +29,8 @@ public:
 
 private:
     Ui::ComputeNormalsDlg *ui;
+
+    C3DScene* m3DScene = NULL;
 };
 
 #endif // COMPUTENORMALSDLG_H

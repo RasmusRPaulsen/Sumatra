@@ -50,7 +50,7 @@ public slots:
     void OnRemoveNormalsBtn();
     void OnSetMinScalarRange(double);
     void OnSetMaxScalarRange(double);
-
+    void OnSetScalarRangeForAll();
 
 signals:
     void valueChanged();

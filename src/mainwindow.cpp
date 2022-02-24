@@ -65,16 +65,12 @@ void MainWindow::openFile(const QString& fileName)
 void MainWindow::processComputeNormals()
 {
     ComputeNormalsDlg dlg;
-    dlg.Setup();
+    dlg.Set3DScene(ui->sceneWidget->get3DScene());
+    //dlg.Setup();
     if (dlg.exec())
     {
         int selected = dlg.getSelectedSurface();
         QMessageBox::information(this, "Hello", tr("Selected surface: ") + QString::number(selected));
-
-
-        //bool Opt1, Opt2, Opt3;
-        //myDialog->GetOptions(Opt1, Opt2, Opt3);
-        //DoSomethingWithThoseBooleans(Opt1, Opt2, Opt3);
     }
 
 }

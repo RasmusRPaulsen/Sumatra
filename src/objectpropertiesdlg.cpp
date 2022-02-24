@@ -6,7 +6,7 @@
 #include <vtkProperty.h>
 #include <vtkRenderer.h>
 #include <qcolordialog.h>
-
+#include <qmessagebox.h>
 
 
 ObjectPropertiesDlg::ObjectPropertiesDlg(QWidget *parent) :
@@ -41,6 +41,7 @@ ObjectPropertiesDlg::ObjectPropertiesDlg(QWidget *parent) :
 	connect(ui->RemoveScalarsBtn, SIGNAL(clicked()), SLOT(OnRemoveScalarsBtn()));
 	connect(ui->RemoveNormalsBtn, SIGNAL(clicked()), SLOT(OnRemoveNormalsBtn()));
 	connect(ui->ResetTransformBtn, SIGNAL(clicked()), SLOT(OnResetTransformBtn()));
+	connect(ui->SetScalarRangeForAllBtn, SIGNAL(clicked()), SLOT(OnSetScalarRangeForAll()));
 }
 
 ObjectPropertiesDlg::~ObjectPropertiesDlg()
@@ -353,6 +354,11 @@ void ObjectPropertiesDlg::OnSetMinScalarRange(double val)
 		m3DScene->SetScalarRange(idx, range);
 		emit valueChanged();
 	}
+	//else
+	//{
+	//	QMessageBox::information(this, "Scalar range", tr("Minimum scalar range must be smaller than max value"));
+	//	UpdateAllSceneData();
+	//}
 }
 
 void ObjectPropertiesDlg::OnSetMaxScalarRange(double val)
@@ -364,6 +370,30 @@ void ObjectPropertiesDlg::OnSetMaxScalarRange(double val)
 	{
 		range[1] = val;
 		m3DScene->SetScalarRange(idx, range);
+		emit valueChanged();
+	}
+	//else
+	//{
+	//	QMessageBox::information(this, "Scalar range", tr("Minimum scalar range must be smaller than max value"));
+	//	UpdateAllSceneData();
+	//}
+}
+
+void ObjectPropertiesDlg::OnSetScalarRangeForAll()
+{
+	double minScal = ui->ScalarRangeMin->value();
+	double maxScal = ui->ScalarRangeMax->value();
+
+	if (maxScal >= minScal)
+	{
+		double range[2];
+		range[0] = minScal;
+		range[1] = maxScal;
+
+		for (int i = 0; i < m3DScene->GetNumberOfSurfaces(); i++)
+		{
+			m3DScene->SetScalarRange(i, range);
+		}
 		emit valueChanged();
 	}
 }

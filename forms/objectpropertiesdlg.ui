@@ -329,6 +329,13 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QPushButton" name="SetScalarRangeForAllBtn">
+          <property name="text">
+           <string>Set for all</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
