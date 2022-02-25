@@ -22,13 +22,18 @@ public:
 
     void PopulateObjectCB();
 
-    int getSelectedSurface();
+    int GetSelectedSurface();
 
-    bool replaceSource();
+    bool GetReplaceSource();
 
+    bool GetFlipNormals();
+
+    bool GetSplitNormals();
+
+    double GetSplitEdgeAngle();
 
 private:
-    Ui::ComputeNormalsDlg *ui;
+    Ui::ComputeNormalsDlg* ui;
 
     C3DScene* m3DScene = NULL;
 };

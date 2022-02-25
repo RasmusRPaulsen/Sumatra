@@ -66,13 +66,13 @@ void MainWindow::processComputeNormals()
 {
     ComputeNormalsDlg dlg;
     dlg.Set3DScene(ui->sceneWidget->get3DScene());
-    //dlg.Setup();
+
     if (dlg.exec())
     {
-        int selected = dlg.getSelectedSurface();
-        QMessageBox::information(this, "Hello", tr("Selected surface: ") + QString::number(selected));
+        ui->sceneWidget->get3DScene()->CalculateNormals(dlg.GetSelectedSurface(), dlg.GetReplaceSource(), dlg.GetFlipNormals(), dlg.GetSplitNormals(),
+            dlg.GetSplitEdgeAngle());
+        forceRendering();
     }
-
 }
 
 void MainWindow::showObjectProperties()
@@ -92,7 +92,6 @@ void MainWindow::showObjectProperties()
     mObjectPropsDlg->show();
     mObjectPropsDlg->raise();
     mObjectPropsDlg->activateWindow();
-
 }
 
 void MainWindow::forceRendering()

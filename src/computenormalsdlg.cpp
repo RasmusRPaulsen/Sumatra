@@ -9,20 +9,11 @@ ComputeNormalsDlg::ComputeNormalsDlg(QWidget *parent) :
 {
     ui->setupUi(this);
 }
-//
-//void ComputeNormalsDlg::Setup()
-//{
-//    ui->selectedSurface->addItem("item 1");
-//    ui->selectedSurface->addItem("item 2");
-//    ui->selectedSurface->addItem("item 3");
-//    ui->selectedSurface->addItem("item 4");
-//}
 
 void ComputeNormalsDlg::Set3DScene(C3DScene* sc)
 {
     m3DScene = sc;
     PopulateObjectCB();
-//    UpdateAllSceneData();
 }
 
 void ComputeNormalsDlg::PopulateObjectCB()
@@ -40,15 +31,31 @@ void ComputeNormalsDlg::PopulateObjectCB()
     ui->selectedObjectCB->setCurrentIndex(0);
 }
 
-int ComputeNormalsDlg::getSelectedSurface()
+int ComputeNormalsDlg::GetSelectedSurface()
 {
     return ui->selectedObjectCB->currentIndex();
 }
 
-bool ComputeNormalsDlg::replaceSource()
+bool ComputeNormalsDlg::GetReplaceSource()
 {
     return ui->ReplaceSourceChk->isChecked();
 }
+
+bool ComputeNormalsDlg::GetFlipNormals()
+{
+    return ui->FlipNormalsChk->isChecked();
+}
+
+bool ComputeNormalsDlg::GetSplitNormals()
+{
+    return ui->SplitSharpEdgesChk->isChecked();
+}
+
+double ComputeNormalsDlg::GetSplitEdgeAngle()
+{
+    return ui->SharpEdgeAngleSpn->value();
+}
+
 
 ComputeNormalsDlg::~ComputeNormalsDlg()
 {
