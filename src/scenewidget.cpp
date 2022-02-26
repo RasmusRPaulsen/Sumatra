@@ -145,6 +145,7 @@ void SceneWidget::SpacePressed()
             // Do a pick operation
         }
     }
+    ForceRender();
 }
 
 void SceneWidget::keyPressEvent(QKeyEvent *event)

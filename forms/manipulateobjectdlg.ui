@@ -22,7 +22,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QComboBox" name="SelectedObjectCB"/>
+    <widget class="QComboBox" name="selectedObjectCB"/>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">

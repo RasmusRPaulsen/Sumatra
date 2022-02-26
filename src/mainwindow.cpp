@@ -9,6 +9,7 @@
 #include <vtkRenderer.h>
 #include "computenormalsdlg.h"
 #include "objectpropertiesdlg.h"
+#include "manipulateobjectdlg.h"
 #include "SumatraSettings.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -121,21 +122,18 @@ void MainWindow::CutWithPlane()
 {
     if (ui->sceneWidget->GetWidgetManipulateObject() == -1)
     {
-        //CAnnotateAndManipulateDialog dlg;
-        //dlg.Set3Dscene(ui->sceneWidget->Get3DScene());
+        ManipulateObjectDlg dlg;
+        dlg.Set3DScene(ui->sceneWidget->get3DScene());
 
-        //if (dlg.DoModal() == IDOK)
-        //{
-       //     ui->sceneWidget->SetWidgetManipulateObject(dlg.SelectedObject);
-        //    m_wndView.Refresh();
-        //}
-        ui->sceneWidget->SetWidgetManipulateObject(0);
-        CutWithPlaneAct->setChecked(true);
+        if (dlg.exec())
+        {
+            ui->sceneWidget->SetWidgetManipulateObject(dlg.GetSelectedSurface());
+            CutWithPlaneAct->setChecked(true);
+        }
     }
     else
     {
         ui->sceneWidget->SetWidgetManipulateObject(-1);
-        //ui->sceneWidget->Refresh();
         CutWithPlaneAct->setChecked(false);
     }
     forceRendering();
@@ -186,7 +184,6 @@ void MainWindow::dragEnterEvent(QDragEnterEvent* event)
 {
     event->acceptProposedAction();
 }
-
 
 void MainWindow::dropEvent(QDropEvent* event)
 {
