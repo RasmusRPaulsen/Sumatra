@@ -7,6 +7,9 @@
 #include <qmimedata.h>
 #include <qcolordialog.h>
 #include <vtkRenderer.h>
+
+#include <sstream>
+
 #include "computenormalsdlg.h"
 #include "objectpropertiesdlg.h"
 #include "manipulateobjectdlg.h"
@@ -145,6 +148,33 @@ void MainWindow::undoManipulate()
     forceRendering();
 }
 
+void MainWindow::annotateWithSphere()
+{
+    if (ui->sceneWidget->GetSphereWidgetManipulateObject() == -1)
+    {
+        ManipulateObjectDlg dlg;
+        dlg.Set3DScene(ui->sceneWidget->get3DScene());
+
+        if (dlg.exec())
+        {
+            ui->sceneWidget->get3DScene()->SetScalarBarVisible(true);
+            ui->sceneWidget->SetSphereWidgetManipulateObject(dlg.GetSelectedSurface());
+            annotateWithSphereAct->setChecked(true);
+
+            std::ostringstream ost;
+            ost << "Marker value: " << ui->sceneWidget->get3DScene()->GetMarkerValue()
+                << " (change with key + and -) (size change: shift and key + and -)";
+            ui->sceneWidget->get3DScene()->SetStatusText(ost.str(), true);
+        }
+    }
+    else
+    {
+        ui->sceneWidget->SetSphereWidgetManipulateObject(-1);
+        annotateWithSphereAct->setChecked(false);
+    }
+    forceRendering();
+}
+
 void MainWindow::createActions()
 {
     openAct = new QAction(tr("&Open"), this);
@@ -172,6 +202,11 @@ void MainWindow::createActions()
     undoManipulateAct = new QAction(tr("&Undo cut"), this);
     undoManipulateAct->setStatusTip(tr("Undo cut with plane"));
     connect(undoManipulateAct, &QAction::triggered, this, &MainWindow::undoManipulate);
+
+    annotateWithSphereAct = new QAction(tr("Annotate with &Sphere"), this);
+    annotateWithSphereAct->setCheckable(true);
+    annotateWithSphereAct->setStatusTip(tr("Annotate with sphere"));
+    connect(annotateWithSphereAct, &QAction::triggered, this, &MainWindow::annotateWithSphere);
 }
 
 void MainWindow::createMenus()
@@ -185,6 +220,7 @@ void MainWindow::createMenus()
     fileMenu = menuBar()->addMenu(tr("&Manipulate"));
     fileMenu->addAction(CutWithPlaneAct);
     fileMenu->addAction(undoManipulateAct);
+    fileMenu->addAction(annotateWithSphereAct);
 
     fileMenu = menuBar()->addMenu(tr("&Options"));
     fileMenu->addAction(optionsObjectPropAct);

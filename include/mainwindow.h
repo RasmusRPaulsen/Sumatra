@@ -30,6 +30,7 @@ private slots:
     void ChooseBackgroundColor();
     void CutWithPlane();
     void undoManipulate();
+    void annotateWithSphere();
 
 protected:
     void dropEvent(QDropEvent* event);
@@ -54,6 +55,7 @@ private:
     QAction* ChooseBackgroundColorAct;
     QAction* CutWithPlaneAct;
     QAction* undoManipulateAct;
+    QAction* annotateWithSphereAct;
 };
 
 #endif // MAINWINDOW_H
