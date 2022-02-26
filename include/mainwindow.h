@@ -28,6 +28,7 @@ private slots:
     void showObjectProperties();
     void forceRendering();
     void ChooseBackgroundColor();
+    void CutWithPlane();
 
 protected:
     void dropEvent(QDropEvent* event);
@@ -50,6 +51,7 @@ private:
     QAction* ProcessComputeNormalsAct;
     QAction* optionsObjectPropAct;
     QAction* ChooseBackgroundColorAct;
+    QAction* CutWithPlaneAct;
 };
 
 #endif // MAINWINDOW_H

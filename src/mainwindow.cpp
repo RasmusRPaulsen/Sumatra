@@ -79,6 +79,9 @@ void MainWindow::processComputeNormals()
 
 void MainWindow::showObjectProperties()
 {
+    if (ui->sceneWidget->get3DScene()->GetNumberOfSurfaces() < 1)
+        return;
+
     if (!mObjectPropsDlg) 
     {
         C3DScene* t3DScene = ui->sceneWidget->get3DScene();
@@ -114,6 +117,30 @@ void MainWindow::ChooseBackgroundColor()
     }
 }
 
+void MainWindow::CutWithPlane()
+{
+    if (ui->sceneWidget->GetWidgetManipulateObject() == -1)
+    {
+        //CAnnotateAndManipulateDialog dlg;
+        //dlg.Set3Dscene(ui->sceneWidget->Get3DScene());
+
+        //if (dlg.DoModal() == IDOK)
+        //{
+       //     ui->sceneWidget->SetWidgetManipulateObject(dlg.SelectedObject);
+        //    m_wndView.Refresh();
+        //}
+        ui->sceneWidget->SetWidgetManipulateObject(0);
+        CutWithPlaneAct->setChecked(true);
+    }
+    else
+    {
+        ui->sceneWidget->SetWidgetManipulateObject(-1);
+        //ui->sceneWidget->Refresh();
+        CutWithPlaneAct->setChecked(false);
+    }
+    forceRendering();
+}
+
 void MainWindow::createActions()
 {
     openAct = new QAction(tr("&Open"), this);
@@ -132,6 +159,11 @@ void MainWindow::createActions()
     ChooseBackgroundColorAct = new QAction(tr("Choose &Bacground Color"), this);
     ChooseBackgroundColorAct->setStatusTip(tr("Chooose background color"));
     connect(ChooseBackgroundColorAct, &QAction::triggered, this, &MainWindow::ChooseBackgroundColor);
+
+    CutWithPlaneAct = new QAction(tr("Cut With &Plane"), this);
+    CutWithPlaneAct->setCheckable(true);
+    CutWithPlaneAct->setStatusTip(tr("Cut object with a plane"));
+    connect(CutWithPlaneAct, &QAction::triggered, this, &MainWindow::CutWithPlane);
 }
 
 void MainWindow::createMenus()
@@ -141,6 +173,9 @@ void MainWindow::createMenus()
 
     fileMenu = menuBar()->addMenu(tr("&Process"));
     fileMenu->addAction(ProcessComputeNormalsAct);
+
+    fileMenu = menuBar()->addMenu(tr("&Manipulate"));
+    fileMenu->addAction(CutWithPlaneAct);
 
     fileMenu = menuBar()->addMenu(tr("&Options"));
     fileMenu->addAction(optionsObjectPropAct);
