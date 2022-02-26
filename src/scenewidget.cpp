@@ -136,6 +136,17 @@ bool SceneWidget::UndoAvailable() const
 }
 
 
+void SceneWidget::SpacePressed()
+{
+    if (!CutWithPlane())
+    {
+        if (!MarkWithSphere())
+        {
+            // Do a pick operation
+        }
+    }
+}
+
 void SceneWidget::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_A)
@@ -145,5 +156,9 @@ void SceneWidget::keyPressEvent(QKeyEvent *event)
     else if (event->key() == Qt::Key_C)
     {
         renderWindow()->GetInteractor()->SetInteractorStyle(mStyleCamera);
+    }
+    else if (event->key() == Qt::Key_Space)
+    {
+        SpacePressed();
     }
 }

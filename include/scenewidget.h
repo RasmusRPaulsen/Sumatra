@@ -69,6 +69,7 @@ private:
 
     int m_SphereWidgetManipulateObject = -1;
 
+    void SpacePressed();
 
 protected:
     void keyPressEvent(QKeyEvent*);
