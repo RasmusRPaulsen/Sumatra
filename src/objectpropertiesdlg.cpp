@@ -313,9 +313,17 @@ void ObjectPropertiesDlg::OnDeleteObjectBtn()
 	if (idx < 0)
 		return;
 	m3DScene->RemoveSurface(idx);
-	PopulateObjectCB();
-	UpdateAllSceneData();
 	emit valueChanged();
+
+	if (m3DScene->GetNumberOfSurfaces() > 0)
+	{
+		PopulateObjectCB();
+		UpdateAllSceneData();
+	}
+	else
+	{
+		this->close();
+	}
 }
 
 void ObjectPropertiesDlg::OnResetTransformBtn()
