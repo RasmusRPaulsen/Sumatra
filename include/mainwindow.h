@@ -27,6 +27,7 @@ private slots:
     void processComputeNormals();
     void showObjectProperties();
     void forceRendering();
+    void ChooseBackgroundColor();
 
 protected:
     void dropEvent(QDropEvent* event);
@@ -48,6 +49,7 @@ private:
     QAction* openAct;
     QAction* ProcessComputeNormalsAct;
     QAction* optionsObjectPropAct;
+    QAction* ChooseBackgroundColorAct;
 };
 
 #endif // MAINWINDOW_H

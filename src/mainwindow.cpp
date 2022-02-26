@@ -5,6 +5,8 @@
 #include <QFileDialog>
 #include <qmessagebox.h>
 #include <qmimedata.h>
+#include <qcolordialog.h>
+#include <vtkRenderer.h>
 #include "computenormalsdlg.h"
 #include "objectpropertiesdlg.h"
 #include "SumatraSettings.h"
@@ -99,6 +101,19 @@ void MainWindow::forceRendering()
     ui->sceneWidget->ForceRender();
 }
 
+void MainWindow::ChooseBackgroundColor()
+{
+    double col[3];
+    ui->sceneWidget->get3DScene()->GetRenderer()->GetBackground(col);
+
+    QColor color = QColorDialog::getColor(QColor(col[0] * 255, col[1] * 255, col[2] * 255), this);
+    if (color.isValid())
+    {
+        ui->sceneWidget->get3DScene()->GetRenderer()->SetBackground(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0);
+        forceRendering();
+    }
+}
+
 void MainWindow::createActions()
 {
     openAct = new QAction(tr("&Open"), this);
@@ -113,6 +128,10 @@ void MainWindow::createActions()
     optionsObjectPropAct = new QAction(tr("Object &Properties"), this);
     optionsObjectPropAct->setStatusTip(tr("View and modify object properties"));
     connect(optionsObjectPropAct, &QAction::triggered, this, &MainWindow::showObjectProperties);
+
+    ChooseBackgroundColorAct = new QAction(tr("Choose &Bacground Color"), this);
+    ChooseBackgroundColorAct->setStatusTip(tr("Chooose background color"));
+    connect(ChooseBackgroundColorAct, &QAction::triggered, this, &MainWindow::ChooseBackgroundColor);
 }
 
 void MainWindow::createMenus()
@@ -125,6 +144,7 @@ void MainWindow::createMenus()
 
     fileMenu = menuBar()->addMenu(tr("&Options"));
     fileMenu->addAction(optionsObjectPropAct);
+    fileMenu->addAction(ChooseBackgroundColorAct);
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent* event)
