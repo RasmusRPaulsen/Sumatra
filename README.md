@@ -51,3 +51,6 @@ Passing values forth and back:
 ### Creating installer
 (https://doc.qt.io/qtinstallerframework/index.html)
 
+### C++ naming conventions 
+- from Google: (https://google.github.io/styleguide/cppguide.html#Naming)
+- from Qt: (https://wiki.qt.io/Qt_Coding_Style)

@@ -139,6 +139,12 @@ void MainWindow::CutWithPlane()
     forceRendering();
 }
 
+void MainWindow::undoManipulate()
+{
+    ui->sceneWidget->UndoLastOperation();
+    forceRendering();
+}
+
 void MainWindow::createActions()
 {
     openAct = new QAction(tr("&Open"), this);
@@ -162,6 +168,10 @@ void MainWindow::createActions()
     CutWithPlaneAct->setCheckable(true);
     CutWithPlaneAct->setStatusTip(tr("Cut object with a plane"));
     connect(CutWithPlaneAct, &QAction::triggered, this, &MainWindow::CutWithPlane);
+
+    undoManipulateAct = new QAction(tr("&Undo cut"), this);
+    undoManipulateAct->setStatusTip(tr("Undo cut with plane"));
+    connect(undoManipulateAct, &QAction::triggered, this, &MainWindow::undoManipulate);
 }
 
 void MainWindow::createMenus()
@@ -174,6 +184,7 @@ void MainWindow::createMenus()
 
     fileMenu = menuBar()->addMenu(tr("&Manipulate"));
     fileMenu->addAction(CutWithPlaneAct);
+    fileMenu->addAction(undoManipulateAct);
 
     fileMenu = menuBar()->addMenu(tr("&Options"));
     fileMenu->addAction(optionsObjectPropAct);
