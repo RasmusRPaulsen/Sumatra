@@ -55,6 +55,15 @@ Passing values forth and back:
 - from Google: (https://google.github.io/styleguide/cppguide.html#Naming)
 - from Qt: (https://wiki.qt.io/Qt_Coding_Style)
 
-### Bulding Qt application on Linux
+## Linux build and installation
+
+### Qt
+
+### VTK
+(https://gitlab.kitware.com/vtk/vtk/-/blob/master/Documentation/dev/build.md)
+
+
+
+### Building Qt application on Linux
 (https://vitux.com/compiling-your-first-qt-program-in-ubuntu/)
 
