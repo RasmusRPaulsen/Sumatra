@@ -54,3 +54,7 @@ Passing values forth and back:
 ### C++ naming conventions 
 - from Google: (https://google.github.io/styleguide/cppguide.html#Naming)
 - from Qt: (https://wiki.qt.io/Qt_Coding_Style)
+
+### Bulding Qt application on Linux
+(https://vitux.com/compiling-your-first-qt-program-in-ubuntu/)
+

@@ -329,7 +329,7 @@ void C3DScene::SetupScreenThings()
 	SetupScalarBar();
 
 	m_PointPicker = vtkPointPicker::New();
-	m_PointPicker->SetTolerance(0.01);
+	m_PointPicker->SetTolerance(1.00);
 
 	m_PickSphere = vtkSphereSource::New();
 	m_PickSphere->SetThetaResolution(50);

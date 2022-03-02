@@ -5,6 +5,7 @@
 
 #include <QMainWindow>
 #include <qdragenterevent>
+#include <qstring>
 #include "objectpropertiesdlg.h"
 #include "SumatraSettings.h"
 
@@ -31,6 +32,7 @@ private slots:
     void CutWithPlane();
     void undoManipulate();
     void annotateWithSphere();
+    void updateStatusBarMessage(const QString& str);
 
 protected:
     void dropEvent(QDropEvent* event);
@@ -46,6 +48,9 @@ private:
     void createMenus();
 
     ObjectPropertiesDlg* mObjectPropsDlg = NULL;
+
+    // Status bare message
+    QString statusMessage = tr("Default status bar message");
 
     QMenu* fileMenu;
     QMenu* optionsMenu;

@@ -142,7 +142,26 @@ void SceneWidget::SpacePressed()
     {
         if (!MarkWithSphere())
         {
-            // Do a pick operation
+            // For strange reasons these methods do not give the correct x,y pos for pointpicking
+            //QSize wSize = this->size();
+            //QPoint globalPos = QCursor::pos();
+            //QPoint localPos = this->mapFromGlobal(globalPos);
+            
+            int ePos[2];
+            renderWindow()->GetInteractor()->GetEventPosition(ePos);
+
+            // std::string text = m3DScene->PickPointAndGetText(localPos.x(), wSize.height() - localPos.y() - 1);
+            std::string text = m3DScene->PickPointAndGetText(ePos[0], ePos[1]);
+
+            QString statusMsg = "Pick position (" + QString::number(ePos[0]) + ", " + QString::number(ePos[1]) + ") " +
+                QString::fromStdString(text);
+
+            //QString statusMsg = "Globalpos (" + QString::number(globalPos.x()) + ", " + QString::number(globalPos.y()) + ") " +
+            //    "LocalPos (" + QString::number(localPos.x()) + ", " + QString::number(localPos.y()) + ") " +
+            //    "EventPos (" + QString::number(ePos[0]) + ", " + QString::number(ePos[1]) + ") " +
+            //    QString::fromStdString(text);
+
+            emit updateStatusMessage(statusMsg);
         }
     }
     ForceRender();

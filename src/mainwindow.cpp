@@ -28,12 +28,15 @@ MainWindow::MainWindow(QWidget *parent) :
     createActions();
     createMenus();
 
-    QString message = tr("Default status bar message");
-    statusBar()->showMessage(message);
+    statusBar()->showMessage(statusMessage);
 
     setWindowTitle(tr("Sumatra (Qt) ") + tr(SUMATRA_VERSION));
 
     setAcceptDrops(true);
+
+    QObject::connect(ui->sceneWidget, &SceneWidget::updateStatusMessage,
+        this, &MainWindow::updateStatusBarMessage);
+
 }
 
 MainWindow::~MainWindow()
@@ -66,6 +69,7 @@ void MainWindow::openFile(const QString& fileName)
     ui->sceneWidget->OpenFile(fileName.toStdString());
     if (mObjectPropsDlg)
         mObjectPropsDlg->FullUpdate();
+    updateStatusBarMessage(tr("Read: ") + fileName);
 }
 
 void MainWindow::processComputeNormals()
@@ -173,6 +177,12 @@ void MainWindow::annotateWithSphere()
         annotateWithSphereAct->setChecked(false);
     }
     forceRendering();
+}
+
+void MainWindow::updateStatusBarMessage(const QString& str)
+{
+    statusMessage = str;
+    statusBar()->showMessage(statusMessage);
 }
 
 void MainWindow::createActions()

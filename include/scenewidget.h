@@ -3,6 +3,7 @@
 
 #include <QVTKOpenGLNativeWidget.h>
 #include <QtGui>
+#include <qstring>
 #include <vtkSmartPointer.h>
 #include <vtkInteractorStyleTrackballActor.h>
 #include <vtkInteractorStyleTrackballCamera.h>
@@ -53,6 +54,9 @@ public:
 public slots:
     //! Zoom to the extent of the data set in the scene
     // void zoomToExtent();
+
+signals:
+    void updateStatusMessage(const QString& str);
 
 private:
     virtual ~SceneWidget();
