@@ -4,8 +4,8 @@
 #define SUMATRA_VERSION "0.0.1"
 
 #include <QMainWindow>
-#include <qdragenterevent>
-#include <qstring>
+#include <QDragEnterEvent>
+#include <QString>
 #include "objectpropertiesdlg.h"
 #include "SumatraSettings.h"
 

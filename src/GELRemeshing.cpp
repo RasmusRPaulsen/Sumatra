@@ -1,6 +1,6 @@
 #include "GELRemeshing.h"
 #include "GeneralUtils.h"
-#include <vtkpolydata.h>
+#include <vtkPolyData.h>
 #include <vtkCellArray.h>
 #include <GEL/HMesh/Manifold.h>
 #include <GEL/HMesh/cleanup.h>
@@ -36,7 +36,7 @@
 #include <iostream>
 #include <sstream>
 #include <iterator>
-#include "MultiTimer.h"
+//#include "MultiTimer.h"
 
 
 CGELRemeshing::CGELRemeshing()
@@ -2009,7 +2009,7 @@ void CGELRemeshing::GEL2VTK( HMesh::Manifold &mesh, vtkPolyData *pd )
 
 bool CGELRemeshing::RemeshDirectMesh(vtkPolyData *pdin, vtkPolyData *pdout, double targetLength)
 {
-	CMultiTimer::MultiTimer().Start("Remesh", 1);
+//	//CMultiTimer::MultiTimer().Start("Remesh", 1);
 
 	bool debug = false;
 	std::string debugDir = "d:/data/IMM/Remeshing/debugout/";
@@ -2019,12 +2019,12 @@ bool CGELRemeshing::RemeshDirectMesh(vtkPolyData *pdin, vtkPolyData *pdout, doub
 
 	HMesh::Manifold mesh;
 
-	CMultiTimer::MultiTimer().Start("VTK2GELFaceByFace", 1);
+//	//CMultiTimer::MultiTimer().Start("VTK2GELFaceByFace", 1);
 	std::cout << "VTK2GELFaceByFace" << std::endl;
 	if (!VTK2GELFaceByFace(pdin, mesh))
 		return false;
 
-	CMultiTimer::MultiTimer().End("VTK2GELFaceByFace");
+//	//CMultiTimer::MultiTimer().End("VTK2GELFaceByFace");
 
 	if (debug)
 	{
@@ -2038,11 +2038,11 @@ bool CGELRemeshing::RemeshDirectMesh(vtkPolyData *pdin, vtkPolyData *pdout, doub
 		//		return false;
 	}
 
-	CMultiTimer::MultiTimer().Start("Computing average length", 1);
+//	//CMultiTimer::MultiTimer().Start("Computing average length", 1);
 	std::cout << "Computing average length" << std::endl;
 	double avgL = HMesh::average_edge_length(mesh);
 	std::cout << "Average edge length: " << avgL << std::endl;
-	CMultiTimer::MultiTimer().End("Computing average length");
+//	//CMultiTimer::MultiTimer().End("Computing average length");
 
 	//	double targetLength = avgL * 0.8;
 	if (targetLength == 0)  // Only change if no targetlength specified
@@ -2061,13 +2061,13 @@ bool CGELRemeshing::RemeshDirectMesh(vtkPolyData *pdin, vtkPolyData *pdout, doub
 	{
 		std::cout << "It#" << i << " ";
 
-		CMultiTimer::MultiTimer().Start("mesh.cleanup", 1);
+//		//CMultiTimer::MultiTimer().Start("mesh.cleanup", 1);
 		mesh.cleanup();
-		CMultiTimer::MultiTimer().End("mesh.cleanup");
+		//CMultiTimer::MultiTimer().End("mesh.cleanup");
 
-		CMultiTimer::MultiTimer().Start("SplitLongEdgesReengineered", 1);
+		////CMultiTimer::MultiTimer().Start("SplitLongEdgesReengineered", 1);
 		SplitLongEdgesReengineered(mesh, hiTarget);
-		CMultiTimer::MultiTimer().End("SplitLongEdgesReengineered");
+		////CMultiTimer::MultiTimer().End("SplitLongEdgesReengineered");
 
 		if (debug)
 		{
@@ -2084,9 +2084,9 @@ bool CGELRemeshing::RemeshDirectMesh(vtkPolyData *pdin, vtkPolyData *pdout, doub
 		//	obj_save(ss.str(), mesh);
 		//}
 
-		CMultiTimer::MultiTimer().Start("CollapseShortEdges", 1);
+		////CMultiTimer::MultiTimer().Start("CollapseShortEdges", 1);
 		CollapseShortEdges(mesh, loTarget, hiTarget);
-		CMultiTimer::MultiTimer().End("CollapseShortEdges");
+		////CMultiTimer::MultiTimer().End("CollapseShortEdges");
 		if (debug)
 		{
 			std::ostringstream ss;
@@ -2094,9 +2094,9 @@ bool CGELRemeshing::RemeshDirectMesh(vtkPolyData *pdin, vtkPolyData *pdout, doub
 			obj_save(ss.str(), mesh);
 		}
 
-		CMultiTimer::MultiTimer().Start("CollapseShortBoundaryEdges", 1);
+		////CMultiTimer::MultiTimer().Start("CollapseShortBoundaryEdges", 1);
 		CollapseShortBoundaryEdges(mesh, loTarget, hiTarget);
-		CMultiTimer::MultiTimer().End("CollapseShortBoundaryEdges");
+		////CMultiTimer::MultiTimer().End("CollapseShortBoundaryEdges");
 		if (debug)
 		{
 			std::ostringstream ss;
@@ -2104,9 +2104,9 @@ bool CGELRemeshing::RemeshDirectMesh(vtkPolyData *pdin, vtkPolyData *pdout, doub
 			obj_save(ss.str(), mesh);
 		}
 
-		CMultiTimer::MultiTimer().Start("EqualizeValences", 1);
+		////CMultiTimer::MultiTimer().Start("EqualizeValences", 1);
 		EqualizeValences(mesh);
-		CMultiTimer::MultiTimer().End("EqualizeValences");
+		////CMultiTimer::MultiTimer().End("EqualizeValences");
 		if (debug)
 		{
 			std::ostringstream ss;
@@ -2114,9 +2114,9 @@ bool CGELRemeshing::RemeshDirectMesh(vtkPolyData *pdin, vtkPolyData *pdout, doub
 			obj_save(ss.str(), mesh);
 		}
 
-		CMultiTimer::MultiTimer().Start("TangentialRelaxation", 1);
+		////CMultiTimer::MultiTimer().Start("TangentialRelaxation", 1);
 		TangentialRelaxationOnlyMesh(mesh);
-		CMultiTimer::MultiTimer().End("TangentialRelaxation");
+		////CMultiTimer::MultiTimer().End("TangentialRelaxation");
 		//		AreaWeigthedTangentialRelaxation(func, mesh);
 		if (debug)
 		{
@@ -2125,9 +2125,9 @@ bool CGELRemeshing::RemeshDirectMesh(vtkPolyData *pdin, vtkPolyData *pdout, doub
 			obj_save(ss.str(), mesh);
 		}
 
-		CMultiTimer::MultiTimer().Start("BoundarySmoothing", 1);
+		////CMultiTimer::MultiTimer().Start("BoundarySmoothing", 1);
 		BoundarySmoothing(mesh);
-		CMultiTimer::MultiTimer().End("BoundarySmoothing");
+		////CMultiTimer::MultiTimer().End("BoundarySmoothing");
 		if (debug)
 		{
 			std::ostringstream ss;
@@ -2135,9 +2135,9 @@ bool CGELRemeshing::RemeshDirectMesh(vtkPolyData *pdin, vtkPolyData *pdout, doub
 			obj_save(ss.str(), mesh);
 		}
 
-		CMultiTimer::MultiTimer().Start("MaximiseMinAngle", 1);
+		////CMultiTimer::MultiTimer().Start("MaximiseMinAngle", 1);
 		MaximiseMinAngle(mesh);
-		CMultiTimer::MultiTimer().End("MaximiseMinAngle");
+		////CMultiTimer::MultiTimer().End("MaximiseMinAngle");
 		if (debug)
 		{
 			std::ostringstream ss;
@@ -2145,10 +2145,10 @@ bool CGELRemeshing::RemeshDirectMesh(vtkPolyData *pdin, vtkPolyData *pdout, doub
 			obj_save(ss.str(), mesh);
 		}
 
-		CMultiTimer::MultiTimer().Start("ProjectToSurface", 1);
+		////CMultiTimer::MultiTimer().Start("ProjectToSurface", 1);
 		double maxJump = 2 * avgL;
 		ProjectToSurfaceOnMesh(mesh, cLocator, maxJump);
-		CMultiTimer::MultiTimer().End("ProjectToSurface");
+		////CMultiTimer::MultiTimer().End("ProjectToSurface");
 		if (debug)
 		{
 			std::ostringstream ss;
@@ -2159,25 +2159,25 @@ bool CGELRemeshing::RemeshDirectMesh(vtkPolyData *pdin, vtkPolyData *pdout, doub
 	}
 	std::cout << std::endl;
 
-	CMultiTimer::MultiTimer().Start("mesh.cleanup", 1);
+	//CMultiTimer::MultiTimer().Start("mesh.cleanup", 1);
 	mesh.cleanup();
-	CMultiTimer::MultiTimer().End("mesh.cleanup");
+	//CMultiTimer::MultiTimer().End("mesh.cleanup");
 
-	CMultiTimer::MultiTimer().Start("Computing average length", 1);
+	//CMultiTimer::MultiTimer().Start("Computing average length", 1);
 	avgL = HMesh::average_edge_length(mesh);
 	std::cout << "Average edge length: " << avgL << std::endl;
-	CMultiTimer::MultiTimer().End("Computing average length");
+	//CMultiTimer::MultiTimer().End("Computing average length");
 
-	//CMultiTimer::MultiTimer().Start("VisualiseBadFaceNormals", 1);
+	////CMultiTimer::MultiTimer().Start("VisualiseBadFaceNormals", 1);
 	//int badNormals = VisualiseBadFaceNormals(mesh, std::string(""), false);
 	//std::cout << "Number of bad normals " << badNormals << std::endl;
-	//CMultiTimer::MultiTimer().End("VisualiseBadFaceNormals");
+	////CMultiTimer::MultiTimer().End("VisualiseBadFaceNormals");
 
-	CMultiTimer::MultiTimer().Start("GEL2VTK", 1);
+	//CMultiTimer::MultiTimer().Start("GEL2VTK", 1);
 	GEL2VTK(mesh, pdout);
-	CMultiTimer::MultiTimer().End("GEL2VTK");
+	//CMultiTimer::MultiTimer().End("GEL2VTK");
 
-	CMultiTimer::MultiTimer().End("Remesh");
+	//CMultiTimer::MultiTimer().End("Remesh");
 	return true;
 
 
@@ -2200,7 +2200,7 @@ project to surface()
 
 bool CGELRemeshing::Remesh( vtkImplicitFunction *func, vtkPolyData *pdin, vtkPolyData *pdout, double targetEdgeLength, double edgeFactor)
 {
-	CMultiTimer::MultiTimer().Start("Remesh", 1);
+	//CMultiTimer::MultiTimer().Start("Remesh", 1);
 
 	bool debug = false;
 	std::string debugDir   = "d:/data/test/debugout/";
@@ -2210,19 +2210,19 @@ bool CGELRemeshing::Remesh( vtkImplicitFunction *func, vtkPolyData *pdin, vtkPol
 
 	HMesh::Manifold mesh;
 
-	CMultiTimer::MultiTimer().Start("VTK2GELFaceByFace", 1);
+	//CMultiTimer::MultiTimer().Start("VTK2GELFaceByFace", 1);
 	std::cout << "VTK2GELFaceByFace" << std::endl;
 	if (!VTK2GELFaceByFace(pdin, mesh))
 		return false;
 
-	CMultiTimer::MultiTimer().End("VTK2GELFaceByFace");
+	//CMultiTimer::MultiTimer().End("VTK2GELFaceByFace");
 
-	//CMultiTimer::MultiTimer().Start("VTK2GEL", 1);
+	////CMultiTimer::MultiTimer().Start("VTK2GEL", 1);
 	//std::cout << "VTK2GEL" << std::endl;
 	//if (!VTK2GEL(pdin, mesh))
 	//	return false;
 
-	CMultiTimer::MultiTimer().End("VTK2GEL");
+	//CMultiTimer::MultiTimer().End("VTK2GEL");
 
 	if (debug)
 	{
@@ -2239,11 +2239,11 @@ bool CGELRemeshing::Remesh( vtkImplicitFunction *func, vtkPolyData *pdin, vtkPol
 	double avgL = targetEdgeLength;
 	if (targetEdgeLength <= 0)
 	{
-		CMultiTimer::MultiTimer().Start("Computing average length", 1);
+		//CMultiTimer::MultiTimer().Start("Computing average length", 1);
 		std::cout << "Computing average length" << std::endl;
 		avgL = HMesh::average_edge_length(mesh);
 		std::cout << "Average edge length: " << avgL << std::endl;
-		CMultiTimer::MultiTimer().End("Computing average length");
+		//CMultiTimer::MultiTimer().End("Computing average length");
 	}
 
 //	double targetLength = avgL * 0.8;
@@ -2257,13 +2257,13 @@ bool CGELRemeshing::Remesh( vtkImplicitFunction *func, vtkPolyData *pdin, vtkPol
 	{
 		std::cout << "It#" << i << " ";
 
-		CMultiTimer::MultiTimer().Start("mesh.cleanup", 1);
+		//CMultiTimer::MultiTimer().Start("mesh.cleanup", 1);
 		mesh.cleanup();
-		CMultiTimer::MultiTimer().End("mesh.cleanup");
+		//CMultiTimer::MultiTimer().End("mesh.cleanup");
 
-		CMultiTimer::MultiTimer().Start("SplitLongEdgesReengineered", 1);
+		//CMultiTimer::MultiTimer().Start("SplitLongEdgesReengineered", 1);
 		SplitLongEdgesReengineered(mesh, hiTarget);
-		CMultiTimer::MultiTimer().End("SplitLongEdgesReengineered");
+		//CMultiTimer::MultiTimer().End("SplitLongEdgesReengineered");
 
 		if (debug)
 		{
@@ -2280,9 +2280,9 @@ bool CGELRemeshing::Remesh( vtkImplicitFunction *func, vtkPolyData *pdin, vtkPol
 		//	obj_save(ss.str(), mesh);
 		//}
 
-		CMultiTimer::MultiTimer().Start("CollapseShortEdges", 1);
+		//CMultiTimer::MultiTimer().Start("CollapseShortEdges", 1);
 		CollapseShortEdges(mesh, loTarget, hiTarget);
-		CMultiTimer::MultiTimer().End("CollapseShortEdges");
+		//CMultiTimer::MultiTimer().End("CollapseShortEdges");
 		if (debug)
 		{
 			std::ostringstream ss;
@@ -2290,9 +2290,9 @@ bool CGELRemeshing::Remesh( vtkImplicitFunction *func, vtkPolyData *pdin, vtkPol
 			obj_save(ss.str(), mesh);
 		}
 
-		CMultiTimer::MultiTimer().Start("CollapseShortBoundaryEdges", 1);
+		//CMultiTimer::MultiTimer().Start("CollapseShortBoundaryEdges", 1);
 		CollapseShortBoundaryEdges(mesh, loTarget, hiTarget);
-		CMultiTimer::MultiTimer().End("CollapseShortBoundaryEdges");
+		//CMultiTimer::MultiTimer().End("CollapseShortBoundaryEdges");
 		if (debug)
 		{
 			std::ostringstream ss;
@@ -2300,9 +2300,9 @@ bool CGELRemeshing::Remesh( vtkImplicitFunction *func, vtkPolyData *pdin, vtkPol
 			obj_save(ss.str(), mesh);
 		}
 		
-		CMultiTimer::MultiTimer().Start("EqualizeValences", 1);
+		//CMultiTimer::MultiTimer().Start("EqualizeValences", 1);
 		EqualizeValences(mesh);
-		CMultiTimer::MultiTimer().End("EqualizeValences");
+		//CMultiTimer::MultiTimer().End("EqualizeValences");
 		if (debug)
 		{
 			std::ostringstream ss;
@@ -2310,9 +2310,9 @@ bool CGELRemeshing::Remesh( vtkImplicitFunction *func, vtkPolyData *pdin, vtkPol
 			obj_save(ss.str(), mesh);
 		}
 
-		CMultiTimer::MultiTimer().Start("TangentialRelaxation", 1);
+		//CMultiTimer::MultiTimer().Start("TangentialRelaxation", 1);
 		TangentialRelaxation(func, mesh);
-		CMultiTimer::MultiTimer().End("TangentialRelaxation");
+		//CMultiTimer::MultiTimer().End("TangentialRelaxation");
 //		AreaWeigthedTangentialRelaxation(func, mesh);
 		if (debug)
 		{
@@ -2321,9 +2321,9 @@ bool CGELRemeshing::Remesh( vtkImplicitFunction *func, vtkPolyData *pdin, vtkPol
 			obj_save(ss.str(), mesh);
 		}
 
-		CMultiTimer::MultiTimer().Start("BoundarySmoothing", 1);
+		//CMultiTimer::MultiTimer().Start("BoundarySmoothing", 1);
 		BoundarySmoothing(mesh);
-		CMultiTimer::MultiTimer().End("BoundarySmoothing");
+		//CMultiTimer::MultiTimer().End("BoundarySmoothing");
 		if (debug)
 		{
 			std::ostringstream ss;
@@ -2331,9 +2331,9 @@ bool CGELRemeshing::Remesh( vtkImplicitFunction *func, vtkPolyData *pdin, vtkPol
 			obj_save(ss.str(), mesh);
 		}
 
-		CMultiTimer::MultiTimer().Start("MaximiseMinAngle", 1);
+		//CMultiTimer::MultiTimer().Start("MaximiseMinAngle", 1);
 		MaximiseMinAngle(mesh);
-		CMultiTimer::MultiTimer().End("MaximiseMinAngle");
+		//CMultiTimer::MultiTimer().End("MaximiseMinAngle");
 		if (debug)
 		{
 			std::ostringstream ss;
@@ -2343,13 +2343,13 @@ bool CGELRemeshing::Remesh( vtkImplicitFunction *func, vtkPolyData *pdin, vtkPol
 
 		int projectionIts = 100;
 		double sanityJump = targetLength * 10;
-		CMultiTimer::MultiTimer().Start("ProjectToSurface", 1);
-		ProjectToSurface(func, mesh, sanityJump, projectionIts);
-		CMultiTimer::MultiTimer().End("ProjectToSurface");
-
 		//CMultiTimer::MultiTimer().Start("ProjectToSurface", 1);
-		//ProjectToSurface(func, mesh, targetLength);
+		ProjectToSurface(func, mesh, sanityJump, projectionIts);
 		//CMultiTimer::MultiTimer().End("ProjectToSurface");
+
+		////CMultiTimer::MultiTimer().Start("ProjectToSurface", 1);
+		//ProjectToSurface(func, mesh, targetLength);
+		////CMultiTimer::MultiTimer().End("ProjectToSurface");
 		if (debug)
 		{
 			std::ostringstream ss;
@@ -2360,25 +2360,25 @@ bool CGELRemeshing::Remesh( vtkImplicitFunction *func, vtkPolyData *pdin, vtkPol
 	}
 	std::cout << std::endl;
 
-	CMultiTimer::MultiTimer().Start("mesh.cleanup", 1);
+	//CMultiTimer::MultiTimer().Start("mesh.cleanup", 1);
 	mesh.cleanup();
-	CMultiTimer::MultiTimer().End("mesh.cleanup");
+	//CMultiTimer::MultiTimer().End("mesh.cleanup");
 
-	CMultiTimer::MultiTimer().Start("Computing average length", 1);
+	//CMultiTimer::MultiTimer().Start("Computing average length", 1);
 	avgL = HMesh::average_edge_length(mesh);
 	std::cout << "Average edge length: " << avgL << std::endl;
-	CMultiTimer::MultiTimer().End("Computing average length");
+	//CMultiTimer::MultiTimer().End("Computing average length");
 
-	//CMultiTimer::MultiTimer().Start("VisualiseBadFaceNormals", 1);
+	////CMultiTimer::MultiTimer().Start("VisualiseBadFaceNormals", 1);
 	//int badNormals = VisualiseBadFaceNormals(mesh, std::string(""), false);
 	//std::cout << "Number of bad normals " << badNormals << std::endl;
-	//CMultiTimer::MultiTimer().End("VisualiseBadFaceNormals");
+	////CMultiTimer::MultiTimer().End("VisualiseBadFaceNormals");
 
-	CMultiTimer::MultiTimer().Start("GEL2VTK", 1);
+	//CMultiTimer::MultiTimer().Start("GEL2VTK", 1);
 	GEL2VTK(mesh, pdout);
-	CMultiTimer::MultiTimer().End("GEL2VTK");
+	//CMultiTimer::MultiTimer().End("GEL2VTK");
 
-	CMultiTimer::MultiTimer().End("Remesh");
+	//CMultiTimer::MultiTimer().End("Remesh");
 	return true;
 }
 
@@ -2438,7 +2438,7 @@ bool CGELRemeshing::ClosestPointStatistics(vtkPolyData *pd, double &avgDist)
 
 bool CGELRemeshing::RemeshWithMultiPointProjection(vtkImplicitFunction* func, vtkPolyData* pdin, vtkPolyData* pdout, double targetEdgeLength)
 {
-	CMultiTimer::MultiTimer().Start("Remesh", 1);
+	//CMultiTimer::MultiTimer().Start("Remesh", 1);
 
 	bool debug = false;
 	std::string debugDir = "d:/data/test/debugout/";
@@ -2570,12 +2570,12 @@ bool CGELRemeshing::RemeshWithMultiPointProjection(vtkImplicitFunction* func, vt
 
 	//HMesh::Manifold mesh;
 
-	//CMultiTimer::MultiTimer().Start("VTK2GELFaceByFace", 1);
+	////CMultiTimer::MultiTimer().Start("VTK2GELFaceByFace", 1);
 	//std::cout << "VTK2GELFaceByFace" << std::endl;
 	//if (!VTK2GELFaceByFace(pdin, mesh))
 	//	return false;
 
-	//CMultiTimer::MultiTimer().End("VTK2GELFaceByFace");
+	////CMultiTimer::MultiTimer().End("VTK2GELFaceByFace");
 
 	//if (debug)
 	//{
@@ -2592,11 +2592,11 @@ bool CGELRemeshing::RemeshWithMultiPointProjection(vtkImplicitFunction* func, vt
 	//double avgL = targetEdgeLength;
 	//if (targetEdgeLength <= 0)
 	//{
-	//	CMultiTimer::MultiTimer().Start("Computing average length", 1);
+	//	//CMultiTimer::MultiTimer().Start("Computing average length", 1);
 	//	std::cout << "Computing average length" << std::endl;
 	//	avgL = HMesh::average_edge_length(mesh);
 	//	std::cout << "Average edge length: " << avgL << std::endl;
-	//	CMultiTimer::MultiTimer().End("Computing average length");
+	//	//CMultiTimer::MultiTimer().End("Computing average length");
 	//}
 
 	////	double targetLength = avgL * 0.8;
@@ -2614,7 +2614,7 @@ bool CGELRemeshing::RemeshWithMultiPointProjection(vtkImplicitFunction* func, vt
 	//{
 	//	std::cout << "It#" << i << " ";
 
-	//	CMultiTimer::MultiTimer().Start("mesh.cleanup", 1);
+	//	//CMultiTimer::MultiTimer().Start("mesh.cleanup", 1);
 	//	mesh.cleanup();
 	//	CMultiTimer::MultiTimer().End("mesh.cleanup");
 
@@ -2638,9 +2638,9 @@ bool CGELRemeshing::RemeshWithMultiPointProjection(vtkImplicitFunction* func, vt
 	//	}
 
 
-	//	CMultiTimer::MultiTimer().Start("SplitLongEdgesReengineered", 1);
+	//	//CMultiTimer::MultiTimer().Start("SplitLongEdgesReengineered", 1);
 	//	SplitLongEdgesReengineered(mesh, hiTarget);
-	//	CMultiTimer::MultiTimer().End("SplitLongEdgesReengineered");
+	//	//CMultiTimer::MultiTimer().End("SplitLongEdgesReengineered");
 
 	//	if (debug)
 	//	{
@@ -2649,9 +2649,9 @@ bool CGELRemeshing::RemeshWithMultiPointProjection(vtkImplicitFunction* func, vt
 	//		obj_save(ss.str(), mesh);
 	//	}
 
-	//	CMultiTimer::MultiTimer().Start("CollapseShortEdges", 1);
+	//	//CMultiTimer::MultiTimer().Start("CollapseShortEdges", 1);
 	//	CollapseShortEdges(mesh, loTarget, hiTarget);
-	//	CMultiTimer::MultiTimer().End("CollapseShortEdges");
+	//	//CMultiTimer::MultiTimer().End("CollapseShortEdges");
 	//	if (debug)
 	//	{
 	//		std::ostringstream ss;
@@ -2659,9 +2659,9 @@ bool CGELRemeshing::RemeshWithMultiPointProjection(vtkImplicitFunction* func, vt
 	//		obj_save(ss.str(), mesh);
 	//	}
 
-	//	CMultiTimer::MultiTimer().Start("CollapseShortBoundaryEdges", 1);
+	//	//CMultiTimer::MultiTimer().Start("CollapseShortBoundaryEdges", 1);
 	//	CollapseShortBoundaryEdges(mesh, loTarget, hiTarget);
-	//	CMultiTimer::MultiTimer().End("CollapseShortBoundaryEdges");
+	//	//CMultiTimer::MultiTimer().End("CollapseShortBoundaryEdges");
 	//	if (debug)
 	//	{
 	//		std::ostringstream ss;
@@ -2669,9 +2669,9 @@ bool CGELRemeshing::RemeshWithMultiPointProjection(vtkImplicitFunction* func, vt
 	//		obj_save(ss.str(), mesh);
 	//	}
 
-	//	CMultiTimer::MultiTimer().Start("EqualizeValences", 1);
+	//	//CMultiTimer::MultiTimer().Start("EqualizeValences", 1);
 	//	EqualizeValences(mesh);
-	//	CMultiTimer::MultiTimer().End("EqualizeValences");
+	//	//CMultiTimer::MultiTimer().End("EqualizeValences");
 	//	if (debug)
 	//	{
 	//		std::ostringstream ss;
@@ -2679,10 +2679,10 @@ bool CGELRemeshing::RemeshWithMultiPointProjection(vtkImplicitFunction* func, vt
 	//		obj_save(ss.str(), mesh);
 	//	}
 
-	//	CMultiTimer::MultiTimer().Start("TangentialRelaxation", 1);
+	//	//CMultiTimer::MultiTimer().Start("TangentialRelaxation", 1);
 	//	TAL_smoothing_RAPA_Version(mesh, 0.5, 1);
 	//	// TangentialRelaxation(func, mesh);
-	//	CMultiTimer::MultiTimer().End("TangentialRelaxation");
+	//	//CMultiTimer::MultiTimer().End("TangentialRelaxation");
 	//	//		AreaWeigthedTangentialRelaxation(func, mesh);
 	//	if (debug)
 	//	{
@@ -2691,9 +2691,9 @@ bool CGELRemeshing::RemeshWithMultiPointProjection(vtkImplicitFunction* func, vt
 	//		obj_save(ss.str(), mesh);
 	//	}
 
-	//	CMultiTimer::MultiTimer().Start("BoundarySmoothing", 1);
+	//	//CMultiTimer::MultiTimer().Start("BoundarySmoothing", 1);
 	//	BoundarySmoothing(mesh);
-	//	CMultiTimer::MultiTimer().End("BoundarySmoothing");
+	//	//CMultiTimer::MultiTimer().End("BoundarySmoothing");
 	//	if (debug)
 	//	{
 	//		std::ostringstream ss;
@@ -2701,9 +2701,9 @@ bool CGELRemeshing::RemeshWithMultiPointProjection(vtkImplicitFunction* func, vt
 	//		obj_save(ss.str(), mesh);
 	//	}
 
-	//	CMultiTimer::MultiTimer().Start("MaximiseMinAngle", 1);
+	//	//CMultiTimer::MultiTimer().Start("MaximiseMinAngle", 1);
 	//	MaximiseMinAngle(mesh);
-	//	CMultiTimer::MultiTimer().End("MaximiseMinAngle");
+	//	//CMultiTimer::MultiTimer().End("MaximiseMinAngle");
 	//	if (debug)
 	//	{
 	//		std::ostringstream ss;
@@ -2716,32 +2716,32 @@ bool CGELRemeshing::RemeshWithMultiPointProjection(vtkImplicitFunction* func, vt
 	//}
 	//std::cout << std::endl;
 
-	//CMultiTimer::MultiTimer().Start("mesh.cleanup", 1);
+	////CMultiTimer::MultiTimer().Start("mesh.cleanup", 1);
 	//mesh.cleanup();
-	//CMultiTimer::MultiTimer().End("mesh.cleanup");
+	////CMultiTimer::MultiTimer().End("mesh.cleanup");
 
-	//CMultiTimer::MultiTimer().Start("Computing average length", 1);
+	////CMultiTimer::MultiTimer().Start("Computing average length", 1);
 	//avgL = HMesh::average_edge_length(mesh);
 	//std::cout << "Average edge length: " << avgL << std::endl;
-	//CMultiTimer::MultiTimer().End("Computing average length");
+	////CMultiTimer::MultiTimer().End("Computing average length");
 
-	//CMultiTimer::MultiTimer().Start("VisualiseBadFaceNormals", 1);
+	////CMultiTimer::MultiTimer().Start("VisualiseBadFaceNormals", 1);
 	//int badNormals = VisualiseBadFaceNormals(mesh, std::string(""), false);
 	//std::cout << "Number of bad normals " << badNormals << std::endl;
-	//CMultiTimer::MultiTimer().End("VisualiseBadFaceNormals");
+	////CMultiTimer::MultiTimer().End("VisualiseBadFaceNormals");
 
-	//CMultiTimer::MultiTimer().Start("GEL2VTK", 1);
+	////CMultiTimer::MultiTimer().Start("GEL2VTK", 1);
 	//GEL2VTK(mesh, pdout);
-	//CMultiTimer::MultiTimer().End("GEL2VTK");
+	////CMultiTimer::MultiTimer().End("GEL2VTK");
 
-	//CMultiTimer::MultiTimer().End("Remesh");
+	////CMultiTimer::MultiTimer().End("Remesh");
 	return true;
 }
 
 
 bool CGELRemeshing::RemeshWithBisectionProjection(vtkImplicitFunction* func, vtkPolyData* pdin, vtkPolyData* pdout, double targetEdgeLength)
 {
-	CMultiTimer::MultiTimer().Start("Remesh", 1);
+	//CMultiTimer::MultiTimer().Start("Remesh", 1);
 
 	bool debug = false;
 	std::string debugDir = "d:/data/test/debugout/";
@@ -2751,12 +2751,12 @@ bool CGELRemeshing::RemeshWithBisectionProjection(vtkImplicitFunction* func, vtk
 
 	HMesh::Manifold mesh;
 
-	CMultiTimer::MultiTimer().Start("VTK2GELFaceByFace", 1);
+	//CMultiTimer::MultiTimer().Start("VTK2GELFaceByFace", 1);
 	std::cout << "VTK2GELFaceByFace" << std::endl;
 	if (!VTK2GELFaceByFace(pdin, mesh))
 		return false;
 
-	CMultiTimer::MultiTimer().End("VTK2GELFaceByFace");
+	//CMultiTimer::MultiTimer().End("VTK2GELFaceByFace");
 
 	if (debug)
 	{
@@ -2773,11 +2773,11 @@ bool CGELRemeshing::RemeshWithBisectionProjection(vtkImplicitFunction* func, vtk
 	double avgL = targetEdgeLength;
 	if (targetEdgeLength <= 0)
 	{
-		CMultiTimer::MultiTimer().Start("Computing average length", 1);
+		//CMultiTimer::MultiTimer().Start("Computing average length", 1);
 		std::cout << "Computing average length" << std::endl;
 		avgL = HMesh::average_edge_length(mesh);
 		std::cout << "Average edge length: " << avgL << std::endl;
-		CMultiTimer::MultiTimer().End("Computing average length");
+		//CMultiTimer::MultiTimer().End("Computing average length");
 	}
 
 	//	double targetLength = avgL * 0.8;
@@ -2791,14 +2791,14 @@ bool CGELRemeshing::RemeshWithBisectionProjection(vtkImplicitFunction* func, vtk
 	{
 		std::cout << "It#" << i << " ";
 
-		CMultiTimer::MultiTimer().Start("mesh.cleanup", 1);
+		//CMultiTimer::MultiTimer().Start("mesh.cleanup", 1);
 		mesh.cleanup();
-		CMultiTimer::MultiTimer().End("mesh.cleanup");
+		//CMultiTimer::MultiTimer().End("mesh.cleanup");
 
 		double epsilon = targetLength / 100;
-		CMultiTimer::MultiTimer().Start("ProjectToSurface", 1);
+		//CMultiTimer::MultiTimer().Start("ProjectToSurface", 1);
 		ProjectToSurfaceByBisection(func, mesh, epsilon);
-		CMultiTimer::MultiTimer().End("ProjectToSurface");
+		//CMultiTimer::MultiTimer().End("ProjectToSurface");
 
 		if (debug)
 		{
@@ -2815,9 +2815,9 @@ bool CGELRemeshing::RemeshWithBisectionProjection(vtkImplicitFunction* func, vtk
 		//}
 
 
-		CMultiTimer::MultiTimer().Start("SplitLongEdgesReengineered", 1);
+		//CMultiTimer::MultiTimer().Start("SplitLongEdgesReengineered", 1);
 		SplitLongEdgesReengineered(mesh, hiTarget);
-		CMultiTimer::MultiTimer().End("SplitLongEdgesReengineered");
+		//CMultiTimer::MultiTimer().End("SplitLongEdgesReengineered");
 
 		if (debug)
 		{
@@ -2826,9 +2826,9 @@ bool CGELRemeshing::RemeshWithBisectionProjection(vtkImplicitFunction* func, vtk
 			obj_save(ss.str(), mesh);
 		}
 
-		CMultiTimer::MultiTimer().Start("CollapseShortEdges", 1);
+		//CMultiTimer::MultiTimer().Start("CollapseShortEdges", 1);
 		CollapseShortEdges(mesh, loTarget, hiTarget);
-		CMultiTimer::MultiTimer().End("CollapseShortEdges");
+		//CMultiTimer::MultiTimer().End("CollapseShortEdges");
 		if (debug)
 		{
 			std::ostringstream ss;
@@ -2836,9 +2836,9 @@ bool CGELRemeshing::RemeshWithBisectionProjection(vtkImplicitFunction* func, vtk
 			obj_save(ss.str(), mesh);
 		}
 
-		CMultiTimer::MultiTimer().Start("CollapseShortBoundaryEdges", 1);
+		//CMultiTimer::MultiTimer().Start("CollapseShortBoundaryEdges", 1);
 		CollapseShortBoundaryEdges(mesh, loTarget, hiTarget);
-		CMultiTimer::MultiTimer().End("CollapseShortBoundaryEdges");
+		//CMultiTimer::MultiTimer().End("CollapseShortBoundaryEdges");
 		if (debug)
 		{
 			std::ostringstream ss;
@@ -2846,9 +2846,9 @@ bool CGELRemeshing::RemeshWithBisectionProjection(vtkImplicitFunction* func, vtk
 			obj_save(ss.str(), mesh);
 		}
 
-		CMultiTimer::MultiTimer().Start("EqualizeValences", 1);
+		//CMultiTimer::MultiTimer().Start("EqualizeValences", 1);
 		EqualizeValences(mesh);
-		CMultiTimer::MultiTimer().End("EqualizeValences");
+		//CMultiTimer::MultiTimer().End("EqualizeValences");
 		if (debug)
 		{
 			std::ostringstream ss;
@@ -2856,10 +2856,10 @@ bool CGELRemeshing::RemeshWithBisectionProjection(vtkImplicitFunction* func, vtk
 			obj_save(ss.str(), mesh);
 		}
 
-		CMultiTimer::MultiTimer().Start("TangentialRelaxation", 1);
+		//CMultiTimer::MultiTimer().Start("TangentialRelaxation", 1);
 		TAL_smoothing_RAPA_Version(mesh, 0.5, 1);
 		// TangentialRelaxation(func, mesh);
-		CMultiTimer::MultiTimer().End("TangentialRelaxation");
+		//CMultiTimer::MultiTimer().End("TangentialRelaxation");
 		//		AreaWeigthedTangentialRelaxation(func, mesh);
 		if (debug)
 		{
@@ -2868,9 +2868,9 @@ bool CGELRemeshing::RemeshWithBisectionProjection(vtkImplicitFunction* func, vtk
 			obj_save(ss.str(), mesh);
 		}
 
-		CMultiTimer::MultiTimer().Start("BoundarySmoothing", 1);
+		//CMultiTimer::MultiTimer().Start("BoundarySmoothing", 1);
 		BoundarySmoothing(mesh);
-		CMultiTimer::MultiTimer().End("BoundarySmoothing");
+		//CMultiTimer::MultiTimer().End("BoundarySmoothing");
 		if (debug)
 		{
 			std::ostringstream ss;
@@ -2878,9 +2878,9 @@ bool CGELRemeshing::RemeshWithBisectionProjection(vtkImplicitFunction* func, vtk
 			obj_save(ss.str(), mesh);
 		}
 
-		CMultiTimer::MultiTimer().Start("MaximiseMinAngle", 1);
+		//CMultiTimer::MultiTimer().Start("MaximiseMinAngle", 1);
 		MaximiseMinAngle(mesh);
-		CMultiTimer::MultiTimer().End("MaximiseMinAngle");
+		//CMultiTimer::MultiTimer().End("MaximiseMinAngle");
 		if (debug)
 		{
 			std::ostringstream ss;
@@ -2893,53 +2893,53 @@ bool CGELRemeshing::RemeshWithBisectionProjection(vtkImplicitFunction* func, vtk
 	}
 	std::cout << std::endl;
 
-	CMultiTimer::MultiTimer().Start("mesh.cleanup", 1);
+	//CMultiTimer::MultiTimer().Start("mesh.cleanup", 1);
 	mesh.cleanup();
-	CMultiTimer::MultiTimer().End("mesh.cleanup");
+	//CMultiTimer::MultiTimer().End("mesh.cleanup");
 
-	CMultiTimer::MultiTimer().Start("Computing average length", 1);
+	//CMultiTimer::MultiTimer().Start("Computing average length", 1);
 	avgL = HMesh::average_edge_length(mesh);
 	std::cout << "Average edge length: " << avgL << std::endl;
-	CMultiTimer::MultiTimer().End("Computing average length");
+	//CMultiTimer::MultiTimer().End("Computing average length");
 
-	//CMultiTimer::MultiTimer().Start("VisualiseBadFaceNormals", 1);
+	////CMultiTimer::MultiTimer().Start("VisualiseBadFaceNormals", 1);
 	//int badNormals = VisualiseBadFaceNormals(mesh, std::string(""), false);
 	//std::cout << "Number of bad normals " << badNormals << std::endl;
-	//CMultiTimer::MultiTimer().End("VisualiseBadFaceNormals");
+	////CMultiTimer::MultiTimer().End("VisualiseBadFaceNormals");
 
-	CMultiTimer::MultiTimer().Start("GEL2VTK", 1);
+	//CMultiTimer::MultiTimer().Start("GEL2VTK", 1);
 	GEL2VTK(mesh, pdout);
-	CMultiTimer::MultiTimer().End("GEL2VTK");
+	//CMultiTimer::MultiTimer().End("GEL2VTK");
 
-	CMultiTimer::MultiTimer().End("Remesh");
+	//CMultiTimer::MultiTimer().End("Remesh");
 	return true;
 }
 
 
 bool CGELRemeshing::ProjectOnly(vtkImplicitFunction* func, vtkPolyData* pdin, vtkPolyData* pdout)
 {
-	CMultiTimer::MultiTimer().Start("ProjectOnly", 1);
+	//CMultiTimer::MultiTimer().Start("ProjectOnly", 1);
 
 	bool debug = false;
 	std::string debugDir = "d:/data/test/debugout/";
 
 	HMesh::Manifold mesh;
 
-	CMultiTimer::MultiTimer().Start("VTK2GELFaceByFace", 1);
+	//CMultiTimer::MultiTimer().Start("VTK2GELFaceByFace", 1);
 	std::cout << "VTK2GELFaceByFace" << std::endl;
 	if (!VTK2GELFaceByFace(pdin, mesh))
 		return false;
 
-	CMultiTimer::MultiTimer().End("VTK2GELFaceByFace");
+	//CMultiTimer::MultiTimer().End("VTK2GELFaceByFace");
 
 	double avgL = 0;
 	if (avgL <= 0)
 	{
-		CMultiTimer::MultiTimer().Start("Computing average length", 1);
+		//CMultiTimer::MultiTimer().Start("Computing average length", 1);
 		std::cout << "Computing average length" << std::endl;
 		avgL = HMesh::average_edge_length(mesh);
 		std::cout << "Average edge length: " << avgL << std::endl;
-		CMultiTimer::MultiTimer().End("Computing average length");
+		//CMultiTimer::MultiTimer().End("Computing average length");
 	}
 
 	double targetLength = avgL;
@@ -2973,12 +2973,12 @@ bool CGELRemeshing::ProjectOnly(vtkImplicitFunction* func, vtkPolyData* pdin, vt
 		double sanityJump = targetLength * 10;
 		double epsilon = targetLength / 100;
 
-		CMultiTimer::MultiTimer().Start("ProjectToSurface", 1);
+		//CMultiTimer::MultiTimer().Start("ProjectToSurface", 1);
 		// ProjectToSurface(func, mesh, sanityJump, projectionIts);
 		ProjectToSurfaceByBisection(func, mesh, epsilon);
 		//ProjectToSurfaceByBisection(func, mesh, epsilon);
 		//ProjectToSurfaceByBisection(func, mesh, epsilon);
-		CMultiTimer::MultiTimer().End("ProjectToSurface");
+		//CMultiTimer::MultiTimer().End("ProjectToSurface");
 		if (debug)
 		{
 			std::ostringstream ss;
@@ -2996,16 +2996,16 @@ bool CGELRemeshing::ProjectOnly(vtkImplicitFunction* func, vtkPolyData* pdin, vt
 	}
 
 
-	CMultiTimer::MultiTimer().Start("Computing average length", 1);
+	//CMultiTimer::MultiTimer().Start("Computing average length", 1);
 	avgL = HMesh::average_edge_length(mesh);
 	std::cout << "Average edge length: " << avgL << std::endl;
-	CMultiTimer::MultiTimer().End("Computing average length");
+	//CMultiTimer::MultiTimer().End("Computing average length");
 
-	CMultiTimer::MultiTimer().Start("GEL2VTK", 1);
+	//CMultiTimer::MultiTimer().Start("GEL2VTK", 1);
 	GEL2VTK(mesh, pdout);
-	CMultiTimer::MultiTimer().End("GEL2VTK");
+	//CMultiTimer::MultiTimer().End("GEL2VTK");
 
-	CMultiTimer::MultiTimer().End("ProjectOnly");
+	//CMultiTimer::MultiTimer().End("ProjectOnly");
 	return true;
 }
 

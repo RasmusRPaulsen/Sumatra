@@ -1,6 +1,6 @@
 #include "MeshMeasures.h"
 
-#include <vtkpolydata.h>
+#include <vtkPolyData.h>
 #include <vtkPointLocator.h>
 #include "vtkMath.h"
 #include "vtkCell.h"

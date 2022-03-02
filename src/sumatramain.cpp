@@ -1,5 +1,5 @@
 #include <QtWidgets/QApplication>
-#include <MainWindow.h>
+#include <mainwindow.h>
 #include <QSurfaceFormat>
 #include <QVTKOpenGLNativeWidget.h>
 #include <qmessagebox.h>

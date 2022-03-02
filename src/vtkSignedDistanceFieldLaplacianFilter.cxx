@@ -3,7 +3,7 @@
 #include "vtkImageData.h"
 #include "vtkObjectFactory.h"
 #include <vtkDoubleArray.h>
-#include <vtkpointdata.h>
+#include <vtkPointData.h>
 #include <vtkMath.h>
 #include <vtkPoints.h>
 #include <vtkCellArray.h>

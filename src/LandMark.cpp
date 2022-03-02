@@ -1,4 +1,4 @@
-#include "Landmark.h"
+#include "LandMark.h"
 
 CLandmark::CLandmark()
 {

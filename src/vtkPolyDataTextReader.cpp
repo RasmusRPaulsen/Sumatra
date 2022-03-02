@@ -7,7 +7,7 @@
 #include "vtkObjectFactory.h"
 #include "vtkPointData.h"
 #include "vtkPolyData.h"
-#include "vtkmath.h"
+#include "vtkMath.h"
 
 #include "GeneralUtils.h"
 #include <fstream>

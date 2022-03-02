@@ -37,3 +37,6 @@
 
 # other files
 *.zip
+
+# Build directory
+build/

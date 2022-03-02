@@ -2,7 +2,7 @@
 
 #include <sys/stat.h> // for file exists
 
-#include <vtkjpegreader.h>
+#include <vtkJPEGReader.h>
 #include <vtkTIFFReader.h>
 #include <vtkTexture.h>
 #include <vtkBMPReader.h>

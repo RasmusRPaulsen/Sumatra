@@ -27,7 +27,7 @@ PURPOSE.  See the above copyright notice for more information.
 #include "vtkFeatureEdges.h"
 #include <vtkDoubleArray.h>
 #include <vtkPointData.h>
-#include "multitimer.h"
+//#include "multitimer.h"
 #include "MeshMeasures.h"
 
 vtkStandardNewMacro(vtkConstrainedICPTransform);
@@ -308,9 +308,9 @@ void vtkConstrainedICPTransform::InternalUpdate()
 		return;
 	}
 
-	CMultiTimer::MultiTimer().Start("ICP CreateFeatureEdges", 1);
+//	CMultiTimer::MultiTimer().Start("ICP CreateFeatureEdges", 1);
 	CreateFeatureEdges();
-	CMultiTimer::MultiTimer().End("ICP CreateFeatureEdges");
+//	CMultiTimer::MultiTimer().End("ICP CreateFeatureEdges");
 
 	// Create locator
 //	this->CreateDefaultLocator();
@@ -318,7 +318,7 @@ void vtkConstrainedICPTransform::InternalUpdate()
 	vtkCellLocator *CellLocator = NULL;
 	vtkPointLocator *PointLocator = NULL;
 
-	CMultiTimer::MultiTimer().Start("Build Locator", 1);
+//	CMultiTimer::MultiTimer().Start("Build Locator", 1);
 	
 	// Do they last few iterations with point to surface mode (if in point to point mode)
 	bool FinishWithPointToSurface = true;
@@ -341,7 +341,7 @@ void vtkConstrainedICPTransform::InternalUpdate()
 		PointLocator->BuildLocator();
 	}
 
-	CMultiTimer::MultiTimer().End("Build Locator");
+//	CMultiTimer::MultiTimer().End("Build Locator");
 	// Create two sets of points to handle iteration
 
 	int step = 1;
@@ -387,7 +387,7 @@ void vtkConstrainedICPTransform::InternalUpdate()
 		std::cout << "Constrained ICP with max iterations " << this->MaximumNumberOfIterations << " Max landmarks " << this->MaximumNumberOfLandmarks << " max meanerror " << this->MaximumMeanDistance << std::endl;
 	if (StartByMatchingCentroids)
 	{
-		CMultiTimer::MultiTimer().Start("ICP Match Centroids", 1);
+//		CMultiTimer::MultiTimer().Start("ICP Match Centroids", 1);
 		if (DebugOutput)
 			std::cout << "Starting ICP by matching centroids" << std::endl;
 		double source_centroid[3] = {0,0,0};
@@ -426,7 +426,7 @@ void vtkConstrainedICPTransform::InternalUpdate()
 				outPoint);
 			points1->SetPoint(i, outPoint);
 		}
-		CMultiTimer::MultiTimer().End("ICP Match Centroids");
+//		CMultiTimer::MultiTimer().End("ICP Match Centroids");
 	}
 	else 
 	{
@@ -479,7 +479,7 @@ void vtkConstrainedICPTransform::InternalUpdate()
 		QuartHackPoints1->Reset();
 		QuartHackPoints2->Reset();
 
-		CMultiTimer::MultiTimer().Start("ICP Closest Points", 1);
+//		CMultiTimer::MultiTimer().Start("ICP Closest Points", 1);
 		int borderpoints = 0;
 		int distancePoints = 0;
 		int validPoints = 0;
@@ -545,7 +545,7 @@ void vtkConstrainedICPTransform::InternalUpdate()
 
 			}
 		}
-		CMultiTimer::MultiTimer().End("ICP Closest Points");
+//		CMultiTimer::MultiTimer().End("ICP Closest Points");
 
 		if (DebugOutput)
 			std::cout << "# " << NumberOfIterations << " Points: " << nb_points2 << " Borderpoints: " << borderpoints << " non-borders: " << pp1->GetNumberOfPoints() << " distpoints " << distancePoints << std::endl;
@@ -561,7 +561,7 @@ void vtkConstrainedICPTransform::InternalUpdate()
 			std::cout << "Meand distance after threshold " << MeanDistanceAfterThreshold << std::endl;
 		}
 
-		CMultiTimer::MultiTimer().Start("ICP Update Transform", 1);
+//		CMultiTimer::MultiTimer().Start("ICP Update Transform", 1);
 		// Build the landmark transform
 		this->LandmarkTransform->SetSourceLandmarks(pp1);
 		this->LandmarkTransform->SetTargetLandmarks(pp2);
@@ -569,7 +569,7 @@ void vtkConstrainedICPTransform::InternalUpdate()
 
 		// Concatenate (can't use this->Concatenate directly)
 		accumulate->Concatenate(this->LandmarkTransform->GetMatrix());
-		CMultiTimer::MultiTimer().End("ICP Update Transform");
+//		CMultiTimer::MultiTimer().End("ICP Update Transform");
 
 		this->NumberOfIterations++;
 		vtkDebugMacro(<< "Iteration: " << this->NumberOfIterations);
@@ -596,7 +596,7 @@ void vtkConstrainedICPTransform::InternalUpdate()
 		}
 
 		
-		CMultiTimer::MultiTimer().Start("ICP Move Mesh", 1);
+//		CMultiTimer::MultiTimer().Start("ICP Move Mesh", 1);
 		for(i = 0; i < nb_points; i++)
 		{
 			a->GetPoint(i, p1);
@@ -612,7 +612,7 @@ void vtkConstrainedICPTransform::InternalUpdate()
 				}
 			}
 		}
-		CMultiTimer::MultiTimer().End("ICP Move Mesh");
+//		CMultiTimer::MultiTimer().End("ICP Move Mesh");
 
 		// We can only step if the full number of landmarks has been tried at least once
 		if (this->CheckMeanDistance && (NMarksUsed == nb_points))
@@ -657,7 +657,7 @@ void vtkConstrainedICPTransform::InternalUpdate()
 
 	this->Matrix->DeepCopy(accumulate->GetMatrix());
 
-	CMultiTimer::MultiTimer().Start("ICP Compute Final Transform", 1);
+//	CMultiTimer::MultiTimer().Start("ICP Compute Final Transform", 1);
 	vtkLandmarkTransformDirectQuart *QuartTrans = vtkLandmarkTransformDirectQuart::New();
 	QuartTrans->SetSourceLandmarks(QuartHackPoints1);
 	QuartTrans->SetTargetLandmarks(QuartHackPoints2);
@@ -674,7 +674,7 @@ void vtkConstrainedICPTransform::InternalUpdate()
 		Quarternion[i] = QuartTrans->GetQuarternion()[i];
 	}
 	QuartTrans->Delete();
-	CMultiTimer::MultiTimer().End("ICP Compute Final Transform");
+//	CMultiTimer::MultiTimer().End("ICP Compute Final Transform");
 
 //	std::cout << "Quartenion hack: set 1 " << QuartHackPoints1->GetNumberOfPoints() << " set 2 " << QuartHackPoints2->GetNumberOfPoints() << std::endl;
 

@@ -3,7 +3,7 @@
 
 #include "vtkPolyDataAlgorithm.h"
 #include "vtkCellLocator.h"
-#include "vtkpolydata.h"
+#include "vtkPolyData.h"
 
 class vtkPolyDataDifference : public vtkPolyDataAlgorithm
 {

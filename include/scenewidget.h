@@ -3,7 +3,7 @@
 
 #include <QVTKOpenGLNativeWidget.h>
 #include <QtGui>
-#include <qstring>
+#include <QString>
 #include <vtkSmartPointer.h>
 #include <vtkInteractorStyleTrackballActor.h>
 #include <vtkInteractorStyleTrackballCamera.h>

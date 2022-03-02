@@ -28,7 +28,7 @@
 #include "vtkStripper.h"
 #include "vtkTransform.h"
 #include "vtkTransformPolyDataFilter.h"
-#include "vtktriangle.h"
+#include <vtkTriangle.h>
 #include <vtkDoubleArray.h>
 #include <vtkPointData.h>
 #include <vtkRenderWindow.h>

@@ -3,7 +3,7 @@
 #include <vtkXMLDataParser.h>
 #include <vtkXMLDataElement.h>
 
-#include <vtkpolydata.h>
+#include <vtkPolyData.h>
 #include <vtkCellArray.h>
 #include <vtkDoubleArray.h>
 #include <vtkPointData.h>

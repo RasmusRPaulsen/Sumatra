@@ -29,7 +29,7 @@
 #include <vtkCylinderSource.h>
 #include <vtkDoubleArray.h>
 #include <vtkInteractorStyleTrackballCamera.h>
-#include <vtkLookUpTable.h>
+#include <vtkLookupTable.h>
 #include <vtkMath.h>
 #include <vtkPlane.h>
 #include <vtkPlaneWidget.h>
@@ -44,7 +44,7 @@
 #include <vtkPolyDataNormals.h>
 #include <vtkPolyDataReader.h>
 #include <vtkProperty.h>
-#include <vtkproperty2D.h>
+#include <vtkProperty2D.h>
 #include <vtkTextProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>

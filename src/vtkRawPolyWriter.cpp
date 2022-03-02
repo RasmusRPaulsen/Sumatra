@@ -51,7 +51,7 @@ void vtkRawPolyWriter::WriteData()
 		{
 			vtkErrorMacro("Ran out of disk space; deleting file: "
 				<< this->FileName);
-			_unlink(this->FileName);
+//			_unlink(this->FileName); // TODO: Do something here
 		}
 	}
 }
