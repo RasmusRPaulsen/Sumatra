@@ -33,6 +33,7 @@ private slots:
     void undoManipulate();
     void annotateWithSphere();
     void updateStatusBarMessage(const QString& str);
+    void showSaveFileDialog();
 
 protected:
     void dropEvent(QDropEvent* event);
@@ -55,6 +56,7 @@ private:
     QMenu* fileMenu;
     QMenu* optionsMenu;
     QAction* openAct;
+    QAction* saveFileAct;
     QAction* ProcessComputeNormalsAct;
     QAction* optionsObjectPropAct;
     QAction* ChooseBackgroundColorAct;

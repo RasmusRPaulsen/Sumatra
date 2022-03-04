@@ -13,6 +13,7 @@
 #include "computenormalsdlg.h"
 #include "objectpropertiesdlg.h"
 #include "manipulateobjectdlg.h"
+#include "savefiledlg.h"
 #include "SumatraSettings.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -47,6 +48,32 @@ MainWindow::~MainWindow()
     if (mSettings)
         delete mSettings;
 }
+
+
+void MainWindow::showSaveFileDialog()
+{
+    SaveFileDlg dlg;
+    dlg.Set3DScene(ui->sceneWidget->get3DScene());
+    if (dlg.exec())
+    {
+        std::string defname = ui->sceneWidget->get3DScene()->GetSurfaceShortName(dlg.GetSelectedSurface());
+
+        // std::string extFilt = "VTK File (*.vtk)|*.vtk|VTK XML File (*.vtp)|*.vtp|STL File (*.stl)|*.stl|TXT File (*.txt)|*.txt|PLY File (*.ply)|*.ply|All Files (*.*)|*.*||";
+        std::string extFilt = "Surface File (*.vtk *.vtp *.stl *.txt *.ply);;All Files (*.*)";
+
+        QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
+            tr(defname.c_str()), tr(extFilt.c_str()));
+
+        if (fileName != "")
+        {
+            bool result = ui->sceneWidget->get3DScene()->SaveFile(dlg.GetSelectedSurface(), fileName.toStdString(),
+                dlg.getApplyActorTransform(), !dlg.getWriteAsAscii(), dlg.getWriteNormals(), dlg.getWriteScalars());
+            if (!result)
+                QMessageBox::warning(this, "Warning", "Could not write file");
+        }
+    }
+}
+
 
 void MainWindow::showOpenFileDialog()
 {
@@ -188,9 +215,14 @@ void MainWindow::updateStatusBarMessage(const QString& str)
 void MainWindow::createActions()
 {
     openAct = new QAction(tr("&Open"), this);
-    openAct->setShortcuts(QKeySequence::New);
+    //openAct->setShortcuts(QKeySequence::New);
     openAct->setStatusTip(tr("Open file"));
     connect(openAct, &QAction::triggered, this, &MainWindow::showOpenFileDialog);
+
+    saveFileAct = new QAction(tr("&Save"), this);
+    //saveFileAct->setShortcuts(QKeySequence::New);
+    saveFileAct->setStatusTip(tr("Save file"));
+    connect(saveFileAct, &QAction::triggered, this, &MainWindow::showSaveFileDialog);
 
     ProcessComputeNormalsAct = new QAction(tr("&Compute normals"), this);
     ProcessComputeNormalsAct->setStatusTip(tr("Compute surface normals"));
@@ -223,6 +255,7 @@ void MainWindow::createMenus()
 {
     fileMenu = menuBar()->addMenu(tr("&File"));
     fileMenu->addAction(openAct);
+    fileMenu->addAction(saveFileAct);
 
     fileMenu = menuBar()->addMenu(tr("&Process"));
     fileMenu->addAction(ProcessComputeNormalsAct);

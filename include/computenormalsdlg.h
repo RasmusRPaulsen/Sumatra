@@ -16,8 +16,6 @@ public:
     explicit ComputeNormalsDlg(QWidget *parent = nullptr);
     ~ComputeNormalsDlg();
 
-    // void Setup();
-
     void Set3DScene(C3DScene* sc);
 
     void PopulateObjectCB();
