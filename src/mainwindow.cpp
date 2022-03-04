@@ -74,6 +74,12 @@ void MainWindow::showSaveFileDialog()
     }
 }
 
+void MainWindow::showAxes()
+{
+    ui->sceneWidget->get3DScene()->SetAxesVisible(!ui->sceneWidget->get3DScene()->GetAxesVisible());
+    showAxesAct->setChecked(ui->sceneWidget->get3DScene()->GetAxesVisible());
+    forceRendering();
+}
 
 void MainWindow::showOpenFileDialog()
 {
@@ -253,6 +259,11 @@ void MainWindow::createActions()
     annotateWithSphereAct->setCheckable(true);
     annotateWithSphereAct->setStatusTip(tr("Annotate with sphere"));
     connect(annotateWithSphereAct, &QAction::triggered, this, &MainWindow::annotateWithSphere);
+
+    showAxesAct = new QAction(tr("Show &Axes"), this);
+    showAxesAct->setCheckable(true);
+    showAxesAct->setStatusTip(tr("Show coordinate axes"));
+    connect(showAxesAct, &QAction::triggered, this, &MainWindow::showAxes);
 }
 
 void MainWindow::createMenus()
@@ -260,6 +271,9 @@ void MainWindow::createMenus()
     fileMenu = menuBar()->addMenu(tr("&File"));
     fileMenu->addAction(openAct);
     fileMenu->addAction(saveFileAct);
+
+    fileMenu = menuBar()->addMenu(tr("&View"));
+    fileMenu->addAction(showAxesAct);
 
     fileMenu = menuBar()->addMenu(tr("&Process"));
     fileMenu->addAction(ProcessComputeNormalsAct);

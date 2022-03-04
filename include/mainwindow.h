@@ -34,6 +34,7 @@ private slots:
     void annotateWithSphere();
     void updateStatusBarMessage(const QString& str);
     void showSaveFileDialog();
+    void showAxes();
 
 protected:
     void dropEvent(QDropEvent* event);
@@ -63,6 +64,7 @@ private:
     QAction* CutWithPlaneAct;
     QAction* undoManipulateAct;
     QAction* annotateWithSphereAct;
+    QAction* showAxesAct;
 };
 
 #endif // MAINWINDOW_H
