@@ -215,7 +215,7 @@ bool CSurfaceProperties::SaveToFile(const std::string& fname, bool ApplyUserTran
 		bool result = false;
 		if (ext == "vtk")
 		{
-			 result = vtkExtMisc::WritePDVTK(tf->GetOutput(), fname);
+			 result = vtkExtMisc::WritePDVTK(tf->GetOutput(), fname, Binary);
 		}
 		else if (ext == "stl")
 		{
@@ -251,11 +251,11 @@ bool CSurfaceProperties::SaveToFile(const std::string& fname, bool ApplyUserTran
 	{
 		if (ext == "vtk")
 		{
-			return vtkExtMisc::WritePDVTK(m_polyData, fname);
+			return vtkExtMisc::WritePDVTK(m_polyData, fname, Binary);
 		}
 		else if (ext == "stl")
 		{
-			return vtkExtMisc::WritePDSTL(m_polyData, fname);
+			return vtkExtMisc::WritePDSTL(m_polyData, fname, Binary);
 		}
 		//else if (ext == "aranz")
 		//{

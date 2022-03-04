@@ -65,11 +65,13 @@ void vtkExtMisc::PrintPolyInfo(vtkPolyData* pd)
 };
 
 
-bool vtkExtMisc::WritePDVTK(vtkPolyData *pd, const std::string& fname)
+bool vtkExtMisc::WritePDVTK(vtkPolyData *pd, const std::string& fname, bool Binary)
 {
 	vtkPolyDataWriter *Writer = vtkPolyDataWriter::New();
  	 Writer->SetInputData(pd);
 	 Writer->SetFileName(fname.c_str());
+	 if (Binary)
+		 Writer->SetFileTypeToBinary();
 	 int result = Writer->Write();
 
 	 Writer->Delete();
@@ -2223,6 +2225,8 @@ vtkPolyData * vtkExtMisc::MultiReadSurface( const std::string &fname )
 	else if (ext == "vtp")
 	{
 		vtkXMLPolyDataReader *reader = vtkXMLPolyDataReader::New();
+		reader->SetFileName(fname.c_str());
+		reader->Update();
 		if (!reader)
 		{
 			pdout->Delete();

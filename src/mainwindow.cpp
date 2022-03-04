@@ -77,18 +77,22 @@ void MainWindow::showSaveFileDialog()
 
 void MainWindow::showOpenFileDialog()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open file"), "",
-        "VTK Files (*.vtk) | STL Files (*.stl)");
+    //std::string extFilt = "Surface File (*.vtk *.vtp *.stl *.txt *.ply);;All Files (*.*)";
+    std::string extFilt = "Surface Files (*.vtk *.vtp *.stl *.ply *.obj *.wrl);;Raw X Y Z (*.txt *.dat *.pts *.txt *.bnd *.csv);;Landmarks (*.pp);;All Files (*.*)";
 
-    // Open file
-    QFile file(fileName);
-    file.open(QIODevice::ReadOnly);
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open file"), "", tr(extFilt.c_str()));
+    //    "VTK Files (*.vtk) | STL Files (*.stl)");
 
-    // Return on Cancel
-    if (!file.exists())
-        return;
+    if (fileName != "")
+    {
+        QFile file(fileName);
+        file.open(QIODevice::ReadOnly);
 
-    openFile(fileName);
+        if (!file.exists())
+            return;
+
+        openFile(fileName);
+    }
 }
 
 void MainWindow::openFile(const QString& fileName)

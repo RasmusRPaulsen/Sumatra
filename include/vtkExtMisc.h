@@ -32,7 +32,7 @@ public:
 
 	//! Write Polydata to a VTK file
 	/** Returns false in case of errors */
-	static bool WritePDVTK(vtkPolyData *pd, const std::string& fname);
+	static bool WritePDVTK(vtkPolyData *pd, const std::string& fname, bool Binary = false);
 	
 	//! Write points as spheres with a given radius
 	/** if radius == 0 an estimate is made of the best radius */
