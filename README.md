@@ -58,6 +58,8 @@ Passing values forth and back:
 ## Linux build and installation
 
 ### Qt
+(https://doc.qt.io/qt-6/linux.html)
+
 
 ### VTK
 (https://gitlab.kitware.com/vtk/vtk/-/blob/master/Documentation/dev/build.md)
