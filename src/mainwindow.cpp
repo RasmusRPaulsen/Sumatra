@@ -83,6 +83,12 @@ void MainWindow::showAxes()
     forceRendering();
 }
 
+void MainWindow::showScalarBar()
+{
+    ui->sceneWidget->get3DScene()->SetScalarBarVisible(!ui->sceneWidget->get3DScene()->GetScalarBarVisible());
+    forceRendering();
+}
+
 void MainWindow::setMarkerSphereValue()
 {
     bool ok = false;
@@ -293,6 +299,11 @@ void MainWindow::createActions()
     showAxesAct->setCheckable(true);
     showAxesAct->setStatusTip(tr("Show coordinate axes"));
     connect(showAxesAct, &QAction::triggered, this, &MainWindow::showAxes);
+
+    showScalarBarAct = new QAction(tr("Show &Scalar Bar"), this);
+    showScalarBarAct->setCheckable(true);
+    showScalarBarAct->setStatusTip(tr("Show Scalar Bar"));
+    connect(showScalarBarAct, &QAction::triggered, this, &MainWindow::showScalarBar);
 }
 
 void MainWindow::createMenus()
@@ -303,6 +314,7 @@ void MainWindow::createMenus()
 
     fileMenu = menuBar()->addMenu(tr("&View"));
     fileMenu->addAction(showAxesAct);
+    fileMenu->addAction(showScalarBarAct);
 
     fileMenu = menuBar()->addMenu(tr("&Process"));
     fileMenu->addAction(ProcessComputeNormalsAct);
@@ -330,6 +342,7 @@ void MainWindow::updateEnabledActions()
     annotateWithSphereAct->setEnabled(anyObjects);
     setMarkerSphereValueAct->setEnabled(anyObjects);
     optionsObjectPropAct->setEnabled(anyObjects);
+    showScalarBarAct->setChecked(ui->sceneWidget->get3DScene()->GetScalarBarVisible());
 }
 
 

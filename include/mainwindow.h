@@ -35,6 +35,7 @@ private slots:
     void updateStatusBarMessage(const QString& str);
     void showSaveFileDialog();
     void showAxes();
+    void showScalarBar();
     void setMarkerSphereValue();
 
 protected:
@@ -68,6 +69,7 @@ private:
     QAction* undoManipulateAct;
     QAction* annotateWithSphereAct;
     QAction* showAxesAct;
+    QAction* showScalarBarAct;
     QAction* setMarkerSphereValueAct;
 };
 
