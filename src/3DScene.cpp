@@ -939,19 +939,21 @@ void C3DScene::FlipObject(unsigned int SourceID, bool ReplaceSurface)
 	sourceTrans->Delete();
 }
 
+#include <qmessagebox.h>
+#include <qstring.h>
 
 void C3DScene::VisualiseNormals(unsigned int SourceID, bool VisualiseAdjacentFlipped)
 {
-	if (SourceID >= m_Surfaces.size())
+	if (SourceID >= m_Surfaces.size() || SourceID < 0)
 	{
-		// TODO: Update QMessageBox::information(this, "Warning","Selected object not valid!");
+		QMessageBox::warning(NULL, QString("Warning"), QString("Selected object not valid!"));
 		return;
 	}
 
 	vtkDataArray *normals = m_Surfaces[SourceID]->m_polyData->GetPointData()->GetNormals();
 	if (!normals)
 	{
-		// TODO: Update QMessageBox::information(this, "Warning","No normals computed for object!");
+		QMessageBox::warning(NULL, QString("Warning"), QString("No normals computed for object!"));
 		return;
 	}
 

@@ -37,6 +37,8 @@ private slots:
     void showAxes();
     void showScalarBar();
     void setMarkerSphereValue();
+    int selectObjectDialog();
+    void visualizeNormals();
 
 protected:
     void dropEvent(QDropEvent* event);
@@ -71,6 +73,7 @@ private:
     QAction* showAxesAct;
     QAction* showScalarBarAct;
     QAction* setMarkerSphereValueAct;
+    QAction* visualizeNormalsAct;
 };
 
 #endif // MAINWINDOW_H

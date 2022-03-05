@@ -7,6 +7,7 @@
 #include <qmimedata.h>
 #include <qcolordialog.h>
 #include <qinputdialog.h>
+#include <qstringlist.h>
 
 #include <vtkRenderer.h>
 
@@ -107,6 +108,44 @@ void MainWindow::setMarkerSphereValue()
         updateStatusBarMessage(QString::fromStdString(ost.str()));
         forceRendering();
     }
+}
+
+int MainWindow::selectObjectDialog()
+{
+    if (ui->sceneWidget->get3DScene()->GetNumberOfSurfaces() <= 0)
+        return -1;
+
+    QStringList items;
+    for (int i = 0; i < ui->sceneWidget->get3DScene()->GetNumberOfSurfaces(); i++)
+    {
+        std::ostringstream ost;
+        ost << std::setfill('0') << std::setw(3) << i + 1 << " : " << ui->sceneWidget->get3DScene()->GetSurfaceShortName(i);
+        items << QString::fromStdString(ost.str());
+    }
+    bool ok;
+    QString item = QInputDialog::getItem(this, tr("Select object"),
+        tr("Object:"), items, 0, false, &ok);
+    if (ok && !item.isEmpty())
+    {
+        int idx = items.indexOf(item);
+        if (idx >= 0)
+        {
+            // QMessageBox::information(this, "Index returned", QString::number(idx));
+            return idx;
+        }
+    }
+    return -1;
+}
+
+
+void MainWindow::visualizeNormals()
+{
+    int idx = selectObjectDialog();
+    if (idx == -1)
+        return;
+
+    ui->sceneWidget->get3DScene()->VisualiseNormals(idx, false);
+    forceRendering();
 }
 
 void MainWindow::showOpenFileDialog()
@@ -269,6 +308,10 @@ void MainWindow::createActions()
     ProcessComputeNormalsAct->setStatusTip(tr("Compute surface normals"));
     connect(ProcessComputeNormalsAct, &QAction::triggered, this, &MainWindow::processComputeNormals);
 
+    visualizeNormalsAct = new QAction(tr("&Visualize normals"), this);
+    visualizeNormalsAct->setStatusTip(tr("Visualize normals"));
+    connect(visualizeNormalsAct, &QAction::triggered, this, &MainWindow::visualizeNormals);
+
     optionsObjectPropAct = new QAction(tr("Object &Properties"), this);
     optionsObjectPropAct->setStatusTip(tr("View and modify object properties"));
     connect(optionsObjectPropAct, &QAction::triggered, this, &MainWindow::showObjectProperties);
@@ -318,6 +361,7 @@ void MainWindow::createMenus()
 
     fileMenu = menuBar()->addMenu(tr("&Process"));
     fileMenu->addAction(ProcessComputeNormalsAct);
+    fileMenu->addAction(visualizeNormalsAct);
 
     fileMenu = menuBar()->addMenu(tr("&Manipulate"));
     fileMenu->addAction(CutWithPlaneAct);
@@ -337,6 +381,7 @@ void MainWindow::updateEnabledActions()
     bool anyObjects = (ui->sceneWidget->get3DScene()->GetNumberOfSurfaces() > 0);
     saveFileAct->setEnabled(anyObjects);
     ProcessComputeNormalsAct->setEnabled(anyObjects);
+    visualizeNormalsAct->setEnabled(anyObjects);
     CutWithPlaneAct->setEnabled(anyObjects);
     undoManipulateAct->setEnabled(anyObjects);
     annotateWithSphereAct->setEnabled(anyObjects);
@@ -344,8 +389,6 @@ void MainWindow::updateEnabledActions()
     optionsObjectPropAct->setEnabled(anyObjects);
     showScalarBarAct->setChecked(ui->sceneWidget->get3DScene()->GetScalarBarVisible());
 }
-
-
 
 void MainWindow::dragEnterEvent(QDragEnterEvent* event)
 {
