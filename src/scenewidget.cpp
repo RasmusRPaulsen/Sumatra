@@ -8,6 +8,8 @@
 #include <vtkProperty.h>
 #include <vtkRenderWindowInteractor.h>
 
+#include <sstream>
+
 SceneWidget::SceneWidget(QWidget* parent)
     : QVTKOpenGLNativeWidget(parent)
 {
@@ -167,6 +169,22 @@ void SceneWidget::SpacePressed()
     ForceRender();
 }
 
+void SceneWidget::changeMarkerSphereSize(bool increase)
+{
+    double scale = 1.1;
+    if (!increase)
+        scale = 0.9;
+
+    m3DScene->SetSphereWidgetRadius(m3DScene->GetSphereWidgetRadius() * scale);
+
+    std::ostringstream ost;
+    ost << "Marker value: " << m3DScene->GetMarkerValue() <<
+        " radius: " << m3DScene->GetSphereWidgetRadius();
+    m3DScene->SetStatusText(ost.str(), true);
+    emit updateStatusMessage(QString::fromStdString(ost.str()));
+    ForceRender();
+}
+
 void SceneWidget::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_A)
@@ -180,5 +198,15 @@ void SceneWidget::keyPressEvent(QKeyEvent *event)
     else if (event->key() == Qt::Key_Space)
     {
         SpacePressed();
+    }
+    else if (event->key() == Qt::Key_Plus)
+    {
+        if (m_SphereWidgetManipulateObject != -1)
+            changeMarkerSphereSize(true);
+    }
+    else if (event->key() == Qt::Key_Minus)
+    {
+        if (m_SphereWidgetManipulateObject != -1)
+            changeMarkerSphereSize(false);
     }
 }

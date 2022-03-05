@@ -75,6 +75,8 @@ private:
 
     void SpacePressed();
 
+    void changeMarkerSphereSize(bool increase);
+
 protected:
     void keyPressEvent(QKeyEvent*);
 };
