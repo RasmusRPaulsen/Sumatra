@@ -50,6 +50,8 @@ private:
     void createActions();
     void createMenus();
 
+    void updateEnabledActions();
+
     ObjectPropertiesDlg* mObjectPropsDlg = NULL;
 
     // Status bare message

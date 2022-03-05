@@ -129,6 +129,7 @@ void MainWindow::openFile(const QString& fileName)
     if (mObjectPropsDlg)
         mObjectPropsDlg->FullUpdate();
     updateStatusBarMessage(tr("Read: ") + fileName);
+    updateEnabledActions();
 }
 
 void MainWindow::processComputeNormals()
@@ -169,6 +170,7 @@ void MainWindow::showObjectProperties()
 void MainWindow::forceRendering()
 {
     ui->sceneWidget->ForceRender();
+    updateEnabledActions();
 }
 
 void MainWindow::ChooseBackgroundColor()
@@ -314,7 +316,23 @@ void MainWindow::createMenus()
     fileMenu = menuBar()->addMenu(tr("&Options"));
     fileMenu->addAction(optionsObjectPropAct);
     fileMenu->addAction(ChooseBackgroundColorAct);
+
+    updateEnabledActions();
 }
+
+void MainWindow::updateEnabledActions()
+{
+    bool anyObjects = (ui->sceneWidget->get3DScene()->GetNumberOfSurfaces() > 0);
+    saveFileAct->setEnabled(anyObjects);
+    ProcessComputeNormalsAct->setEnabled(anyObjects);
+    CutWithPlaneAct->setEnabled(anyObjects);
+    undoManipulateAct->setEnabled(anyObjects);
+    annotateWithSphereAct->setEnabled(anyObjects);
+    setMarkerSphereValueAct->setEnabled(anyObjects);
+    optionsObjectPropAct->setEnabled(anyObjects);
+}
+
+
 
 void MainWindow::dragEnterEvent(QDragEnterEvent* event)
 {
