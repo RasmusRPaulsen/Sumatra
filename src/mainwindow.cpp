@@ -6,6 +6,8 @@
 #include <qmessagebox.h>
 #include <qmimedata.h>
 #include <qcolordialog.h>
+#include <qinputdialog.h>
+
 #include <vtkRenderer.h>
 
 #include <sstream>
@@ -79,6 +81,26 @@ void MainWindow::showAxes()
     ui->sceneWidget->get3DScene()->SetAxesVisible(!ui->sceneWidget->get3DScene()->GetAxesVisible());
     showAxesAct->setChecked(ui->sceneWidget->get3DScene()->GetAxesVisible());
     forceRendering();
+}
+
+void MainWindow::setMarkerSphereValue()
+{
+    bool ok = false;
+    double defVal = ui->sceneWidget->get3DScene()->GetMarkerValue();
+
+    double v = QInputDialog::getDouble(this, tr("Set marker sphere value"),
+        tr("Marker sphere value"), defVal, -2147483647, 2147483647, 2, &ok,
+        Qt::WindowFlags(), 1);
+    if (ok)
+    {
+        ui->sceneWidget->get3DScene()->SetMarkerValue(v);
+        std::ostringstream ost;
+        ost << "Marker value: " << ui->sceneWidget->get3DScene()->GetMarkerValue() << 
+            " radius: " << ui->sceneWidget->get3DScene()->GetSphereWidgetRadius();
+        ui->sceneWidget->get3DScene()->SetStatusText(ost.str(), true);
+        updateStatusBarMessage(QString::fromStdString(ost.str()));
+        forceRendering();
+    }
 }
 
 void MainWindow::showOpenFileDialog()
@@ -203,9 +225,10 @@ void MainWindow::annotateWithSphere()
             annotateWithSphereAct->setChecked(true);
 
             std::ostringstream ost;
-            ost << "Marker value: " << ui->sceneWidget->get3DScene()->GetMarkerValue()
-                << " (change with key + and -) (size change: shift and key + and -)";
+            ost << "Marker value (set from menu): " << ui->sceneWidget->get3DScene()->GetMarkerValue()
+                << " (size change: keys +/-)";
             ui->sceneWidget->get3DScene()->SetStatusText(ost.str(), true);
+            updateStatusBarMessage(QString::fromStdString(ost.str()));
         }
     }
     else
@@ -260,6 +283,10 @@ void MainWindow::createActions()
     annotateWithSphereAct->setStatusTip(tr("Annotate with sphere"));
     connect(annotateWithSphereAct, &QAction::triggered, this, &MainWindow::annotateWithSphere);
 
+    setMarkerSphereValueAct = new QAction(tr("Set Marker Sphere &Value"), this);
+    setMarkerSphereValueAct-> setStatusTip(tr("Set sphere marker value"));
+    connect(setMarkerSphereValueAct, &QAction::triggered, this, &MainWindow::setMarkerSphereValue);
+
     showAxesAct = new QAction(tr("Show &Axes"), this);
     showAxesAct->setCheckable(true);
     showAxesAct->setStatusTip(tr("Show coordinate axes"));
@@ -282,6 +309,7 @@ void MainWindow::createMenus()
     fileMenu->addAction(CutWithPlaneAct);
     fileMenu->addAction(undoManipulateAct);
     fileMenu->addAction(annotateWithSphereAct);
+    fileMenu->addAction(setMarkerSphereValueAct);
 
     fileMenu = menuBar()->addMenu(tr("&Options"));
     fileMenu->addAction(optionsObjectPropAct);

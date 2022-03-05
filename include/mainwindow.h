@@ -35,6 +35,7 @@ private slots:
     void updateStatusBarMessage(const QString& str);
     void showSaveFileDialog();
     void showAxes();
+    void setMarkerSphereValue();
 
 protected:
     void dropEvent(QDropEvent* event);
@@ -52,7 +53,7 @@ private:
     ObjectPropertiesDlg* mObjectPropsDlg = NULL;
 
     // Status bare message
-    QString statusMessage = tr("Default status bar message");
+    QString statusMessage = tr("Welcome to the Surface Manipulation and Transformation Toolkit (Sumatra)");
 
     QMenu* fileMenu;
     QMenu* optionsMenu;
@@ -65,6 +66,7 @@ private:
     QAction* undoManipulateAct;
     QAction* annotateWithSphereAct;
     QAction* showAxesAct;
+    QAction* setMarkerSphereValueAct;
 };
 
 #endif // MAINWINDOW_H
