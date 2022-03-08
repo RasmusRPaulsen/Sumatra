@@ -270,27 +270,30 @@ void CProcess3DData::DoSmoothSurface(vtkPolyData *source, vtkPolyData *smooth, i
 	}
 }
 
-void CProcess3DData::DoComputeFeatureEdges(vtkPolyData *source, vtkPolyData *FeatureEdges, int EdgeType, double FeatureAngle)
+void CProcess3DData::DoComputeFeatureEdges(vtkPolyData *source, vtkPolyData *FeatureEdges, 
+	bool boundary, bool nonManifold, bool manifold, bool sharp, double FeatureAngle)
 {
 
 	vtkFeatureEdges *feature = vtkFeatureEdges::New();
 	feature->SetInputData(source);
-	feature->SetBoundaryEdges(false);
-	feature->SetManifoldEdges(false);
-	feature->SetNonManifoldEdges(false);
-	feature->SetFeatureEdges(false);
+	feature->SetBoundaryEdges(boundary);
+	feature->SetManifoldEdges(manifold);
+	feature->SetNonManifoldEdges(nonManifold);
+	feature->SetFeatureEdges(sharp);
+	feature->SetFeatureAngle(FeatureAngle);
+	feature->ColoringOn();
 
-	if (EdgeType == 0)
-		feature->SetBoundaryEdges(true);
-	else if (EdgeType == 1)
-		feature->SetNonManifoldEdges(true);
-	else if (EdgeType == 2)
-		feature->SetManifoldEdges(true);
-	else if (EdgeType == 3)
-	{
-		feature->SetFeatureEdges(true);
-		feature->SetFeatureAngle(FeatureAngle);
-	}
+	//if (EdgeType == 0)
+	//	feature->SetBoundaryEdges(true);
+	//else if (EdgeType == 1)
+	//	feature->SetNonManifoldEdges(true);
+	//else if (EdgeType == 2)
+	//	feature->SetManifoldEdges(true);
+	//else if (EdgeType == 3)
+	//{
+	//	feature->SetFeatureEdges(true);
+	//	
+	//}
 	
 	feature->Update();
 	FeatureEdges->DeepCopy(feature->GetOutput());

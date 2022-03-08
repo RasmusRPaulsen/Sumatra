@@ -1375,7 +1375,7 @@ void C3DScene::DecimateSurface(unsigned int SourceID, bool ReplaceSurface, int d
 	decim->Delete();
 }
 
-void C3DScene::ComputeFeatureEdges(unsigned int SourceID, int EdgeType, double FeatureAngle)
+void C3DScene::ComputeFeatureEdges(unsigned int SourceID, bool boundary, bool nonManifold, bool manifold, bool sharp, double FeatureAngle)
 {
 	if (SourceID >= m_Surfaces.size())
 	{
@@ -1383,25 +1383,26 @@ void C3DScene::ComputeFeatureEdges(unsigned int SourceID, int EdgeType, double F
 		return;
 	}
 	vtkPolyData *FeatureEdges = vtkPolyData::New();
-	CProcess3DData::DoComputeFeatureEdges(m_Surfaces[SourceID]->m_polyData, FeatureEdges, EdgeType, FeatureAngle);
+	CProcess3DData::DoComputeFeatureEdges(m_Surfaces[SourceID]->m_polyData, FeatureEdges, 
+		boundary, nonManifold, manifold, sharp, FeatureAngle);
 
 	std::ostringstream name;
 	name << m_Surfaces[SourceID]->m_shortname;
-	if (EdgeType == 0)
-		name << "_BoundaryEdges";
-	if (EdgeType == 1)
-		name << "_NonManifoldEdges";
-	if (EdgeType == 2)
-		name << "_ManifoldEdges";
-	if (EdgeType == 3)
-		name << "_FeatureEdges_" << FeatureAngle;
+	name << "FeatureEdges_";
+	if (boundary)
+		name << "_Boundary";
+	if (nonManifold)
+		name << "_NonManifold";
+	if (manifold)
+		name << "_Manifold";
+	if (sharp)
+		name << "_sharp_" << FeatureAngle;
 
 	CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 	surfProbs->InitialiseSurface(FeatureEdges);
 	surfProbs->m_shortname = name.str();
 
 	AddSurfaceToRenderer(surfProbs);
-
 	FeatureEdges->Delete();
 }
 

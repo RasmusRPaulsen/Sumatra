@@ -216,7 +216,7 @@ class C3DScene
 				
 		//! Calculate feature edges
 		/** \param EdgeType 0 = boundary, 1 = non-manifold, 2 = manifold, 3 = sharp */
-		void ComputeFeatureEdges(unsigned int SourceID, int EdgeType, double FeatureAngle);
+		void ComputeFeatureEdges(unsigned int SourceID, bool boundary, bool nonManifold, bool manifold, bool sharp, double FeatureAngle);
 
 		//! Set if the scalarbar is visible
 		void SetScalarBarVisible(bool flag);

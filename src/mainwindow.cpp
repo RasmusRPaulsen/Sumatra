@@ -17,6 +17,7 @@
 #include "objectpropertiesdlg.h"
 #include "manipulateobjectdlg.h"
 #include "savefiledlg.h"
+#include "featureedgesdlg.h"
 #include "SumatraSettings.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -146,6 +147,35 @@ void MainWindow::visualizeNormals()
 
     ui->sceneWidget->get3DScene()->VisualiseNormals(idx, false);
     forceRendering();
+}
+
+void MainWindow::visualizeFeatureEdges()
+{
+    FeatureEdgesDlg dlg;
+    dlg.Set3DScene(ui->sceneWidget->get3DScene());
+
+    if (dlg.exec())
+    {
+        bool boundary = false;
+        bool nonManifold = false;
+        bool manifold = false;
+        bool sharp = false;
+        double sharpAngle = 30;
+        dlg.getValues(boundary, nonManifold, manifold, sharp, sharpAngle);
+        if (!boundary && !nonManifold && !manifold && !sharp)
+        {
+            QMessageBox::warning(this, "Warning", "At least one edge type should be selected");
+        }
+        else
+        {
+            ui->sceneWidget->get3DScene()->ComputeFeatureEdges(dlg.GetSelectedSurface(), boundary, nonManifold,
+                manifold, sharp, sharpAngle);
+            //ui->sceneWidget->get3DScene()->CalculateNormals(dlg.GetSelectedSurface(), dlg.GetReplaceSource(), dlg.GetFlipNormals(), dlg.GetSplitNormals(),
+            //    dlg.GetSplitEdgeAngle());
+            forceRendering();
+
+        }
+    }
 }
 
 void MainWindow::showOpenFileDialog()
@@ -312,6 +342,10 @@ void MainWindow::createActions()
     visualizeNormalsAct->setStatusTip(tr("Visualize normals"));
     connect(visualizeNormalsAct, &QAction::triggered, this, &MainWindow::visualizeNormals);
 
+    visualizeFeatureEdgesAct = new QAction(tr("Visualize &Feature edges"), this);
+    visualizeFeatureEdgesAct->setStatusTip(tr("Visualize feature edges"));
+    connect(visualizeFeatureEdgesAct, &QAction::triggered, this, &MainWindow::visualizeFeatureEdges);
+
     optionsObjectPropAct = new QAction(tr("Object &Properties"), this);
     optionsObjectPropAct->setStatusTip(tr("View and modify object properties"));
     connect(optionsObjectPropAct, &QAction::triggered, this, &MainWindow::showObjectProperties);
@@ -362,6 +396,7 @@ void MainWindow::createMenus()
     fileMenu = menuBar()->addMenu(tr("&Process"));
     fileMenu->addAction(ProcessComputeNormalsAct);
     fileMenu->addAction(visualizeNormalsAct);
+    fileMenu->addAction(visualizeFeatureEdgesAct);
 
     fileMenu = menuBar()->addMenu(tr("&Manipulate"));
     fileMenu->addAction(CutWithPlaneAct);
@@ -382,6 +417,7 @@ void MainWindow::updateEnabledActions()
     saveFileAct->setEnabled(anyObjects);
     ProcessComputeNormalsAct->setEnabled(anyObjects);
     visualizeNormalsAct->setEnabled(anyObjects);
+    visualizeFeatureEdgesAct->setEnabled(anyObjects);
     CutWithPlaneAct->setEnabled(anyObjects);
     undoManipulateAct->setEnabled(anyObjects);
     annotateWithSphereAct->setEnabled(anyObjects);

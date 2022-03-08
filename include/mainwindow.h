@@ -24,6 +24,7 @@ public:
     void openFile(const QString& fileName);
 
 private slots:
+    int selectObjectDialog();
     void showOpenFileDialog();
     void processComputeNormals();
     void showObjectProperties();
@@ -37,8 +38,8 @@ private slots:
     void showAxes();
     void showScalarBar();
     void setMarkerSphereValue();
-    int selectObjectDialog();
     void visualizeNormals();
+    void visualizeFeatureEdges();
 
 protected:
     void dropEvent(QDropEvent* event);
@@ -74,6 +75,7 @@ private:
     QAction* showScalarBarAct;
     QAction* setMarkerSphereValueAct;
     QAction* visualizeNormalsAct;
+    QAction* visualizeFeatureEdgesAct;
 };
 
 #endif // MAINWINDOW_H

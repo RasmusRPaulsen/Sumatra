@@ -115,8 +115,9 @@ class CProcess3DData
 			bool BoundarySmooth, bool FeatureEdgeSmooth, double FeatureAngle, bool GenerateErrScal);
 
 		//! Calculate feature edges
-		/** \param EdgeType 0 = boundary, 1 = non-manifold, 2 = manifold, 3 = sharp */
-		static void DoComputeFeatureEdges(vtkPolyData *source, vtkPolyData *FeatureEdges, int EdgeType, double FeatureAngle);
+		/** */
+		static void DoComputeFeatureEdges(vtkPolyData *source, vtkPolyData *FeatureEdges,
+			bool boundary, bool nonManifold, bool manifold, bool sharp, double FeatureAngle);
 
 		//! Extract the outer surface from a polydata containing a set of distinct part
 		/** This is a special case of connectivity filtration */
