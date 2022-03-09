@@ -54,6 +54,7 @@
 #include <vtkArray.h>
 #include <math.h>
 #include "vtkLine.h"
+#include <vtkCellData.h>
 
 
 void vtkExtMisc::PrintPolyInfo(vtkPolyData* pd)
@@ -2095,14 +2096,14 @@ std::string vtkExtMisc::GetSurfaceValues(vtkPolyData *pd, const std::string& sep
 	{
 		if (pd->GetPointData()->GetScalars() && pd->GetPointData()->GetScalars()->GetNumberOfComponents() == 3)
 		{
-			ost << "3 component scalars - probably RGB" << sep;
+			ost << "Point scalars: 3 component scalars - probably RGB" << sep;
 		}
 		else if (pd->GetPointData()->GetScalars())
 		{
-			ost << pd->GetPointData()->GetScalars()->GetNumberOfComponents() << " component scalars" << sep;
+			ost << "Point scalars: " << pd->GetPointData()->GetScalars()->GetNumberOfComponents() << " component scalars" << sep;
 		}
 		else
-			ost << "No scalars" << sep;
+			ost << "No point scalars" << sep;
 	}
 	else
 	{
@@ -2127,7 +2128,7 @@ std::string vtkExtMisc::GetSurfaceValues(vtkPolyData *pd, const std::string& sep
 		CGeneralUtils::Median(scals, 0.50, median);
 		double RMS = CGeneralUtils::RMS(scals);
 		
-		ost << "Scalars:" << sep;
+		ost << "Point scalars:" << sep;
 		ost << " Min: " << spa << minScal << sep;
 		ost << " Max: " << spa << maxScal << sep;
 		ost << " Average: " << spa << mean << sep;
@@ -2138,6 +2139,57 @@ std::string vtkExtMisc::GetSurfaceValues(vtkPolyData *pd, const std::string& sep
 		ost << " 95% fractile: " << spa << frac95 << sep;
 		ost << sep;
 	}
+	// ost << "Point data number of arrays: " << pd->GetPointData()->GetNumberOfArrays() << sep;
+
+	scalars = vtkDoubleArray::SafeDownCast(pd->GetCellData()->GetScalars());
+	if (!scalars)
+	{
+		if (pd->GetCellData()->GetScalars() && pd->GetCellData()->GetScalars()->GetNumberOfComponents() == 3)
+		{
+			ost << "Cell scalars: 3 component scalars - probably RGB" << sep;
+		}
+		else if (pd->GetCellData()->GetScalars())
+		{
+			ost << "Cell scalars: " << pd->GetCellData()->GetScalars()->GetNumberOfComponents() << " component scalars" << sep;
+		}
+		else
+			ost << "No cell scalars" << sep;
+	}
+	else
+	{
+		std::vector<double> scals(pd->GetNumberOfPoints());
+
+		for (int i = 0; i < pd->GetNumberOfPoints(); i++)
+		{
+			scals[i] = scalars->GetValue(i);
+		}
+
+		double frac05 = 0;
+		double frac95 = 0;
+		double median = 0;
+		double mean = 0;
+		double sdev = 0;
+		double minScal = 0;
+		double maxScal = 0;
+		CGeneralUtils::MeanAndSdev(scals, mean, sdev);
+		CGeneralUtils::MinMax(scals, minScal, maxScal);
+		CGeneralUtils::Median(scals, 0.05, frac05);
+		CGeneralUtils::Median(scals, 0.95, frac95);
+		CGeneralUtils::Median(scals, 0.50, median);
+		double RMS = CGeneralUtils::RMS(scals);
+
+		ost << "Cell scalars:" << sep;
+		ost << " Min: " << spa << minScal << sep;
+		ost << " Max: " << spa << maxScal << sep;
+		ost << " Average: " << spa << mean << sep;
+		ost << " Sdev: " << spa << sdev << sep;
+		ost << " Median: " << spa << median << sep;
+		ost << " RMS: " << spa << RMS << sep;
+		ost << " 5% fractile: " << spa << frac05 << sep;
+		ost << " 95% fractile: " << spa << frac95 << sep;
+		ost << sep;
+	}
+	//ost << "Cell data number of arrays: " << pd->GetCellData()->GetNumberOfArrays() << sep;
 
 	vtkDataArray* norms = pd->GetPointData()->GetNormals();
 	if (norms)
@@ -2171,6 +2223,60 @@ std::string vtkExtMisc::GetSurfaceValues(vtkPolyData *pd, const std::string& sep
 		<< "(" << bounds[0] << ", " << bounds[1] << ", " << bounds[2] << ", " 
 		<< bounds[3] << ", " << bounds[4] << ", " << bounds[5] << ")" << sep;
 	ost << "Bounding box volume: " << spa << volume << sep;
+	ost << sep;
+
+	typedef std::map<int, int> CellContainer;
+	CellContainer cellMap;
+	for (int i = 0; i < pd->GetNumberOfCells(); i++)
+	{
+		cellMap[pd->GetCellType(i)]++;
+	}
+
+	ost << "Contains cell types:" << sep;
+	CellContainer::const_iterator it = cellMap.begin();
+	while (it != cellMap.end())
+	{
+		ost << "\t" << vtkCellTypes::GetClassNameFromTypeId(it->first) << " occurs "
+			<< it->second << " times." << sep;
+		++it;
+	}
+
+	// Now check for point data
+	vtkPointData* pdata = pd->GetPointData();
+	if (pdata)
+	{
+		ost << "Contains point data with " << pdata->GetNumberOfArrays() << " arrays."
+			<< sep;
+		for (int i = 0; i < pdata->GetNumberOfArrays(); i++)
+		{
+			ost << "\tArray " << i << " is named "
+				<< (pdata->GetArrayName(i) ? pdata->GetArrayName(i) : "NULL") << sep;
+		}
+	}
+	// Now check for cell data
+	vtkCellData* cd = pd->GetCellData();
+	if (cd)
+	{
+		ost << "Contains cell data with " << cd->GetNumberOfArrays() << " arrays."
+			<< sep;
+		for (int i = 0; i < cd->GetNumberOfArrays(); i++)
+		{
+			ost << "\tArray " << i << " is named "
+				<< (cd->GetArrayName(i) ? cd->GetArrayName(i) : "NULL") << sep;
+		}
+	}
+	// Now check for field data
+	if (pd->GetFieldData())
+	{
+		ost << "Contains field data with " << pd->GetFieldData()->GetNumberOfArrays()
+			<< " arrays." << sep;
+		for (int i = 0; i < pd->GetFieldData()->GetNumberOfArrays(); i++)
+		{
+			ost << "\tArray " << i << " is named "
+				<< pd->GetFieldData()->GetArray(i)->GetName() << sep;
+		}
+	}
+	ost << sep;
 
 	return ost.str();
 }
