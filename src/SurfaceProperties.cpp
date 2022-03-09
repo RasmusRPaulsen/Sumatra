@@ -386,8 +386,6 @@ bool CSurfaceProperties::ReadTexture(const std::string& fname)
 		return true;
 	}
 
-
-
 	return true;
 }
 

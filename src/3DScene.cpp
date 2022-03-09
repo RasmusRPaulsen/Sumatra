@@ -1402,6 +1402,12 @@ void C3DScene::ComputeFeatureEdges(unsigned int SourceID, bool boundary, bool no
 	surfProbs->InitialiseSurface(FeatureEdges);
 	surfProbs->m_shortname = name.str();
 
+	// TODO: Check if this is correct
+	//surfProbs->m_mapper->SetScalarModeToUseCellFieldData();
+	//surfProbs->m_mapper->SetLookupTable(surfProbs->m_lookup);
+	//surfProbs->m_mapper->SetScalarVisibility(true);
+	//surfProbs->m_mapper->SelectColorArray(0);
+
 	AddSurfaceToRenderer(surfProbs);
 	FeatureEdges->Delete();
 }
