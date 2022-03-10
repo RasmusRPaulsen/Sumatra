@@ -35,7 +35,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     statusBar()->showMessage(statusMessage);
 
-    setWindowTitle(tr("Sumatra (Qt) ") + tr(SUMATRA_VERSION));
+    setWindowTitle(tr("Sumatra (Qt) ") + tr(SUMATRA_VERSION) + tr(" (build: ") 
+        + tr(__DATE__) + " " + tr(__TIME__) + tr(")"));
 
     setAcceptDrops(true);
 

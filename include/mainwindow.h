@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#define SUMATRA_VERSION "0.0.1"
+#define SUMATRA_VERSION "0.1.0"
 
 #include <QMainWindow>
 #include <QDragEnterEvent>
