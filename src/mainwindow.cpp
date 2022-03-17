@@ -18,6 +18,7 @@
 #include "manipulateobjectdlg.h"
 #include "savefiledlg.h"
 #include "featureedgesdlg.h"
+#include "connectivitydlg.h"
 #include "SumatraSettings.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -178,6 +179,18 @@ void MainWindow::visualizeFeatureEdges()
         }
     }
 }
+
+
+void MainWindow::computeConnectivity()
+{
+    ConnectivityDlg dlg;
+    dlg.Set3DScene(ui->sceneWidget->get3DScene());
+
+    if (dlg.exec())
+    {
+    }
+}
+
 
 void MainWindow::showOpenFileDialog()
 {
@@ -347,6 +360,10 @@ void MainWindow::createActions()
     visualizeFeatureEdgesAct->setStatusTip(tr("Visualize feature edges"));
     connect(visualizeFeatureEdgesAct, &QAction::triggered, this, &MainWindow::visualizeFeatureEdges);
 
+    computeConnectivityAct = new QAction(tr("Compute &connectivity"), this);
+    computeConnectivityAct->setStatusTip(tr("Compute mesh connectivity"));
+    connect(computeConnectivityAct, &QAction::triggered, this, &MainWindow::computeConnectivity);
+
     optionsObjectPropAct = new QAction(tr("Object &Properties"), this);
     optionsObjectPropAct->setStatusTip(tr("View and modify object properties"));
     connect(optionsObjectPropAct, &QAction::triggered, this, &MainWindow::showObjectProperties);
@@ -398,6 +415,7 @@ void MainWindow::createMenus()
     fileMenu->addAction(ProcessComputeNormalsAct);
     fileMenu->addAction(visualizeNormalsAct);
     fileMenu->addAction(visualizeFeatureEdgesAct);
+    fileMenu->addAction(computeConnectivityAct);
 
     fileMenu = menuBar()->addMenu(tr("&Manipulate"));
     fileMenu->addAction(CutWithPlaneAct);
@@ -419,6 +437,7 @@ void MainWindow::updateEnabledActions()
     ProcessComputeNormalsAct->setEnabled(anyObjects);
     visualizeNormalsAct->setEnabled(anyObjects);
     visualizeFeatureEdgesAct->setEnabled(anyObjects);
+    computeConnectivityAct->setEnabled(anyObjects);
     CutWithPlaneAct->setEnabled(anyObjects);
     undoManipulateAct->setEnabled(anyObjects);
     annotateWithSphereAct->setEnabled(anyObjects);

@@ -40,6 +40,7 @@ private slots:
     void setMarkerSphereValue();
     void visualizeNormals();
     void visualizeFeatureEdges();
+    void computeConnectivity();
 
 protected:
     void dropEvent(QDropEvent* event);
@@ -76,6 +77,7 @@ private:
     QAction* setMarkerSphereValueAct;
     QAction* visualizeNormalsAct;
     QAction* visualizeFeatureEdgesAct;
+    QAction* computeConnectivityAct;
 };
 
 #endif // MAINWINDOW_H
