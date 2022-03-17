@@ -44,6 +44,9 @@
        <property name="text">
         <string>Largest region</string>
        </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
        <attribute name="buttonGroup">
         <string notr="true">buttonGroup</string>
        </attribute>
@@ -91,17 +94,34 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="scalarMinSpn"/>
+      <widget class="QDoubleSpinBox" name="scalarMinSpn">
+       <property name="minimum">
+        <double>-100000000.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>100000000.000000000000000</double>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
         <string>-</string>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="ScalarMaxSpin"/>
+      <widget class="QDoubleSpinBox" name="scalarMaxSpn">
+       <property name="minimum">
+        <double>-100000000.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>100000000.000000000000000</double>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QCheckBox" name="fullScalarConnectivityBtn">
@@ -125,13 +145,43 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="pointXSpn"/>
+      <widget class="QDoubleSpinBox" name="pointXSpn">
+       <property name="decimals">
+        <number>5</number>
+       </property>
+       <property name="minimum">
+        <double>-100000000.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>100000000.000000000000000</double>
+       </property>
+      </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="pointYSpn"/>
+      <widget class="QDoubleSpinBox" name="pointYSpn">
+       <property name="decimals">
+        <number>5</number>
+       </property>
+       <property name="minimum">
+        <double>-100000000.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>100000000.000000000000000</double>
+       </property>
+      </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="PointZSpn"/>
+      <widget class="QDoubleSpinBox" name="pointZSpn">
+       <property name="decimals">
+        <number>5</number>
+       </property>
+       <property name="minimum">
+        <double>-100000000.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>100000000.000000000000000</double>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

@@ -1448,7 +1448,8 @@ void C3DScene::SubdivideSurface(unsigned int SourceID, bool ReplaceSurface, int 
 	subdiv->Delete();
 }
 
-void C3DScene::Connectivity(unsigned int SourceID, bool ReplaceSurface, int RegionType)
+void C3DScene::Connectivity(unsigned int SourceID, bool ReplaceSurface, int RegionType, double* scalarRange, bool fullScalarMode,
+	double* point)
 {
 	if (SourceID >= m_Surfaces.size())
 	{
@@ -3129,6 +3130,10 @@ std::string C3DScene::PickPointAndGetText( double x, double y )
 			double p[3];
 			pact->GetMapper()->GetInput()->GetPoint(id, p);
 
+			m_pickedPointPosition[0] = p[0];
+			m_pickedPointPosition[1] = p[1];
+			m_pickedPointPosition[2] = p[2];
+
 			m_PickSphereActor->SetPosition(p);
 			m_PickSphereActor->SetVisibility(1);
 
@@ -3458,6 +3463,11 @@ void C3DScene::SetScalarLookupTableNum( int num )
 void C3DScene::SetBackgroundColor( int R, int G, int B )
 {
 	m_Renderer->SetBackground(R, G, B);
+}
+
+double* C3DScene::getLastPickedPoint()
+{
+	return m_pickedPointPosition;
 }
 
 void C3DScene::SetSphereWidgetRadius( double val )

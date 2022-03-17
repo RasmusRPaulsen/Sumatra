@@ -92,7 +92,6 @@ class C3DScene
 		//! Remove normal data from object
 		void RemoveNormals(unsigned int id);
 		
-		
 		//! Returns false if no scalars
 		/** Range is the range of the scalar values in poly data */
 		bool GetSurfaceScalarRange(unsigned int id, double *range);
@@ -173,8 +172,9 @@ class C3DScene
 
 		//! Extract largest connected region
 		/** \param ReplaceSource if true the source surface is replaced with the result 
-		    \param RegionType (0 = all regions, 1 = largest region, 2 = outer region)*/
-		void Connectivity(unsigned int SourceID, bool ReplaceSurface, int RegionType);
+		    \param RegionType (0 = all regions, 1 = largest region, 2 = outer region, 3 = closest point region, 4 = scalar connectivity)*/
+		void Connectivity(unsigned int SourceID, bool ReplaceSurface, int RegionType, double *scalarRange, bool fullScalarMode,
+			double *point);
 
 		//! Subdivide surface
 		/** \param subdivtype 0 = vtkLinearSubdivisionFilter, 1 = vtkButterflySubdivisionFilter,
@@ -313,6 +313,9 @@ class C3DScene
 		//! Set the background color
 		void SetBackgroundColor(int R, int G, int B);
 
+		//! Get position of last picked point
+		double* getLastPickedPoint();
+	
 	private:
 
 		CSumatraSettings* mSettings = NULL;
@@ -391,6 +394,9 @@ class C3DScene
 
 		//! Default ID of mirror surface
 		int m_MirrorID;
+
+		// Last picked point position
+		double m_pickedPointPosition[3] = {0, 0, 0};
 
 		C3DScene() {};
 };

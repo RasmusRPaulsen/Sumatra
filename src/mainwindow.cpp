@@ -175,7 +175,6 @@ void MainWindow::visualizeFeatureEdges()
             //ui->sceneWidget->get3DScene()->CalculateNormals(dlg.GetSelectedSurface(), dlg.GetReplaceSource(), dlg.GetFlipNormals(), dlg.GetSplitNormals(),
             //    dlg.GetSplitEdgeAngle());
             forceRendering();
-
         }
     }
 }
@@ -188,6 +187,15 @@ void MainWindow::computeConnectivity()
 
     if (dlg.exec())
     {
+        // void ConnectivityDlg::getValues(bool& replaceSource, int& regionType, double* scalarRange, bool& fullScalarMode, double* point)
+        bool replaceSource = false;
+        int regionType = 0;
+        double scalarRange[2];
+        bool fullScalarMode = false;
+        double p[3];
+        dlg.getValues(replaceSource, regionType, scalarRange, fullScalarMode, p);
+        ui->sceneWidget->get3DScene()->Connectivity(dlg.GetSelectedSurface(), replaceSource, regionType, scalarRange, fullScalarMode, p);
+        forceRendering();
     }
 }
 

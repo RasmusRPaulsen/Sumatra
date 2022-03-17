@@ -18,11 +18,14 @@ public:
 
     void Set3DScene(C3DScene* sc);
 
+    void setPickedPointPosition(double* p);
+
     void PopulateObjectCB();
 
     int GetSelectedSurface();
 
-    void getValues(bool& boundary, bool& nonManifold, bool& manifold, bool& sharp, double& sharpAngle);
+    void getValues(bool& replaceSource, int& regionType, double* scalarRange, bool& fullScalarMode,
+        double* point);
 
 private:
     C3DScene* m3DScene = NULL;
