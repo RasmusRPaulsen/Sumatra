@@ -1457,9 +1457,10 @@ void C3DScene::Connectivity(unsigned int SourceID, bool ReplaceSurface, int Regi
 		return;
 	}
 
+	// All regions
 	if (RegionType == 0)
 	{
-		vtkPolyDataConnectivityFilter *connect = vtkPolyDataConnectivityFilter::New();
+		vtkPolyDataConnectivityFilter* connect = vtkPolyDataConnectivityFilter::New();
 		connect->SetInputData(m_Surfaces[SourceID]->m_polyData);
 		connect->ColorRegionsOff();
 		connect->SetExtractionModeToSpecifiedRegions();
@@ -1474,13 +1475,13 @@ void C3DScene::Connectivity(unsigned int SourceID, bool ReplaceSurface, int Regi
 			connect->InitializeSpecifiedRegionList();
 			connect->AddSpecifiedRegion(i);
 			connect->Update();
-			vtkRemoveUnusedPolyDataPoints *rem = vtkRemoveUnusedPolyDataPoints::New();
+			vtkRemoveUnusedPolyDataPoints* rem = vtkRemoveUnusedPolyDataPoints::New();
 			rem->SetInputConnection(connect->GetOutputPort());
 			rem->Update();
 
 			nn.str("");
 			nn << m_Surfaces[SourceID]->m_shortname << "_connect" << i;
-			CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
+			CSurfaceProperties* surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 			surfProbs->InitialiseSurface(rem->GetOutput());
 			surfProbs->m_shortname = nn.str();
 
@@ -1488,16 +1489,16 @@ void C3DScene::Connectivity(unsigned int SourceID, bool ReplaceSurface, int Regi
 			rem->Delete();
 		}
 		connect->Delete();
-	}
+	} // Largest region
 	else if (RegionType == 1)
 	{
-		vtkPolyDataConnectivityFilter *connect = vtkPolyDataConnectivityFilter::New();
+		vtkPolyDataConnectivityFilter* connect = vtkPolyDataConnectivityFilter::New();
 		connect->SetInputData(m_Surfaces[SourceID]->m_polyData);
 		connect->ColorRegionsOff();
 		connect->SetExtractionModeToLargestRegion();
 		connect->Update();
 
-		vtkRemoveUnusedPolyDataPoints *rem = vtkRemoveUnusedPolyDataPoints::New();
+		vtkRemoveUnusedPolyDataPoints* rem = vtkRemoveUnusedPolyDataPoints::New();
 		rem->SetInputConnection(connect->GetOutputPort());
 		rem->Update();
 
@@ -1508,17 +1509,17 @@ void C3DScene::Connectivity(unsigned int SourceID, bool ReplaceSurface, int Regi
 		else
 		{
 			std::string name = m_Surfaces[SourceID]->m_shortname + "_largestregion";
-			CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
+			CSurfaceProperties* surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 			surfProbs->InitialiseSurface(rem->GetOutput());
 			surfProbs->m_shortname = name;
 			AddSurfaceToRenderer(surfProbs);
 		}
 		connect->Delete();
 		rem->Delete();
-	}	
+	}	// Outmost region
 	else if (RegionType == 2)
 	{
-		vtkPolyData *con = vtkPolyData::New();
+		vtkPolyData* con = vtkPolyData::New();
 		CProcess3DData::ExtractOuterSurface(m_Surfaces[SourceID]->m_polyData, con);
 
 		if (ReplaceSurface)
@@ -1528,15 +1529,44 @@ void C3DScene::Connectivity(unsigned int SourceID, bool ReplaceSurface, int Regi
 		else
 		{
 			std::string name = m_Surfaces[SourceID]->m_shortname + "_outersurface";
-			CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
+			CSurfaceProperties* surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 			surfProbs->InitialiseSurface(con);
 			surfProbs->m_shortname = name;
 			AddSurfaceToRenderer(surfProbs);
 		}
 		con->Delete();
 	}
-}
+	else if (RegionType == 4)
+	{
+		vtkPolyDataConnectivityFilter* connect = vtkPolyDataConnectivityFilter::New();
+		connect->SetInputData(m_Surfaces[SourceID]->m_polyData);
+		connect->ColorRegionsOff();
+		connect->SetScalarConnectivity(true);
+		connect->SetScalarRange(scalarRange);
+		connect->SetFullScalarConnectivity(fullScalarMode);
+		connect->Update();
 
+		vtkRemoveUnusedPolyDataPoints* rem = vtkRemoveUnusedPolyDataPoints::New();
+		rem->SetInputConnection(connect->GetOutputPort());
+		rem->Update();
+
+		if (ReplaceSurface)
+		{
+			m_Surfaces[SourceID]->m_polyData->DeepCopy(rem->GetOutput());
+		}
+		else
+		{
+			std::string name = m_Surfaces[SourceID]->m_shortname + "_scalarRegion_" + std::to_string(scalarRange[0]) +
+				"_" + std::to_string(scalarRange[1]);
+			CSurfaceProperties* surfProbs = new CSurfaceProperties(m_lookup, mSettings);
+			surfProbs->InitialiseSurface(rem->GetOutput());
+			surfProbs->m_shortname = name;
+			AddSurfaceToRenderer(surfProbs);
+		}
+		connect->Delete();
+		rem->Delete();
+	}
+}
 
 void C3DScene::CalculateMRFSurface( unsigned int SourceID, bool ReplaceSurface, bool RecomputeNorms, int priortype, 
 	bool LargestCliqueOnly, bool MarchingCubes, bool ConComp, int InputType, int NumberOfPoints, int PPerNormal, int PPerDistance, double TriangleSizeFactor, bool UseTargetEdgeLengths )
