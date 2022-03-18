@@ -1536,7 +1536,35 @@ void C3DScene::Connectivity(unsigned int SourceID, bool ReplaceSurface, int Regi
 		}
 		con->Delete();
 	}
-	else if (RegionType == 4)
+	else if (RegionType == 3) // closest point region
+	{
+		vtkPolyDataConnectivityFilter* connect = vtkPolyDataConnectivityFilter::New();
+		connect->SetInputData(m_Surfaces[SourceID]->m_polyData);
+		connect->ColorRegionsOff();
+		connect->SetExtractionModeToClosestPointRegion();
+		connect->SetClosestPoint(point);
+		connect->Update();
+
+		vtkRemoveUnusedPolyDataPoints* rem = vtkRemoveUnusedPolyDataPoints::New();
+		rem->SetInputConnection(connect->GetOutputPort());
+		rem->Update();
+
+		if (ReplaceSurface)
+		{
+			m_Surfaces[SourceID]->m_polyData->DeepCopy(rem->GetOutput());
+		}
+		else
+		{
+			std::string name = m_Surfaces[SourceID]->m_shortname + "_closestPointRegion";
+			CSurfaceProperties* surfProbs = new CSurfaceProperties(m_lookup, mSettings);
+			surfProbs->InitialiseSurface(rem->GetOutput());
+			surfProbs->m_shortname = name;
+			AddSurfaceToRenderer(surfProbs);
+		}
+		connect->Delete();
+		rem->Delete();
+	}
+	else if (RegionType == 4) // scalar connectivity
 	{
 		vtkPolyDataConnectivityFilter* connect = vtkPolyDataConnectivityFilter::New();
 		connect->SetInputData(m_Surfaces[SourceID]->m_polyData);

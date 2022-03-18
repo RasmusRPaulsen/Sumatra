@@ -419,11 +419,10 @@ void MainWindow::createMenus()
     fileMenu->addAction(showAxesAct);
     fileMenu->addAction(showScalarBarAct);
 
-    fileMenu = menuBar()->addMenu(tr("&Process"));
-    fileMenu->addAction(ProcessComputeNormalsAct);
-    fileMenu->addAction(visualizeNormalsAct);
-    fileMenu->addAction(visualizeFeatureEdgesAct);
-    fileMenu->addAction(computeConnectivityAct);
+
+    fileMenu = menuBar()->addMenu(tr("&Options"));
+    fileMenu->addAction(optionsObjectPropAct);
+    fileMenu->addAction(ChooseBackgroundColorAct);
 
     fileMenu = menuBar()->addMenu(tr("&Manipulate"));
     fileMenu->addAction(CutWithPlaneAct);
@@ -431,9 +430,11 @@ void MainWindow::createMenus()
     fileMenu->addAction(annotateWithSphereAct);
     fileMenu->addAction(setMarkerSphereValueAct);
 
-    fileMenu = menuBar()->addMenu(tr("&Options"));
-    fileMenu->addAction(optionsObjectPropAct);
-    fileMenu->addAction(ChooseBackgroundColorAct);
+    fileMenu = menuBar()->addMenu(tr("&Process"));
+    fileMenu->addAction(ProcessComputeNormalsAct);
+    fileMenu->addAction(visualizeNormalsAct);
+    fileMenu->addAction(visualizeFeatureEdgesAct);
+    fileMenu->addAction(computeConnectivityAct);
 
     updateEnabledActions();
 }
