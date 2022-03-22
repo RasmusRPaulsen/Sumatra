@@ -2488,12 +2488,16 @@ void C3DScene::FindClosestPoints(unsigned int SourceID, unsigned int TargetID,bo
 }
 
 
-void C3DScene::CreateCube(double XLength, double YLength, double ZLength)
+void C3DScene::CreateCube(double XLength, double YLength, double ZLength, double *pos)
 {
 	vtkCubeSource *Cube = vtkCubeSource::New();
 	 Cube->SetXLength(XLength);
 	 Cube->SetYLength(YLength);
 	 Cube->SetZLength(ZLength);
+	 if (pos)
+	 {
+		 Cube->SetCenter(pos);
+	 }
 	 Cube->Update();
 
 	std::ostringstream name;

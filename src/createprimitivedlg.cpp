@@ -43,3 +43,14 @@ void CreatePrimitiveDlg::getSphereParameters(double& r, double& phiStart, double
     center[1] = ui->centerYSpn->value();
     center[2] = ui->centerZSpn->value();
 }
+
+void CreatePrimitiveDlg::getCubeParameters(double* size, double* center)
+{
+    size[0] = ui->cubeXLengthSpn->value();
+    size[1] = ui->cubeYLengthSpn->value();
+    size[2] = ui->cubeZLengthSpn->value();
+
+    center[0] = ui->centerXSpn->value();
+    center[1] = ui->centerYSpn->value();
+    center[2] = ui->centerZSpn->value();
+}

@@ -23,6 +23,8 @@ public:
 	void getSphereParameters(double &r, double &phiStart, double &phiEnd, double &thetaStart, double &thetaEnd,
 		int &phiRes, int &thetaRes, double *center);
 
+    void getCubeParameters(double *size, double* center);
+
 private:
     Ui::CreatePrimitiveDlg *ui;
 };

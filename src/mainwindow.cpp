@@ -222,6 +222,14 @@ void MainWindow::createPrimitive()
             dlg.getSphereParameters(r, phiStart, phiEnd, thetaStart, thetaEnd, phiRes, thetaRes, center);
             ui->sceneWidget->get3DScene()->CreateSphere(r, thetaStart, thetaEnd, phiStart, phiEnd, thetaRes, phiRes, center);
         }
+        else if (primitiveType == 1)
+        {
+            double size[3];
+            double center[3];
+            dlg.getCubeParameters(size, center);
+
+            ui->sceneWidget->get3DScene()->CreateCube(size[0], size[1], size[2], center);
+        }
 
         //// void ConnectivityDlg::getValues(bool& replaceSource, int& regionType, double* scalarRange, bool& fullScalarMode, double* point)
         //bool replaceSource = false;

@@ -240,7 +240,7 @@ class C3DScene
 		void CreateCylinder(double radius, double height, int resolution, bool capping);
 
 		//! Create a cube
-		void CreateCube(double XLength, double YLength, double ZLength);
+		void CreateCube(double XLength, double YLength, double ZLength, double *pos = NULL);
 
 		//! Create a trapezoid
 		void CreateTrapezoid(double XLength, double YLength, double ZLength, double alpha, double beta, bool capping);
