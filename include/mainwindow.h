@@ -41,6 +41,7 @@ private slots:
     void visualizeNormals();
     void visualizeFeatureEdges();
     void computeConnectivity();
+    void createPrimitive();
 
 protected:
     void dropEvent(QDropEvent* event);
@@ -78,6 +79,7 @@ private:
     QAction* visualizeNormalsAct;
     QAction* visualizeFeatureEdgesAct;
     QAction* computeConnectivityAct;
+    QAction* createPrimitiveAct;
 };
 
 #endif // MAINWINDOW_H

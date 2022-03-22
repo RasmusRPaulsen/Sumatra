@@ -20,6 +20,7 @@
 #include "featureedgesdlg.h"
 #include "connectivitydlg.h"
 #include "SumatraSettings.h"
+#include "createprimitivedlg.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -197,6 +198,26 @@ void MainWindow::computeConnectivity()
         ui->sceneWidget->get3DScene()->Connectivity(dlg.GetSelectedSurface(), replaceSource, regionType, scalarRange, fullScalarMode, p);
         forceRendering();
     }
+}
+
+void MainWindow::createPrimitive()
+{
+    CreatePrimitiveDlg dlg;
+    //dlg.Set3DScene(ui->sceneWidget->get3DScene());
+
+    if (dlg.exec())
+    {
+        //// void ConnectivityDlg::getValues(bool& replaceSource, int& regionType, double* scalarRange, bool& fullScalarMode, double* point)
+        //bool replaceSource = false;
+        //int regionType = 0;
+        //double scalarRange[2];
+        //bool fullScalarMode = false;
+        //double p[3];
+        //dlg.getValues(replaceSource, regionType, scalarRange, fullScalarMode, p);
+        //ui->sceneWidget->get3DScene()->Connectivity(dlg.GetSelectedSurface(), replaceSource, regionType, scalarRange, fullScalarMode, p);
+        forceRendering();
+    }
+
 }
 
 
@@ -407,6 +428,10 @@ void MainWindow::createActions()
     showScalarBarAct->setCheckable(true);
     showScalarBarAct->setStatusTip(tr("Show Scalar Bar"));
     connect(showScalarBarAct, &QAction::triggered, this, &MainWindow::showScalarBar);
+
+    createPrimitiveAct = new QAction(tr("Create &Primitive"), this);
+    createPrimitiveAct->setStatusTip(tr("Create geometric primitive"));
+    connect(createPrimitiveAct, &QAction::triggered, this, &MainWindow::createPrimitive);
 }
 
 void MainWindow::createMenus()
@@ -419,6 +444,8 @@ void MainWindow::createMenus()
     fileMenu->addAction(showAxesAct);
     fileMenu->addAction(showScalarBarAct);
 
+    fileMenu = menuBar()->addMenu(tr("&Create"));
+    fileMenu->addAction(createPrimitiveAct);
 
     fileMenu = menuBar()->addMenu(tr("&Options"));
     fileMenu->addAction(optionsObjectPropAct);
