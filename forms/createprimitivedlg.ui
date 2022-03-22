@@ -97,7 +97,7 @@
           <double>360.000000000000000</double>
          </property>
          <property name="value">
-          <double>360.000000000000000</double>
+          <double>180.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -123,7 +123,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="spinBox_2">
+        <widget class="QSpinBox" name="spherePhiResSpn">
          <property name="maximum">
           <number>500</number>
          </property>
@@ -144,7 +144,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="spinBox">
+        <widget class="QSpinBox" name="sphereThetaResSpn">
          <property name="maximum">
           <number>500</number>
          </property>

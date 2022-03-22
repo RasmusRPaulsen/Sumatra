@@ -15,6 +15,14 @@ public:
     explicit CreatePrimitiveDlg(QWidget *parent = nullptr);
     ~CreatePrimitiveDlg();
 
+    void setPickedPointPosition(double* p);
+
+    //! 0: Sphere, 1: cube
+    int getPrimitiveType();
+
+	void getSphereParameters(double &r, double &phiStart, double &phiEnd, double &thetaStart, double &thetaEnd,
+		int &phiRes, int &thetaRes, double *center);
+
 private:
     Ui::CreatePrimitiveDlg *ui;
 };

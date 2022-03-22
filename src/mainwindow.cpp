@@ -203,10 +203,26 @@ void MainWindow::computeConnectivity()
 void MainWindow::createPrimitive()
 {
     CreatePrimitiveDlg dlg;
-    //dlg.Set3DScene(ui->sceneWidget->get3DScene());
+    dlg.setPickedPointPosition(ui->sceneWidget->get3DScene()->getLastPickedPoint());
+    //dlg.Set3DScene(ui->sceneWidget->get3DScene();
 
     if (dlg.exec())
     {
+        int primitiveType = dlg.getPrimitiveType();
+        if (primitiveType == 0)
+        {
+            double r = 1;
+            double phiStart = 0;
+            double phiEnd = 180;
+            double thetaStart = 0;
+            double thetaEnd = 360;
+            int phiRes = 50;
+            int thetaRes = 50;
+            double center[3];
+            dlg.getSphereParameters(r, phiStart, phiEnd, thetaStart, thetaEnd, phiRes, thetaRes, center);
+            ui->sceneWidget->get3DScene()->CreateSphere(r, thetaStart, thetaEnd, phiStart, phiEnd, thetaRes, phiRes, center);
+        }
+
         //// void ConnectivityDlg::getValues(bool& replaceSource, int& regionType, double* scalarRange, bool& fullScalarMode, double* point)
         //bool replaceSource = false;
         //int regionType = 0;
