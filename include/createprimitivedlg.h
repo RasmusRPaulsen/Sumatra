@@ -25,6 +25,8 @@ public:
 
     void getCubeParameters(double *size, double* center);
 
+    void getCylinderParameters(double& r, double& h, int& res, bool& capped, double* center);
+
 private:
     Ui::CreatePrimitiveDlg *ui;
 };

@@ -230,15 +230,17 @@ void MainWindow::createPrimitive()
 
             ui->sceneWidget->get3DScene()->CreateCube(size[0], size[1], size[2], center);
         }
+        else if (primitiveType == 2)
+        {
+            double center[3];
+            double r = 1;
+            double h = 1;
+            int res = 50;
+            bool capped = false;
+            dlg.getCylinderParameters(r, h, res, capped,center);
 
-        //// void ConnectivityDlg::getValues(bool& replaceSource, int& regionType, double* scalarRange, bool& fullScalarMode, double* point)
-        //bool replaceSource = false;
-        //int regionType = 0;
-        //double scalarRange[2];
-        //bool fullScalarMode = false;
-        //double p[3];
-        //dlg.getValues(replaceSource, regionType, scalarRange, fullScalarMode, p);
-        //ui->sceneWidget->get3DScene()->Connectivity(dlg.GetSelectedSurface(), replaceSource, regionType, scalarRange, fullScalarMode, p);
+            ui->sceneWidget->get3DScene()->CreateCylinder(r, h, res, capped, center);
+        }
         forceRendering();
     }
 

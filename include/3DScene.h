@@ -237,7 +237,7 @@ class C3DScene
 		void InitialiseSphereWidget(vtkRenderWindowInteractor *interactor, unsigned int objID);
 
 		//! Create a cylinder
-		void CreateCylinder(double radius, double height, int resolution, bool capping);
+		void CreateCylinder(double radius, double height, int resolution, bool capping, double* pos = NULL);
 
 		//! Create a cube
 		void CreateCube(double XLength, double YLength, double ZLength, double *pos = NULL);

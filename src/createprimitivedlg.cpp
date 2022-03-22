@@ -26,6 +26,8 @@ int CreatePrimitiveDlg::getPrimitiveType()
         return 0;
     else if (ui->cubeBtn->isChecked())
         return 1;
+    else if (ui->cylinderBtn->isChecked())
+        return 2;
     return 0; // Sphere as default
 }
 
@@ -49,6 +51,18 @@ void CreatePrimitiveDlg::getCubeParameters(double* size, double* center)
     size[0] = ui->cubeXLengthSpn->value();
     size[1] = ui->cubeYLengthSpn->value();
     size[2] = ui->cubeZLengthSpn->value();
+
+    center[0] = ui->centerXSpn->value();
+    center[1] = ui->centerYSpn->value();
+    center[2] = ui->centerZSpn->value();
+}
+
+void CreatePrimitiveDlg::getCylinderParameters(double& r, double& h, int& res, bool &capped, double* center)
+{
+    r = ui->cylinderRadiusSpn->value();
+    h = ui->cylinderLengthSpn->value();
+    res = ui->cylinderResSpn->value();
+    capped = ui->cylinderCappedChk->isChecked();
 
     center[0] = ui->centerXSpn->value();
     center[1] = ui->centerYSpn->value();

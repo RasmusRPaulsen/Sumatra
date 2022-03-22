@@ -2568,13 +2568,15 @@ void C3DScene::CreateSphere(double radius, double startTheta, double endTheta, d
 }
 
 
-void C3DScene::CreateCylinder(double radius, double height, int resolution, bool capping)
+void C3DScene::CreateCylinder(double radius, double height, int resolution, bool capping, double *pos)
 {
 	vtkCylinderSource *cylinder = vtkCylinderSource::New();
 	 cylinder->SetRadius(radius);
 	 cylinder->SetHeight(height);
 	 cylinder->SetCapping(capping);
 	 cylinder->SetResolution(resolution);
+	 if (pos)
+		 cylinder->SetCenter(pos);
 	 cylinder->Update();
 
 	std::ostringstream name;

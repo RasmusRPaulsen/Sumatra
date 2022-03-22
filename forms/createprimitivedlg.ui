@@ -6,51 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>856</width>
-    <height>319</height>
+    <width>812</width>
+    <height>260</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
+  <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="4">
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Longitude angle (theta) from:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QDoubleSpinBox" name="sphereThetaStartSpn">
-         <property name="maximum">
-          <double>360.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>to:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QDoubleSpinBox" name="sphereThetaEndSpn">
-         <property name="maximum">
-          <double>360.000000000000000</double>
-         </property>
-         <property name="value">
-          <double>360.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
+    <layout class="QGridLayout" name="gridLayout_2">
      <item row="0" column="0">
       <widget class="QRadioButton" name="sphereBtn">
        <property name="text">
@@ -62,36 +27,81 @@
       </widget>
      </item>
      <item row="0" column="1" colspan="2">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Radius</string>
-       </property>
-      </widget>
+      <layout class="QFormLayout" name="formLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Radius</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QDoubleSpinBox" name="sphereRadiusSpn">
+         <property name="maximum">
+          <double>1000000000.000000000000000</double>
+         </property>
+         <property name="value">
+          <double>1.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
-     <item row="1" column="4">
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <item>
+     <item row="0" column="3" rowspan="2">
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="1" column="0">
         <widget class="QLabel" name="label_4">
          <property name="text">
           <string>Latitude angle (phi) from:</string>
          </property>
         </widget>
        </item>
-       <item>
+       <item row="1" column="2">
         <widget class="QDoubleSpinBox" name="spherePhiStartSpn">
          <property name="maximum">
           <double>360.000000000000000</double>
          </property>
         </widget>
        </item>
-       <item>
+       <item row="1" column="4">
         <widget class="QLabel" name="label_5">
          <property name="text">
           <string>to:</string>
          </property>
         </widget>
        </item>
-       <item>
+       <item row="0" column="0" colspan="2">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Longitude angle (theta) from:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QDoubleSpinBox" name="sphereThetaStartSpn">
+         <property name="maximum">
+          <double>360.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="4">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>to:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="5">
+        <widget class="QDoubleSpinBox" name="sphereThetaEndSpn">
+         <property name="maximum">
+          <double>360.000000000000000</double>
+         </property>
+         <property name="value">
+          <double>360.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="5">
         <widget class="QDoubleSpinBox" name="spherePhiEndSpn">
          <property name="maximum">
           <double>360.000000000000000</double>
@@ -102,16 +112,6 @@
         </widget>
        </item>
       </layout>
-     </item>
-     <item row="0" column="3">
-      <widget class="QDoubleSpinBox" name="sphereRadiusSpn">
-       <property name="maximum">
-        <double>1000000000.000000000000000</double>
-       </property>
-       <property name="value">
-        <double>1.000000000000000</double>
-       </property>
-      </widget>
      </item>
      <item row="1" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -134,7 +134,7 @@
        </item>
       </layout>
      </item>
-     <item row="1" column="3">
+     <item row="1" column="2">
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
         <widget class="QLabel" name="label_6">
@@ -158,6 +158,13 @@
     </layout>
    </item>
    <item row="1" column="0">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_7">
      <item>
       <widget class="QRadioButton" name="cubeBtn">
@@ -232,7 +239,93 @@
      </item>
     </layout>
    </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_8">
+     <item>
+      <widget class="QRadioButton" name="cylinderBtn">
+       <property name="text">
+        <string>Cylinder</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_12">
+       <property name="text">
+        <string>Radius</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="cylinderRadiusSpn">
+       <property name="maximum">
+        <double>1000000000.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_13">
+       <property name="text">
+        <string>Height</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="cylinderLengthSpn">
+       <property name="minimum">
+        <double>0.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>100000000000.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_14">
+       <property name="text">
+        <string>Resolution:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="cylinderResSpn">
+       <property name="maximum">
+        <number>500</number>
+       </property>
+       <property name="value">
+        <number>50</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="cylinderCappedChk">
+       <property name="text">
+        <string>Capped</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="5" column="0">
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
       <widget class="QLabel" name="label_8">
@@ -273,7 +366,7 @@
      </item>
     </layout>
    </item>
-   <item row="3" column="0">
+   <item row="7" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
