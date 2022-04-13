@@ -246,6 +246,21 @@ void MainWindow::createPrimitive()
 
 }
 
+void MainWindow::exportScene()
+{
+    std::string extFilt = "Wavefront OBJ (*.obj);; RenderMan RIB (*.rib);; VRML 2.0 (*.wrl);; Single VTP (*.vtp);; All Files (*.*)";
+
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
+        tr(""), tr(extFilt.c_str()));
+
+    if (fileName != "")
+    {
+        bool result = ui->sceneWidget->ExportSceneToFile(fileName.toStdString());
+
+        if (!result)
+            QMessageBox::warning(this, "Warning", "Could not export scene to file");
+    }
+}
 
 void MainWindow::showOpenFileDialog()
 {
@@ -403,6 +418,10 @@ void MainWindow::createActions()
     saveFileAct->setStatusTip(tr("Save file"));
     connect(saveFileAct, &QAction::triggered, this, &MainWindow::showSaveFileDialog);
 
+    exportSceneAct = new QAction(tr("&Export scene"), this);
+    exportSceneAct->setStatusTip(tr("Export scene file"));
+    connect(exportSceneAct, &QAction::triggered, this, &MainWindow::exportScene);
+
     ProcessComputeNormalsAct = new QAction(tr("&Compute normals"), this);
     ProcessComputeNormalsAct->setStatusTip(tr("Compute surface normals"));
     connect(ProcessComputeNormalsAct, &QAction::triggered, this, &MainWindow::processComputeNormals);
@@ -465,6 +484,7 @@ void MainWindow::createMenus()
     fileMenu = menuBar()->addMenu(tr("&File"));
     fileMenu->addAction(openAct);
     fileMenu->addAction(saveFileAct);
+    fileMenu->addAction(exportSceneAct);
 
     fileMenu = menuBar()->addMenu(tr("&View"));
     fileMenu->addAction(showAxesAct);

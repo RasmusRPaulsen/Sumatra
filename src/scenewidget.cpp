@@ -7,8 +7,13 @@
 #include <vtkGenericOpenGLRenderWindow.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkOBJExporter.h>
+#include <vtkRIBExporter.h>
+#include <vtkVRMLExporter.h>
 
 #include <sstream>
+
+#include "GeneralUtils.h"
 
 SceneWidget::SceneWidget(QWidget* parent)
     : QVTKOpenGLNativeWidget(parent)
@@ -46,6 +51,55 @@ void SceneWidget::OpenFile(const std::string& fname)
     m3DScene->ReadFile(fname);
     renderWindow()->Render();
 }
+
+#include <vtkSingleVTPExporter.h>
+
+bool SceneWidget::ExportSceneToFile(const std::string& fname)
+{
+    std::string ext = CGeneralUtils::GetExtensionFromFilename(fname);
+    std::string prefix = CGeneralUtils::StripExtensionFromFilename(fname);
+
+    bool result = true;
+    if (ext == "obj")
+    {
+        vtkOBJExporter* writer = vtkOBJExporter::New();
+        writer->SetRenderWindow(renderWindow());
+        writer->SetFilePrefix(prefix.c_str());
+        writer->Write();
+        writer->Delete();
+    }
+    else if (ext == "rib")
+    {
+        vtkRIBExporter* writer = vtkRIBExporter::New();
+        writer->SetRenderWindow(renderWindow());
+        writer->SetFilePrefix(prefix.c_str());
+        writer->Write();
+        writer->Delete();
+    }
+    else if (ext == "wrl")
+    {
+        vtkVRMLExporter* writer = vtkVRMLExporter::New();
+        writer->SetRenderWindow(renderWindow());
+        writer->SetFileName(fname.c_str());
+        writer->Write();
+        writer->Delete();
+    }
+    else if (ext == "vtp")
+    {
+        vtkSingleVTPExporter* writer = vtkSingleVTPExporter::New();
+        writer->SetRenderWindow(renderWindow());
+        writer->SetFilePrefix(prefix.c_str());
+        writer->Write();
+        writer->Delete();
+    }
+    else
+    {
+        result = false;
+    }
+
+    return result;
+}
+
 
 C3DScene* SceneWidget::get3DScene()
 {

@@ -20,6 +20,8 @@ public:
 
     void OpenFile(const std::string& fname);
 
+    bool ExportSceneToFile(const std::string& fname);
+
     void ForceRender();
 
     C3DScene* get3DScene();

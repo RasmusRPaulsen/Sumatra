@@ -42,6 +42,7 @@ private slots:
     void visualizeFeatureEdges();
     void computeConnectivity();
     void createPrimitive();
+    void exportScene();
 
 protected:
     void dropEvent(QDropEvent* event);
@@ -67,6 +68,7 @@ private:
     QMenu* optionsMenu;
     QAction* openAct;
     QAction* saveFileAct;
+    QAction* exportSceneAct;
     QAction* ProcessComputeNormalsAct;
     QAction* optionsObjectPropAct;
     QAction* ChooseBackgroundColorAct;
