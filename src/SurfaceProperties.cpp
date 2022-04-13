@@ -286,6 +286,10 @@ void CSurfaceProperties::SetTexture( vtkImageData *tex )
 	// Reset color to pure white
 	m_actor->GetProperty()->SetColor(1,1,1);
 	m_actor->GetProperty()->SetAmbient(1.0);
+	m_actor->GetProperty()->SetSpecularColor(1, 1, 1);
+	m_actor->GetProperty()->SetSpecular(0);
+	m_actor->GetProperty()->SetSpecularPower(0);
+	m_actor->GetProperty()->SetDiffuse(0);
 }
 
 
@@ -308,17 +312,19 @@ bool CSurfaceProperties::ReadTexture(const std::string& fname)
 		textureImage->SetFileName(PNGName.c_str());
 		textureImage->Update();
 
-		m_Texture = vtkTexture::New();
-		m_Texture->SetInterpolate(1);
-		m_Texture->SetInputConnection(textureImage->GetOutputPort());
+		SetTexture(textureImage->GetOutput());
+
+		//m_Texture = vtkTexture::New();
+		//m_Texture->SetInterpolate(1);
+		//m_Texture->SetInputConnection(textureImage->GetOutputPort());
 
 		textureImage->Delete();
 
-		m_actor->SetTexture(m_Texture);
+		//m_actor->SetTexture(m_Texture);
 	
-		// Reset color to pure white
-		m_actor->GetProperty()->SetColor(1,1,1);
-		m_actor->GetProperty()->SetAmbient(1.0);
+		//// Reset color to pure white
+		//m_actor->GetProperty()->SetColor(1,1,1);
+		//m_actor->GetProperty()->SetAmbient(1.0);
 
 		return true;
 	}
@@ -327,18 +333,20 @@ bool CSurfaceProperties::ReadTexture(const std::string& fname)
 		vtkTIFFReader *textureImage = vtkTIFFReader::New();
 		textureImage->SetFileName(TIFName.c_str());
 		textureImage->Update();
-
-		m_Texture = vtkTexture::New();
-		m_Texture->SetInterpolate(1);
-		m_Texture->SetInputConnection(textureImage->GetOutputPort());
-
+		SetTexture(textureImage->GetOutput());
 		textureImage->Delete();
 
-		m_actor->SetTexture(m_Texture);
+		//m_Texture = vtkTexture::New();
+		//m_Texture->SetInterpolate(1);
+		//m_Texture->SetInputConnection(textureImage->GetOutputPort());
 
-		// Reset color to pure white
-		m_actor->GetProperty()->SetColor(1,1,1);
-		m_actor->GetProperty()->SetAmbient(1.0);
+		//textureImage->Delete();
+
+		//m_actor->SetTexture(m_Texture);
+
+		//// Reset color to pure white
+		//m_actor->GetProperty()->SetColor(1,1,1);
+		//m_actor->GetProperty()->SetAmbient(1.0);
 
 		return true;
 	}
@@ -348,18 +356,20 @@ bool CSurfaceProperties::ReadTexture(const std::string& fname)
 		vtkBMPReader *textureImage = vtkBMPReader::New();
 		textureImage->SetFileName(BMPName.c_str());
 		textureImage->Update();
-
-		m_Texture = vtkTexture::New();
-		m_Texture->SetInterpolate(1);
-		m_Texture->SetInputConnection(textureImage->GetOutputPort());
-
+		SetTexture(textureImage->GetOutput());
 		textureImage->Delete();
 
-		m_actor->SetTexture(m_Texture);
+		//m_Texture = vtkTexture::New();
+		//m_Texture->SetInterpolate(1);
+		//m_Texture->SetInputConnection(textureImage->GetOutputPort());
 
-		// Reset color to pure white
-		m_actor->GetProperty()->SetColor(1,1,1);
-		m_actor->GetProperty()->SetAmbient(1.0);
+		//textureImage->Delete();
+
+		//m_actor->SetTexture(m_Texture);
+
+		//// Reset color to pure white
+		//m_actor->GetProperty()->SetColor(1,1,1);
+		//m_actor->GetProperty()->SetAmbient(1.0);
 
 		return true;
 	}
@@ -368,20 +378,22 @@ bool CSurfaceProperties::ReadTexture(const std::string& fname)
 		vtkJPEGReader *textureImage = vtkJPEGReader::New();
 		textureImage->SetFileName(JPGName.c_str());
 		textureImage->Update();
-
-		m_Texture = vtkTexture::New();
-		m_Texture->SetInterpolate(1);
-		//m_Texture->SetQualityTo32Bit();
-		//m_Texture->SetRestrictPowerOf2ImageSmaller(0);
-		m_Texture->SetInputConnection(textureImage->GetOutputPort());
-
+		SetTexture(textureImage->GetOutput());
 		textureImage->Delete();
 
-		m_actor->SetTexture(m_Texture);
+		//m_Texture = vtkTexture::New();
+		//m_Texture->SetInterpolate(1);
+		////m_Texture->SetQualityTo32Bit();
+		////m_Texture->SetRestrictPowerOf2ImageSmaller(0);
+		//m_Texture->SetInputConnection(textureImage->GetOutputPort());
 
-		// Reset color to pure white
-		m_actor->GetProperty()->SetColor(1,1,1);
-		m_actor->GetProperty()->SetAmbient(1.0);
+		//textureImage->Delete();
+
+		//m_actor->SetTexture(m_Texture);
+
+		//// Reset color to pure white
+		//m_actor->GetProperty()->SetColor(1,1,1);
+		//m_actor->GetProperty()->SetAmbient(1.0);
 
 		return true;
 	}
@@ -445,6 +457,7 @@ bool CSurfaceProperties::ReadFromFile(const std::string& fname)
 		}
 		InitialiseSurface(pd);
 		pd->Delete();
+		ReadTexture(fname);
 		return true;
 	}
 	return false;
