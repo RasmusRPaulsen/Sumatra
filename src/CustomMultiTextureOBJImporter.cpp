@@ -143,7 +143,7 @@ bool CCustomMultiTextureOBJImporter::ReadFile( const std::string& fname )
 			}
 
 			// Texture coords
-			if (nst == 2 && st[0] == "vt")
+			if ((nst == 2 || nst == 3) && st[0] == "vt")
 			{
 				double tc[2];
 				tc[0] = 	atof(st[1].c_str());
