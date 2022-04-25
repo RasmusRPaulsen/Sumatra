@@ -2272,8 +2272,11 @@ std::string vtkExtMisc::GetSurfaceValues(vtkPolyData *pd, const std::string& sep
 			<< " arrays." << sep;
 		for (int i = 0; i < pd->GetFieldData()->GetNumberOfArrays(); i++)
 		{
-			ost << "\tArray " << i << " is named "
-				<< pd->GetFieldData()->GetArray(i)->GetName() << sep;
+			if (pd->GetFieldData()->GetArray(i))
+				ost << "\tArray " << i << " is named "
+					<< pd->GetFieldData()->GetArray(i)->GetName() << sep;
+			else
+				ost << "\tArray " << i << " is NULL" << sep;
 		}
 	}
 	ost << sep;

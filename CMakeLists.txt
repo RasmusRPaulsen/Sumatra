@@ -53,6 +53,7 @@ include_directories(${GEL_SRC_DIR})
 
 set(GEL_BDIR $ENV{GEL_BIN_DIR})				
 FIND_LIBRARY(GEL_LIBRARY_RELEASE GEL.lib ${GEL_BDIR}/Release )
+FIND_LIBRARY(GEL_LIBRARY_DEBUG GEL.lib ${GEL_BDIR}/Debug )
 				
 #======================= INCLUSION OF Our Code ======================#
 set(FORMS_DIR "${CMAKE_SOURCE_DIR}/forms")
@@ -105,7 +106,8 @@ target_link_libraries( Sumatra Qt6::Widgets)
 target_link_libraries( Sumatra ${QT_LIBRARIES} ${OPENGL_LIBRARIES})
 #target_link_libraries( Sumatra VTK::GUISupportQt VTK::IOLegacy VTK:IOGeometry)
 target_link_libraries( Sumatra ${VTK_LIBRARIES})
-target_link_libraries(Sumatra ${GEL_LIBRARY_RELEASE})
+target_link_libraries(Sumatra debug ${GEL_LIBRARY_DEBUG})
+target_link_libraries(Sumatra optimized ${GEL_LIBRARY_RELEASE})
 
 vtk_module_autoinit(
     TARGETS Sumatra

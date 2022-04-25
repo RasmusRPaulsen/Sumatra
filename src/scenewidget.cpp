@@ -10,6 +10,7 @@
 #include <vtkOBJExporter.h>
 #include <vtkRIBExporter.h>
 #include <vtkVRMLExporter.h>
+#include <vtkSingleVTPExporter.h>
 
 #include <sstream>
 
@@ -51,8 +52,6 @@ void SceneWidget::OpenFile(const std::string& fname)
     m3DScene->ReadFile(fname);
     renderWindow()->Render();
 }
-
-#include <vtkSingleVTPExporter.h>
 
 bool SceneWidget::ExportSceneToFile(const std::string& fname)
 {
