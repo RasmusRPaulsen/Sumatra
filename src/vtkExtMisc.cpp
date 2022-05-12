@@ -2098,6 +2098,10 @@ std::string vtkExtMisc::GetSurfaceValues(vtkPolyData *pd, const std::string& sep
 		{
 			ost << "Point scalars: 3 component scalars - probably RGB" << sep;
 		}
+		else if (pd->GetPointData()->GetScalars() && pd->GetPointData()->GetScalars()->GetNumberOfComponents() == 4)
+		{
+			ost << "Point scalars: 4 component scalars - probably RGBA" << sep;
+		}
 		else if (pd->GetPointData()->GetScalars())
 		{
 			ost << "Point scalars: " << pd->GetPointData()->GetScalars()->GetNumberOfComponents() << " component scalars" << sep;
@@ -2147,6 +2151,10 @@ std::string vtkExtMisc::GetSurfaceValues(vtkPolyData *pd, const std::string& sep
 		if (pd->GetCellData()->GetScalars() && pd->GetCellData()->GetScalars()->GetNumberOfComponents() == 3)
 		{
 			ost << "Cell scalars: 3 component scalars - probably RGB" << sep;
+		}
+		else if (pd->GetCellData()->GetScalars() && pd->GetCellData()->GetScalars()->GetNumberOfComponents() == 4)
+		{
+			ost << "Cell scalars: 4 component scalars - probably RGBA" << sep;
 		}
 		else if (pd->GetCellData()->GetScalars())
 		{

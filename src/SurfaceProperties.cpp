@@ -102,7 +102,8 @@ Points 0 0 100
 	UpdateScalarProperties();
 
 	// Check for RGB scalar values
-	if (m_polyData->GetPointData()->GetScalars() && m_polyData->GetPointData()->GetScalars()->GetNumberOfComponents() == 3)
+	if (m_polyData->GetPointData()->GetScalars() && m_polyData->GetPointData()->GetScalars()->GetNumberOfComponents() == 3 ||
+		m_polyData->GetPointData()->GetScalars() && m_polyData->GetPointData()->GetScalars()->GetNumberOfComponents() == 4)
 	{
 		prop->SetColor(1,1,1);
 		prop->SetSpecularColor(1, 1, 1);
