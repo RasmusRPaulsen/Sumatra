@@ -24,6 +24,12 @@ public:
 
     bool GetReplaceSource();
 
+    bool GetPreserveTopology();
+
+    double GetDecimationFactor();
+
+    // 0: DecimatePro, 1: Quadratric, 2: QuadraticCLuster 
+    int GetDecimationType();
 
 private:
     Ui::DecimateDlg *ui;

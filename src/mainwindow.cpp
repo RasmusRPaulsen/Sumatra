@@ -312,8 +312,8 @@ void MainWindow::processDecimate()
 
     if (dlg.exec())
     {
-        // ui->sceneWidget->get3DScene()->CalculateNormals(dlg.GetSelectedSurface(), dlg.GetReplaceSource(), dlg.GetFlipNormals(), dlg.GetSplitNormals(),
-        //    dlg.GetSplitEdgeAngle());
+        ui->sceneWidget->get3DScene()->DecimateSurface(dlg.GetSelectedSurface(), dlg.GetReplaceSource(), dlg.GetDecimationType(), dlg.GetDecimationFactor(),
+            dlg.GetPreserveTopology());
         forceRendering();
     }
 }

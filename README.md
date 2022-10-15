@@ -3,7 +3,7 @@ Surface manipulation and transformation toolkit (Sumatra) - a fast and versatile
 
 
 ## TODO
-- Decimation dialog
+- Decimation dialog - add quadtratic clustering
 - Subdivision dialog
 - Smooth dialog
 - ICP

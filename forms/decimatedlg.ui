@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>673</width>
-    <height>84</height>
+    <width>875</width>
+    <height>152</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <item>
     <widget class="QComboBox" name="selectedObjectCB"/>
    </item>
-	<item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QCheckBox" name="ReplaceSourceChk">
        <property name="text">
@@ -27,38 +27,62 @@
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="FlipNormalsChk">
+      <widget class="QCheckBox" name="preserveTopologyBtn">
        <property name="text">
-        <string>Flip normals</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="SplitSharpEdgesChk">
-       <property name="text">
-        <string>Split sharp edges</string>
+        <string>Preserve Topology</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Sharp edge angle:</string>
+        <string>Decimation factor (percent to reduce)</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="SharpEdgeAngleSpn">
+      <widget class="QDoubleSpinBox" name="decimationFactorSpn">
        <property name="maximum">
-        <double>360.000000000000000</double>
+        <double>1.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.050000000000000</double>
        </property>
        <property name="value">
-        <double>30.000000000000000</double>
+        <double>0.500000000000000</double>
        </property>
       </widget>
      </item>
     </layout>
-	</item>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QRadioButton" name="quadratricRadio">
+       <property name="text">
+        <string>Quadratic Decimation</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="decimateProRadio">
+       <property name="text">
+        <string>DecimatePro</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="qclusteringRadio">
+       <property name="text">
+        <string>Quadratric Clustering</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">

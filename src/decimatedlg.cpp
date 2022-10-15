@@ -48,3 +48,26 @@ bool DecimateDlg::GetReplaceSource()
     return ui->ReplaceSourceChk->isChecked();
 }
 
+bool DecimateDlg::GetPreserveTopology()
+{
+    return ui->preserveTopologyBtn->isChecked();
+}
+
+double DecimateDlg::GetDecimationFactor()
+{
+    return ui->decimationFactorSpn->value();
+}
+
+
+int DecimateDlg::GetDecimationType()
+{
+    if (ui->quadratricRadio->isChecked())
+        return 1;
+    if (ui->decimateProRadio->isChecked())
+        return 0;
+    if (ui->qclusteringRadio->isChecked())
+        return 2;
+
+    return 0;
+}
+
