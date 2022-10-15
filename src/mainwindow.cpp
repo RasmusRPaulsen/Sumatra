@@ -14,6 +14,7 @@
 #include <sstream>
 
 #include "computenormalsdlg.h"
+#include "decimatedlg.h"
 #include "objectpropertiesdlg.h"
 #include "manipulateobjectdlg.h"
 #include "savefiledlg.h"
@@ -304,6 +305,20 @@ void MainWindow::processComputeNormals()
     }
 }
 
+void MainWindow::processDecimate()
+{
+    DecimateDlg dlg;
+    dlg.Set3DScene(ui->sceneWidget->get3DScene());
+
+    if (dlg.exec())
+    {
+        // ui->sceneWidget->get3DScene()->CalculateNormals(dlg.GetSelectedSurface(), dlg.GetReplaceSource(), dlg.GetFlipNormals(), dlg.GetSplitNormals(),
+        //    dlg.GetSplitEdgeAngle());
+        forceRendering();
+    }
+}
+
+
 void MainWindow::showObjectProperties()
 {
     if (ui->sceneWidget->get3DScene()->GetNumberOfSurfaces() < 1)
@@ -426,6 +441,11 @@ void MainWindow::createActions()
     ProcessComputeNormalsAct->setStatusTip(tr("Compute surface normals"));
     connect(ProcessComputeNormalsAct, &QAction::triggered, this, &MainWindow::processComputeNormals);
 
+    ProcessDecimateAct = new QAction(tr("&Decimate"), this);
+    ProcessDecimateAct->setStatusTip(tr("Decimate a mesh"));
+    connect(ProcessDecimateAct, &QAction::triggered, this, &MainWindow::processDecimate);
+
+
     visualizeNormalsAct = new QAction(tr("&Visualize normals"), this);
     visualizeNormalsAct->setStatusTip(tr("Visualize normals"));
     connect(visualizeNormalsAct, &QAction::triggered, this, &MainWindow::visualizeNormals);
@@ -508,6 +528,7 @@ void MainWindow::createMenus()
     fileMenu->addAction(visualizeNormalsAct);
     fileMenu->addAction(visualizeFeatureEdgesAct);
     fileMenu->addAction(computeConnectivityAct);
+    fileMenu->addAction(ProcessDecimateAct);
 
     updateEnabledActions();
 }
@@ -517,6 +538,7 @@ void MainWindow::updateEnabledActions()
     bool anyObjects = (ui->sceneWidget->get3DScene()->GetNumberOfSurfaces() > 0);
     saveFileAct->setEnabled(anyObjects);
     ProcessComputeNormalsAct->setEnabled(anyObjects);
+    ProcessDecimateAct->setEnabled(anyObjects);
     visualizeNormalsAct->setEnabled(anyObjects);
     visualizeFeatureEdgesAct->setEnabled(anyObjects);
     computeConnectivityAct->setEnabled(anyObjects);

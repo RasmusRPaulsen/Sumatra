@@ -2,6 +2,14 @@
 Surface manipulation and transformation toolkit (Sumatra) - a fast and versatile mesh viewer
 
 
+## TODO
+- Decimation dialog
+- Subdivision dialog
+- Smooth dialog
+- ICP
+- Compare
+
+
 ## Install Qt
 
 - Download and install Qt in C:\Qt

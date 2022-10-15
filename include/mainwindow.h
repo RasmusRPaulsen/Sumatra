@@ -27,6 +27,7 @@ private slots:
     int selectObjectDialog();
     void showOpenFileDialog();
     void processComputeNormals();
+    void processDecimate();
     void showObjectProperties();
     void forceRendering();
     void ChooseBackgroundColor();
@@ -70,6 +71,7 @@ private:
     QAction* saveFileAct;
     QAction* exportSceneAct;
     QAction* ProcessComputeNormalsAct;
+    QAction* ProcessDecimateAct;
     QAction* optionsObjectPropAct;
     QAction* ChooseBackgroundColorAct;
     QAction* CutWithPlaneAct;
