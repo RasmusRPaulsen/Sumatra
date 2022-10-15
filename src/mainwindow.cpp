@@ -65,8 +65,8 @@ void MainWindow::showSaveFileDialog()
     {
         std::string defname = ui->sceneWidget->get3DScene()->GetSurfaceShortName(dlg.GetSelectedSurface());
 
-        // std::string extFilt = "VTK File (*.vtk)|*.vtk|VTK XML File (*.vtp)|*.vtp|STL File (*.stl)|*.stl|TXT File (*.txt)|*.txt|PLY File (*.ply)|*.ply|All Files (*.*)|*.*||";
-        std::string extFilt = "Surface File (*.vtk *.vtp *.stl *.txt *.ply);;All Files (*.*)";
+        std::string extFilt = "VTK XML File (*.vtp);;VTK File (*.vtk);;STL File (*.stl);;PLY File (*.ply);;All Files (*.*)";
+        //std::string extFilt = "Surface File (*.vtk *.vtp *.stl *.txt *.ply);;All Files (*.*)";
 
         QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
             tr(defname.c_str()), tr(extFilt.c_str()));
