@@ -29,6 +29,7 @@ private slots:
     void processComputeNormals();
     void processDecimate();
     void processSubdivide();
+    void processSmooth();
     void showObjectProperties();
     void forceRendering();
     void ChooseBackgroundColor();
@@ -74,6 +75,7 @@ private:
     QAction* ProcessComputeNormalsAct;
     QAction* ProcessDecimateAct;
     QAction* ProcessSubdivideAct;
+    QAction* ProcessSmoothAct;
     QAction* optionsObjectPropAct;
     QAction* ChooseBackgroundColorAct;
     QAction* CutWithPlaneAct;

@@ -16,6 +16,7 @@
 #include "computenormalsdlg.h"
 #include "decimatedlg.h"
 #include "subdividedlg.h"
+#include "smoothdlg.h"
 #include "objectpropertiesdlg.h"
 #include "manipulateobjectdlg.h"
 #include "savefiledlg.h"
@@ -331,6 +332,17 @@ void MainWindow::processSubdivide()
     }
 }
 
+void MainWindow::processSmooth()
+{
+    SmoothDlg dlg;
+    dlg.Set3DScene(ui->sceneWidget->get3DScene());
+
+    if (dlg.exec())
+    {
+       // ui->sceneWidget->get3DScene()->SubdivideSurface(dlg.GetSelectedSurface(), dlg.GetReplaceSource(), dlg.GetSubdivisionType(), dlg.GetNumberOfSubdivisions());
+        forceRendering();
+    }
+}
 
 
 void MainWindow::showObjectProperties()
@@ -463,6 +475,10 @@ void MainWindow::createActions()
     ProcessSubdivideAct->setStatusTip(tr("Subdivide a mesh"));
     connect(ProcessSubdivideAct, &QAction::triggered, this, &MainWindow::processSubdivide);
 
+    ProcessSmoothAct = new QAction(tr("&smooth"), this);
+    ProcessSmoothAct->setStatusTip(tr("Smooth a mesh"));
+    connect(ProcessSmoothAct, &QAction::triggered, this, &MainWindow::processSmooth);
+
     visualizeNormalsAct = new QAction(tr("&Visualize normals"), this);
     visualizeNormalsAct->setStatusTip(tr("Visualize normals"));
     connect(visualizeNormalsAct, &QAction::triggered, this, &MainWindow::visualizeNormals);
@@ -547,6 +563,7 @@ void MainWindow::createMenus()
     fileMenu->addAction(computeConnectivityAct);
     fileMenu->addAction(ProcessDecimateAct);
     fileMenu->addAction(ProcessSubdivideAct);
+    fileMenu->addAction(ProcessSmoothAct);
 
     updateEnabledActions();
 }
@@ -558,6 +575,7 @@ void MainWindow::updateEnabledActions()
     ProcessComputeNormalsAct->setEnabled(anyObjects);
     ProcessDecimateAct->setEnabled(anyObjects);
     ProcessSubdivideAct->setEnabled(anyObjects);
+    ProcessSmoothAct->setEnabled(anyObjects);
     visualizeNormalsAct->setEnabled(anyObjects);
     visualizeFeatureEdgesAct->setEnabled(anyObjects);
     computeConnectivityAct->setEnabled(anyObjects);

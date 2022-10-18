@@ -1,7 +1,6 @@
 #include "subdividedlg.h"
 #include "ui_subdividedlg.h"
 
-
 #include <sstream>
 
 SubdivideDlg::SubdivideDlg(QWidget *parent) :
