@@ -15,6 +15,7 @@
 
 #include "computenormalsdlg.h"
 #include "decimatedlg.h"
+#include "subdividedlg.h"
 #include "objectpropertiesdlg.h"
 #include "manipulateobjectdlg.h"
 #include "savefiledlg.h"
@@ -318,6 +319,19 @@ void MainWindow::processDecimate()
     }
 }
 
+void MainWindow::processSubdivide()
+{
+    SubdivideDlg dlg;
+    dlg.Set3DScene(ui->sceneWidget->get3DScene());
+
+    if (dlg.exec())
+    {
+        ui->sceneWidget->get3DScene()->SubdivideSurface(dlg.GetSelectedSurface(), dlg.GetReplaceSource(), dlg.GetSubdivisionType(), dlg.GetNumberOfSubdivisions());
+        forceRendering();
+    }
+}
+
+
 
 void MainWindow::showObjectProperties()
 {
@@ -445,6 +459,9 @@ void MainWindow::createActions()
     ProcessDecimateAct->setStatusTip(tr("Decimate a mesh"));
     connect(ProcessDecimateAct, &QAction::triggered, this, &MainWindow::processDecimate);
 
+    ProcessSubdivideAct = new QAction(tr("&Subdivide"), this);
+    ProcessSubdivideAct->setStatusTip(tr("Subdivide a mesh"));
+    connect(ProcessSubdivideAct, &QAction::triggered, this, &MainWindow::processSubdivide);
 
     visualizeNormalsAct = new QAction(tr("&Visualize normals"), this);
     visualizeNormalsAct->setStatusTip(tr("Visualize normals"));
@@ -529,6 +546,7 @@ void MainWindow::createMenus()
     fileMenu->addAction(visualizeFeatureEdgesAct);
     fileMenu->addAction(computeConnectivityAct);
     fileMenu->addAction(ProcessDecimateAct);
+    fileMenu->addAction(ProcessSubdivideAct);
 
     updateEnabledActions();
 }
@@ -539,6 +557,7 @@ void MainWindow::updateEnabledActions()
     saveFileAct->setEnabled(anyObjects);
     ProcessComputeNormalsAct->setEnabled(anyObjects);
     ProcessDecimateAct->setEnabled(anyObjects);
+    ProcessSubdivideAct->setEnabled(anyObjects);
     visualizeNormalsAct->setEnabled(anyObjects);
     visualizeFeatureEdgesAct->setEnabled(anyObjects);
     computeConnectivityAct->setEnabled(anyObjects);
