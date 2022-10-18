@@ -77,7 +77,7 @@
      <item>
       <widget class="QRadioButton" name="qclusteringRadio">
        <property name="text">
-        <string>Quadratric Clustering</string>
+        <string>Quadric Clustering</string>
        </property>
       </widget>
      </item>

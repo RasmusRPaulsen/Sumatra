@@ -20,6 +20,7 @@
 #include <vtkPolyDataConnectivityFilter.h>
 #include <vtkTriangleFilter.h>
 #include <vtkDecimatePro.h>
+#include <vtkQuadricClustering.h>
 #include <vtkQuadricDecimation.h>
 #include <vtkFeatureEdges.h>
 #include <vtkWindowedSincPolyDataFilter.h>
@@ -205,33 +206,43 @@ void CProcess3DData::DoSubdivideSurface(vtkPolyData *source, int subdivisions, v
 	tri->Delete();
 }
 
-
-void CProcess3DData::DoDecimateSurface(vtkPolyData *source, vtkPolyData *decimated, 
-			int decimtype, float decimfactor, bool preservetopology)
+void CProcess3DData::DoDecimateSurface(vtkPolyData* source, vtkPolyData* decimated,
+	int decimtype, float decimfactor, bool preservetopology)
 {
-	vtkTriangleFilter *tri = vtkTriangleFilter::New();
-	tri->SetInputData(source);
-	tri->Update();
-	if (decimtype == 0)
+	if (decimtype == 2)
 	{
-		vtkDecimatePro *decim = vtkDecimatePro::New();
-		decim->SetInputConnection(tri->GetOutputPort());
-		decim->SetPreserveTopology(preservetopology);
-		decim->SetTargetReduction(decimfactor);
-		decim->Update();
-		decimated->DeepCopy(decim->GetOutput());
-		decim->Delete();
-	}	
-	if (decimtype == 1)
+		vtkNew<vtkQuadricClustering> decimate;
+		decimate->SetInputData(source);
+		// decimate->UseFeatureEdgesOn();
+		decimate->Update();
+		decimated->DeepCopy(decimate->GetOutput());
+	}
+	else
 	{
-		vtkQuadricDecimation *decim = vtkQuadricDecimation::New();
-		decim->SetInputConnection(tri->GetOutputPort());
-		decim->SetTargetReduction(decimfactor);
-		decim->Update();
-		decimated->DeepCopy(decim->GetOutput());
-		decim->Delete();
-	}	
-	tri->Delete();
+		vtkTriangleFilter* tri = vtkTriangleFilter::New();
+		tri->SetInputData(source);
+		tri->Update();
+		if (decimtype == 0)
+		{
+			vtkDecimatePro* decim = vtkDecimatePro::New();
+			decim->SetInputConnection(tri->GetOutputPort());
+			decim->SetPreserveTopology(preservetopology);
+			decim->SetTargetReduction(decimfactor);
+			decim->Update();
+			decimated->DeepCopy(decim->GetOutput());
+			decim->Delete();
+		}
+		if (decimtype == 1)
+		{
+			vtkQuadricDecimation* decim = vtkQuadricDecimation::New();
+			decim->SetInputConnection(tri->GetOutputPort());
+			decim->SetTargetReduction(decimfactor);
+			decim->Update();
+			decimated->DeepCopy(decim->GetOutput());
+			decim->Delete();
+		}
+		tri->Delete();
+	}
 }
 
 void CProcess3DData::DoSmoothSurface(vtkPolyData *source, vtkPolyData *smooth, int smoothtype, int NumIt, double RelaxFactor,

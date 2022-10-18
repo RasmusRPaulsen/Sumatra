@@ -1364,6 +1364,8 @@ void C3DScene::DecimateSurface(unsigned int SourceID, bool ReplaceSurface, int d
 			name << "_DecimatePro_" << decimfactor;
 		if (decimtype == 1)
 			name << "_QuadricDecimation_" << decimfactor;
+		if (decimtype == 2)
+			name << "_QuadricClustering";
 
 		CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
 		surfProbs->InitialiseSurface(decim);

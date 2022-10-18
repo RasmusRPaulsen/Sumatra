@@ -61,10 +61,10 @@ double DecimateDlg::GetDecimationFactor()
 
 int DecimateDlg::GetDecimationType()
 {
-    if (ui->quadratricRadio->isChecked())
-        return 1;
     if (ui->decimateProRadio->isChecked())
         return 0;
+    if (ui->quadratricRadio->isChecked())
+        return 1;
     if (ui->qclusteringRadio->isChecked())
         return 2;
 
