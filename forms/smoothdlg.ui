@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>605</width>
-    <height>435</height>
+    <width>758</width>
+    <height>326</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -165,7 +165,7 @@
      <item>
       <widget class="QRadioButton" name="constrainedRadio">
        <property name="text">
-        <string>Constrained</string>
+        <string>Constrained (not yet implemented)</string>
        </property>
       </widget>
      </item>

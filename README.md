@@ -6,7 +6,7 @@ Surface manipulation and transformation toolkit (Sumatra) - a fast and versatile
 - Smooth dialog - add vtkConstrainedSmoothingFilter
 - ICP
 - Compare
-
+- Scalars: smoothing, thresholding, connectivity
 
 ## Install Qt
 
