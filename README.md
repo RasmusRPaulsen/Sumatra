@@ -56,6 +56,12 @@ Passing values forth and back:
 
 ### Creating installer
 (https://doc.qt.io/qtinstallerframework/index.html)
+(https://www.youtube.com/watch?v=1pKMcwJZay4)
+(https://medium.com/swlh/how-to-deploy-your-qt-cross-platform-applications-to-windows-operating-system-by-using-windeployqt-a7cd5663d46e)
+(https://stackoverflow.com/questions/27521586/setting-program-files-as-a-default-installation-directory-in-the-qt-installer)
+(https://stackoverflow.com/questions/58728532/qt-installer-framework-not-registering-file-type=
+(https://github.com/apalomer/image_view/tree/master/installer)
+
 
 ### C++ naming conventions 
 - from Google: (https://google.github.io/styleguide/cppguide.html#Naming)

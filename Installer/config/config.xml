@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>Sumatra</Name>
+    <Version>0.2.0</Version>
+    <Title>Sumatra Installer</Title>
+    <Publisher>DTU Compute</Publisher>
+    <StartMenuDir>Sumatra</StartMenuDir>
+    <TargetDir>@HomeDir@/Sumatra</TargetDir>
+</Installer>

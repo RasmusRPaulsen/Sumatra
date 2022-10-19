@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+    <DisplayName>Sumatra main component</DisplayName>
+    <Description>Install main Sumatra component.</Description>
+    <Version>0.2.0-1</Version>
+    <ReleaseDate>2022-10-19</ReleaseDate>
+    <Licenses>
+        <License name="MIT License" file="license.txt" />
+    </Licenses>
+    <Default>true</Default>
+</Package>
