@@ -46,3 +46,44 @@ bool SmoothDlg::GetReplaceSource()
 {
     return ui->ReplaceSourceChk->isChecked();
 }
+
+int SmoothDlg::GetSmoothType()
+{
+    if (ui->laplacianRadio->isChecked())
+        return 0;
+    if (ui->sincRadio->isChecked())
+        return 1;
+    if (ui->constrainedRadio->isChecked())
+        return 2;
+    return 0;
+}
+
+int SmoothDlg::GetIterations()
+{
+    return ui->iterationsSpn->value();
+}
+
+double SmoothDlg::GetRelaxationFactor()
+{
+    return ui->relaxFactorSpn->value();
+}
+
+bool SmoothDlg::GetBoundarySmoothing()
+{
+    return ui->featureedgeSmoothingBtn->isChecked();
+}
+
+bool SmoothDlg::GetFeatureEdgeSmoothing()
+{
+    return ui->featureedgeSmoothingBtn->isChecked();
+}
+
+double SmoothDlg::GetFeatureAngle()
+{
+    return ui->featureAngleSpn->value();
+}
+
+bool SmoothDlg::GetGenerateErrorScalars()
+{
+    return ui->errorScalarsBtn->isChecked();
+}

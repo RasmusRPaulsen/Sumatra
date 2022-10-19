@@ -23,6 +23,22 @@ public:
 
     bool GetReplaceSource();
 
+    // 0: laplacian, 1: Sinc, 2: constrained
+    int GetSmoothType();
+
+    int GetIterations();
+
+    double GetRelaxationFactor();
+
+    bool GetBoundarySmoothing();
+
+    bool GetFeatureEdgeSmoothing();
+
+    double GetFeatureAngle();
+
+    bool GetGenerateErrorScalars();
+
+
 private:
     Ui::SmoothDlg *ui;
 

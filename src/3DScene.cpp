@@ -1324,8 +1324,10 @@ void C3DScene::SmoothSurface(unsigned int SourceID, bool ReplaceSurface, int smo
 		name << m_Surfaces[SourceID]->m_shortname;
 		if (smoothtype == 0)
 			name << "_LaplacianSmooth";
-		else
+		else if (smoothtype == 1)
 			name << "_SincSmooth";
+		else
+			name << "_ConstrainedSmooth";
 
 		name << "_it_" << NumIt << "_relax_" << RelaxFactor << "_BoundarySmooth_" << BoundarySmooth
 			<< "_FeatureEdgeSmooth_" << FeatureEdgeSmooth << "_FeatureAngle_" << FeatureAngle;

@@ -245,6 +245,8 @@ void CProcess3DData::DoDecimateSurface(vtkPolyData* source, vtkPolyData* decimat
 	}
 }
 
+// #include <vtkConstrainedSmoothingFilter.h>
+
 void CProcess3DData::DoSmoothSurface(vtkPolyData *source, vtkPolyData *smooth, int smoothtype, int NumIt, double RelaxFactor,
 			bool BoundarySmooth, bool FeatureEdgeSmooth, double FeatureAngle, bool GenerateErrScal)
 {
@@ -264,7 +266,7 @@ void CProcess3DData::DoSmoothSurface(vtkPolyData *source, vtkPolyData *smooth, i
 		smooth->DeepCopy(smoother->GetOutput());
 		smoother->Delete();
 	}
-	else
+	else if (smoothtype == 1)
 	{
 		vtkWindowedSincPolyDataFilter *smoother = vtkWindowedSincPolyDataFilter::New();
 		smoother->SetInputData(source);
@@ -274,6 +276,22 @@ void CProcess3DData::DoSmoothSurface(vtkPolyData *source, vtkPolyData *smooth, i
 		smoother->SetFeatureEdgeSmoothing(FeatureEdgeSmooth);
 		smoother->SetFeatureAngle(FeatureAngle);
 		smoother->SetGenerateErrorScalars(GenerateErrScal);
+		smoother->Update();
+
+		smooth->DeepCopy(smoother->GetOutput());
+		smoother->Delete();
+	}
+	else
+	{
+		vtkSmoothPolyDataFilter* smoother = vtkSmoothPolyDataFilter::New();
+		smoother->SetInputData(source);
+		smoother->SetNumberOfIterations(NumIt);
+		smoother->SetRelaxationFactor(RelaxFactor);
+		smoother->SetBoundarySmoothing(BoundarySmooth);
+		smoother->SetFeatureEdgeSmoothing(FeatureEdgeSmooth);
+		smoother->SetFeatureAngle(FeatureAngle);
+		smoother->SetGenerateErrorScalars(GenerateErrScal);
+
 		smoother->Update();
 
 		smooth->DeepCopy(smoother->GetOutput());

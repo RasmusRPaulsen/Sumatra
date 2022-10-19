@@ -339,7 +339,10 @@ void MainWindow::processSmooth()
 
     if (dlg.exec())
     {
-       // ui->sceneWidget->get3DScene()->SubdivideSurface(dlg.GetSelectedSurface(), dlg.GetReplaceSource(), dlg.GetSubdivisionType(), dlg.GetNumberOfSubdivisions());
+        ui->sceneWidget->get3DScene()->SmoothSurface(dlg.GetSelectedSurface(), dlg.GetReplaceSource(), dlg.GetSmoothType(), 
+            dlg.GetIterations(), dlg.GetRelaxationFactor(), dlg.GetBoundarySmoothing(), dlg.GetFeatureEdgeSmoothing(),
+            dlg.GetFeatureAngle(), dlg.GetGenerateErrorScalars());
+            
         forceRendering();
     }
 }
