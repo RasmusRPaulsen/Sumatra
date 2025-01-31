@@ -1,6 +1,8 @@
 # Sumatra
 Surface manipulation and transformation toolkit (Sumatra) - a fast and versatile mesh viewer
 
+This is very much a work in progress and the documentation needs severe upgrading.
+
 
 ## TODO
 - Smooth dialog - add vtkConstrainedSmoothingFilter
