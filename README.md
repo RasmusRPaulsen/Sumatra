@@ -71,12 +71,14 @@ Passing values forth and back:
 
 ## Linux build and installation
 
-### Qt
-(https://doc.qt.io/qt-6/linux.html)
+- Download and install Qt for Linux (https://doc.qt.io/qt-6/linux.html)
+- Get the latest version of VTK (https://gitlab.kitware.com/vtk/vtk/-/blob/master/Documentation/docs/build_instructions/build.md?ref_type=heads)
+- Download and install CMake for Linux
+- Start CMake for VTK and create a binary output directory for vtk
+- Enable build with Qt
+- The QT6 include dir should be set to: /home/rapa/Qt/6.9.0/gcc_64/lib/cmake/Qt6
+- Go to the vtk bin directory in a terminal and type `make`
 
-
-### VTK
-(https://gitlab.kitware.com/vtk/vtk/-/blob/master/Documentation/dev/build.md)
 
 
 

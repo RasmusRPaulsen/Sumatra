@@ -14,7 +14,7 @@
 #include "vtkTrapezoidSource.h"
 #include "vtkPolyDataProjection.h"
 //#include "MRFSurfaceReconstruction.h"
-#include "GELRemeshing.h"
+// #include "GELRemeshing.h"
 #include "vtkPolyDataPCANormals.h"
 #include "vtkPolyDataOrientNormalsByVoting.h"
 #include <vtkCamera.h>
@@ -1020,27 +1020,6 @@ void C3DScene::VisualiseNormals(unsigned int SourceID, bool VisualiseAdjacentFli
 
 	AddSurfaceToRenderer(surfProbs2);
 
-	if (VisualiseAdjacentFlipped)
-	{
-		vtkPolyData *pd2 = vtkPolyData::New();
-		int nFlipped = CGELRemeshing::VisualiseAdjacentFlippedNormals(ptransSource->GetOutput(), pd2, NL);
-		if (nFlipped == 0)
-		{
-			// TODO: Update QMessageBox::information(this, "Warning","No adjacent faces with flipped normals");
-		}
-		else
-		{ 
-			name = m_Surfaces[SourceID]->m_shortname + "_AdjacentFlippedNormals";
-			CSurfaceProperties *surfProbs3 = new CSurfaceProperties(m_lookup, mSettings);
-
-			surfProbs3->InitialiseSurface(pd2);
-			surfProbs3->m_shortname = name;
-
-			AddSurfaceToRenderer(surfProbs3);
-		}
-
-		pd2->Delete();
-	}
 
 
 	pd->Delete();
@@ -2130,120 +2109,6 @@ bool C3DScene::DoCompare( unsigned int SourceID, unsigned int TargetID, bool Sig
 	return true;
 }
 
-void C3DScene::DoRemesh(unsigned int SourceID, bool ReplaceSurface, bool ScalarTargetLengths, double UniformTargetLength)
-{
-	if (SourceID >= m_Surfaces.size())
-	{
-		// TODO: Update QMessageBox::information(this, "Warning","Selected object not valid!");
-		return;
-	}
-	if (ScalarTargetLengths && m_Surfaces[SourceID]->m_polyData->GetPointData()->GetScalars() == NULL)
-	{
-		// TODO: Update QMessageBox::information(this, "Warning","Selected object does not contain scalar values");
-		return;
-	}
-
-	if (ScalarTargetLengths)
-	{
-		vtkPolyData *pdLengths = vtkPolyData::New();
-		pdLengths->DeepCopy(m_Surfaces[SourceID]->m_polyData);
-
-		vtkPolyData *pd = vtkPolyData::New();
-
-		CGELRemeshing remesher;
-
-		bool res = remesher.RemeshWithTargetLengthsDirectlyOnMesh(m_Surfaces[SourceID]->m_polyData, pdLengths, pd);
-
-		if (!res)
-		{
-			// TODO: Update QMessageBox::information(this, "Warning","Something went wrong in remeshing");
-		}
-		else
-		{
-			std::ostringstream ost;
-			ost.str("");
-			ost << m_Surfaces[SourceID]->m_shortname << "_remeshedUsingScalars";
-
-			if (ReplaceSurface)
-			{
-				m_Surfaces[SourceID]->m_polyData->DeepCopy(pd);
-				m_Surfaces[SourceID]->m_shortname = ost.str();
-				m_Surfaces[SourceID]->UpdateScalarProperties();
-			}
-			else
-			{
-				CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
-				surfProbs->m_shortname = ost.str();
-
-				vtkTransform *sourceTrans = vtkTransform::New();
-				sourceTrans->SetMatrix(m_Surfaces[SourceID]->m_actor->GetMatrix());
-
-				vtkTransformPolyDataFilter *ptransSource = vtkTransformPolyDataFilter::New();
-				ptransSource->SetInputData(pd);
-				ptransSource->SetTransform(sourceTrans);
-				ptransSource->Update();
-
-				surfProbs->InitialiseSurface(ptransSource->GetOutput());
-
-				AddSurfaceToRenderer(surfProbs);
-
-				ptransSource->Delete();
-				sourceTrans->Delete();
-			}
-		}
-
-		pd->Delete();
-		pdLengths->Delete();
-	}
-	else
-	{
-		vtkPolyData *pd = vtkPolyData::New();
-
-		CGELRemeshing remesher;
-		bool res = remesher.RemeshDirectMesh(m_Surfaces[SourceID]->m_polyData, pd, UniformTargetLength);
-
-		if (!res)
-		{
-			// TODO: Update QMessageBox::information(this, "Warning","Something went wrong in remeshing");
-		}
-		else
-		{
-			std::ostringstream ost;
-			ost.str("");
-			ost << m_Surfaces[SourceID]->m_shortname << "_UniformRemeshed";
-
-			if (ReplaceSurface)
-			{
-				m_Surfaces[SourceID]->m_polyData->DeepCopy(pd);
-				m_Surfaces[SourceID]->m_shortname = ost.str();
-				m_Surfaces[SourceID]->UpdateScalarProperties();
-			}
-			else
-			{
-				CSurfaceProperties *surfProbs = new CSurfaceProperties(m_lookup, mSettings);
-				surfProbs->m_shortname = ost.str();
-
-				vtkTransform *sourceTrans = vtkTransform::New();
-				sourceTrans->SetMatrix(m_Surfaces[SourceID]->m_actor->GetMatrix());
-
-				vtkTransformPolyDataFilter *ptransSource = vtkTransformPolyDataFilter::New();
-				ptransSource->SetInputData(pd);
-				ptransSource->SetTransform(sourceTrans);
-				ptransSource->Update();
-
-				surfProbs->InitialiseSurface(ptransSource->GetOutput());
-
-				AddSurfaceToRenderer(surfProbs);
-
-				ptransSource->Delete();
-				sourceTrans->Delete();
-			}
-		}
-		pd->Delete();
-	}
-}
-
-
 bool C3DScene::DoICPAlignment( CICPParameters& parms )
 {
 	if (parms.SourceID >= m_Surfaces.size() || 
@@ -3069,20 +2934,6 @@ void C3DScene::CalculatePCANormalsParameters( unsigned int SourceID, double Radi
 	//CliqueNeigDist = parms.CliqueNeighbourDistance;
 }
 
-bool C3DScene::ComputeAverageEdgelengths(unsigned int SourceID, double & avgL)
-{
-	if (SourceID >= m_Surfaces.size())
-	{
-		// TODO: Update QMessageBox::information(this, "Warning","Selected object not valid!");
-		return false;
-	}
-
-	avgL = CGELRemeshing::ComputeAverageEdgeLength(m_Surfaces[SourceID]->m_polyData);
-	if (avgL == 0)
-		return false;
-
-	return true;
-}
 
 void C3DScene::CalculatePCANormals( unsigned int SourceID, bool ReplaceSurface, bool ConComp, bool KeepLargestClique,
 								   bool UseOrgNormals, bool VisNormals, int AdaptiveOrManual, double RadiusFactor, 
