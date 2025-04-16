@@ -78,6 +78,12 @@ Passing values forth and back:
 - Enable build with Qt
 - The QT6 include dir should be set to: /home/rapa/Qt/6.9.0/gcc_64/lib/cmake/Qt6
 - Go to the vtk bin directory in a terminal and type `make`
+- Get Sumatra source from Github
+- Create a binary output directory for Sumatra
+- Use CMake to configure Sumatra - specifically all the QT6 include dirs need to set as above
+- use make to build Sumatra
+- Copy the settings and icon files from the source folder to the binary folder
+- Perhaps create a Sumatra.desktop file in ./local/share/appplications/
 
 
 
